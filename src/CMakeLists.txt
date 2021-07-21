@@ -21,10 +21,12 @@ endif()
 if(H264NAL_SMALL_FOOTPRINT)
   add_library(h264nal
       h264_common.h h264_common.cc
+      h264_vui_parameters_parser.h h264_vui_parameters_parser.cc
 )
 else()
   add_library(h264nal
       h264_common.h h264_common.cc
+      h264_vui_parameters_parser.h h264_vui_parameters_parser.cc
 )
 endif()
 target_include_directories(h264nal PUBLIC ../webrtc)
