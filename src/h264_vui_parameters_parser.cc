@@ -211,13 +211,11 @@ H264VuiParametersParser::ParseVuiParameters(
       return nullptr;
     }
     // num_reorder_frames  ue(v)
-    if (!bit_buffer->ReadExponentialGolomb(
-            &(vui->num_reorder_frames))) {
+    if (!bit_buffer->ReadExponentialGolomb(&(vui->num_reorder_frames))) {
       return nullptr;
     }
     // max_dec_frame_buffering  ue(v)
-    if (!bit_buffer->ReadExponentialGolomb(
-            &(vui->max_dec_frame_buffering))) {
+    if (!bit_buffer->ReadExponentialGolomb(&(vui->max_dec_frame_buffering))) {
       return nullptr;
     }
   }
