@@ -1,0 +1,31 @@
+# add executable
+#add_executable(main main.cc)
+
+# link executable to webrtc library
+# Since the webrtc library has public include directories
+# we will use those link directories when building `main`
+#target_link_libraries(main LINK_PUBLIC webrtc)
+
+find_library(GTEST_LIBRARY gtest)
+find_library(GMOCK_LIBRARY gmock)
+
+include_directories(PUBLIC ../src)
+include_directories(PUBLIC ../webrtc)
+
+# MacOS requirements
+include_directories(PUBLIC /usr/local/include)
+link_directories(/usr/local/lib)
+
+add_executable(h264_common_unittest h264_common_unittest.cc)
+add_test(h264_common_unittest h264_common_unittest)
+target_link_libraries(h264_common_unittest PUBLIC h264nal)
+target_link_libraries(h264_common_unittest PUBLIC ${GTEST_LIBRARY} gtest_main)
+target_link_libraries(h264_common_unittest PUBLIC ${GMOCK_LIBRARY} gmock_main)
+
+if(H264NAL_SMALL_FOOTPRINT)
+  message(STATUS "test: small footprint selected")
+
+else()
+  message(STATUS "test: normal footprint selected")
+  add_compile_definitions(RTP_DEFINE)
+endif()
