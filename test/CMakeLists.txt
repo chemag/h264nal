@@ -52,6 +52,12 @@ target_link_libraries(h264_pred_weight_table_parser_unittest PUBLIC h264nal)
 target_link_libraries(h264_pred_weight_table_parser_unittest PUBLIC ${GTEST_LIBRARY} gtest_main)
 target_link_libraries(h264_pred_weight_table_parser_unittest PUBLIC ${GMOCK_LIBRARY} gmock_main)
 
+add_executable(h264_dec_ref_pic_marking_parser_unittest h264_dec_ref_pic_marking_parser_unittest.cc)
+add_test(h264_dec_ref_pic_marking_parser_unittest h264_dec_ref_pic_marking_parser_unittest)
+target_link_libraries(h264_dec_ref_pic_marking_parser_unittest PUBLIC h264nal)
+target_link_libraries(h264_dec_ref_pic_marking_parser_unittest PUBLIC ${GTEST_LIBRARY} gtest_main)
+target_link_libraries(h264_dec_ref_pic_marking_parser_unittest PUBLIC ${GMOCK_LIBRARY} gmock_main)
+
 if(H264NAL_SMALL_FOOTPRINT)
   message(STATUS "test: small footprint selected")
 
