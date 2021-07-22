@@ -18,6 +18,6 @@ enable_testing()
 # Recurse into source code subdirectories.
 add_subdirectory(src)
 add_subdirectory(webrtc)
-#add_subdirectory(tools)
+add_subdirectory(tools)
 add_subdirectory(test)
 #add_subdirectory(fuzz)
