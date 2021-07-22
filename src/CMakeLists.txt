@@ -24,6 +24,7 @@ if(H264NAL_SMALL_FOOTPRINT)
       h264_sps_parser.h h264_sps_parser.cc
       h264_vui_parameters_parser.h h264_vui_parameters_parser.cc
       h264_pps_parser.h h264_pps_parser.cc
+      h264_bitstream_parser_state.h h264_bitstream_parser_state.cc
 )
 else()
   add_library(h264nal
@@ -31,6 +32,7 @@ else()
       h264_sps_parser.h h264_sps_parser.cc
       h264_vui_parameters_parser.h h264_vui_parameters_parser.cc
       h264_pps_parser.h h264_pps_parser.cc
+      h264_bitstream_parser_state.h h264_bitstream_parser_state.cc
 )
 endif()
 target_include_directories(h264nal PUBLIC ../webrtc)
