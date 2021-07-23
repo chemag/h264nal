@@ -13,6 +13,7 @@
 #include "h264_bitstream_parser_state.h"
 #include "h264_common.h"
 #include "h264_pps_parser.h"
+#include "h264_slice_layer_without_partitioning_rbsp_parser.h"
 #include "h264_sps_parser.h"
 
 namespace h264nal {
@@ -134,11 +135,29 @@ H264NalUnitPayloadParser::ParseNalUnitPayload(
 
   // payload (Table 7-1, Section 7.4.1)
   switch (nal_unit_type) {
-    case CODED_SLICE_OF_NON_IDR_PICTURE_NUT:
+    case CODED_SLICE_OF_NON_IDR_PICTURE_NUT: {
+      // h264_slice_layer_without_partitioning_rbsp_parser()
+      nal_unit_payload->h264_slice_layer_without_partitioning_rbsp_parser =
+          H264SliceLayerWithoutPartitioningRbspParser::
+              ParseSliceLayerWithoutPartitioningRbsp(bit_buffer, nal_ref_idc,
+                                                     nal_unit_type,
+                                                     bitstream_parser_state);
+      break;
+    }
     case CODED_SLICE_DATA_PARTITION_A_NUT:
     case CODED_SLICE_DATA_PARTITION_B_NUT:
     case CODED_SLICE_DATA_PARTITION_C_NUT:
-    case CODED_SLICE_OF_IDR_PICTURE_NUT:
+      // unimplemented
+      break;
+    case CODED_SLICE_OF_IDR_PICTURE_NUT: {
+      // h264_slice_layer_without_partitioning_rbsp_parser()
+      nal_unit_payload->h264_slice_layer_without_partitioning_rbsp_parser =
+          H264SliceLayerWithoutPartitioningRbspParser::
+              ParseSliceLayerWithoutPartitioningRbsp(bit_buffer, nal_ref_idc,
+                                                     nal_unit_type,
+                                                     bitstream_parser_state);
+      break;
+    }
     case SEI_NUT:
       // unimplemented
       break;
@@ -266,10 +285,18 @@ void H264NalUnitPayloadParser::NalUnitPayloadState::fdump(
   fdump_indent_level(outfp, indent_level);
   switch (nal_unit_type) {
     case CODED_SLICE_OF_NON_IDR_PICTURE_NUT:
+      h264_slice_layer_without_partitioning_rbsp_parser->fdump(outfp,
+                                                               indent_level);
+      break;
     case CODED_SLICE_DATA_PARTITION_A_NUT:
     case CODED_SLICE_DATA_PARTITION_B_NUT:
     case CODED_SLICE_DATA_PARTITION_C_NUT:
+      // unimplemented
+      break;
     case CODED_SLICE_OF_IDR_PICTURE_NUT:
+      h264_slice_layer_without_partitioning_rbsp_parser->fdump(outfp,
+                                                               indent_level);
+      break;
     case SEI_NUT:
       // unimplemented
       break;

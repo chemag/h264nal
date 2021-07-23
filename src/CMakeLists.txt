@@ -30,6 +30,8 @@ if(H264NAL_SMALL_FOOTPRINT)
       h264_dec_ref_pic_marking_parser.h
       h264_dec_ref_pic_marking_parser.cc
       h264_slice_header_parser.h h264_slice_header_parser.cc
+      h264_slice_layer_without_partitioning_rbsp_parser.h
+      h264_slice_layer_without_partitioning_rbsp_parser.cc
       h264_bitstream_parser_state.h h264_bitstream_parser_state.cc
       h264_bitstream_parser.h h264_bitstream_parser.cc
       h264_nal_unit_parser.h h264_nal_unit_parser.cc
@@ -46,6 +48,8 @@ else()
       h264_dec_ref_pic_marking_parser.h
       h264_dec_ref_pic_marking_parser.cc
       h264_slice_header_parser.h h264_slice_header_parser.cc
+      h264_slice_layer_without_partitioning_rbsp_parser.h
+      h264_slice_layer_without_partitioning_rbsp_parser.cc
       h264_bitstream_parser_state.h h264_bitstream_parser_state.cc
       h264_bitstream_parser.h h264_bitstream_parser.cc
       h264_nal_unit_parser.h h264_nal_unit_parser.cc
