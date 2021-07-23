@@ -137,26 +137,32 @@ void H264RefPicListReorderingParser::RefPicListReorderingState::fdump(
   fprintf(outfp, "ref_pic_list_reordering_flag_l1: %i",
           ref_pic_list_reordering_flag_l1);
 
-  fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "reordering_of_pic_nums_idc {");
-  for (const uint32_t& v : reordering_of_pic_nums_idc) {
-    fprintf(outfp, " %i", v);
+  if (reordering_of_pic_nums_idc.size() > 0) {
+    fdump_indent_level(outfp, indent_level);
+    fprintf(outfp, "reordering_of_pic_nums_idc {");
+    for (const uint32_t& v : reordering_of_pic_nums_idc) {
+      fprintf(outfp, " %i", v);
+    }
+    fprintf(outfp, " }");
   }
-  fprintf(outfp, " }");
 
-  fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "abs_diff_pic_num_minus1 {");
-  for (const uint32_t& v : abs_diff_pic_num_minus1) {
-    fprintf(outfp, " %i", v);
+  if (abs_diff_pic_num_minus1.size() > 0) {
+    fdump_indent_level(outfp, indent_level);
+    fprintf(outfp, "abs_diff_pic_num_minus1 {");
+    for (const uint32_t& v : abs_diff_pic_num_minus1) {
+      fprintf(outfp, " %i", v);
+    }
+    fprintf(outfp, " }");
   }
-  fprintf(outfp, " }");
 
-  fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "long_term_pic_num {");
-  for (const uint32_t& v : long_term_pic_num) {
-    fprintf(outfp, " %i", v);
+  if (long_term_pic_num.size() > 0) {
+    fdump_indent_level(outfp, indent_level);
+    fprintf(outfp, "long_term_pic_num {");
+    for (const uint32_t& v : long_term_pic_num) {
+      fprintf(outfp, " %i", v);
+    }
+    fprintf(outfp, " }");
   }
-  fprintf(outfp, " }");
 
   indent_level = indent_level_decr(indent_level);
   fdump_indent_level(outfp, indent_level);
