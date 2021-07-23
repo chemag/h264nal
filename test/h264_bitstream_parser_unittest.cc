@@ -20,17 +20,25 @@ class H264BitstreamParserTest : public ::testing::Test {
   ~H264BitstreamParserTest() override {}
 };
 
-// SPS, PPS (601.264)
+// SPS, PPS, slice IDR, slice non-IDR (601.264)
 // fuzzer::conv: data
 const uint8_t buffer[] = {
     // SPS
-    0x00, 0x00, 0x00, 0x01, 0x67, 0x42, 0xc0, 0x16,
-    0xa6, 0x11, 0x05, 0x07, 0xe9, 0xb2, 0x00, 0x00,
-    0x03, 0x00, 0x02, 0x00, 0x00, 0x03, 0x00, 0x64,
-    0x1e, 0x2c, 0x5c, 0x23,
+    0x00, 0x00, 0x00, 0x01,
+    0x67, 0x42, 0xc0, 0x16, 0xa6, 0x11, 0x05, 0x07,
+    0xe9, 0xb2, 0x00, 0x00, 0x03, 0x00, 0x02, 0x00,
+    0x00, 0x03, 0x00, 0x64, 0x1e, 0x2c, 0x5c, 0x23,
     // PPS
-    0x00, 0x00, 0x00, 0x01, 0x68, 0xc8, 0x42, 0x02,
-    0x32, 0xc8
+    0x00, 0x00, 0x00, 0x01,
+    0x68, 0xc8, 0x42, 0x02, 0x32, 0xc8,
+    // slice (IDR)
+    0x00, 0x00, 0x00, 0x01,
+    0x65, 0x88, 0x82, 0x06, 0x78, 0x8c, 0x50, 0x00,
+    0x1c, 0xab, 0x8e, 0x00, 0x02, 0xfb, 0x31, 0xc0,
+    0x00, 0x5f, 0x66, 0xfb, 0xef, 0xbe,
+    // slice (non-IDR)
+    0x00, 0x00, 0x00, 0x01,
+    0x41, 0x9a, 0x1c, 0x0c, 0xf0, 0x09, 0x6c
 };
 
 TEST_F(H264BitstreamParserTest, TestSampleBitstream601) {
@@ -45,8 +53,8 @@ TEST_F(H264BitstreamParserTest, TestSampleBitstream601) {
 
   EXPECT_TRUE(bitstream != nullptr);
 
-  // check there are 2 NAL units
-  EXPECT_EQ(2, bitstream->nal_units.size());
+  // check there are 4 NAL units
+  EXPECT_EQ(4, bitstream->nal_units.size());
 
   // check the 1st NAL unit
   int index = 0;
@@ -63,6 +71,22 @@ TEST_F(H264BitstreamParserTest, TestSampleBitstream601) {
   EXPECT_EQ(3, bitstream->nal_units[index]->nal_unit_header->nal_ref_idc);
   EXPECT_EQ(NalUnitType::PPS_NUT,
             bitstream->nal_units[index]->nal_unit_header->nal_unit_type);
+
+  // check the 3rd NAL unit
+  index += 1;
+  EXPECT_EQ(0,
+            bitstream->nal_units[index]->nal_unit_header->forbidden_zero_bit);
+  EXPECT_EQ(3, bitstream->nal_units[index]->nal_unit_header->nal_ref_idc);
+  EXPECT_EQ(NalUnitType::CODED_SLICE_OF_IDR_PICTURE_NUT,
+            bitstream->nal_units[index]->nal_unit_header->nal_unit_type);
+
+  // check the 4th NAL unit
+  index += 1;
+  EXPECT_EQ(0,
+            bitstream->nal_units[index]->nal_unit_header->forbidden_zero_bit);
+  EXPECT_EQ(2, bitstream->nal_units[index]->nal_unit_header->nal_ref_idc);
+  EXPECT_EQ(NalUnitType::CODED_SLICE_OF_NON_IDR_PICTURE_NUT,
+            bitstream->nal_units[index]->nal_unit_header->nal_unit_type);
 }
 
 TEST_F(H264BitstreamParserTest, TestSampleBitstream601Alt) {
@@ -74,8 +98,8 @@ TEST_F(H264BitstreamParserTest, TestSampleBitstream601Alt) {
       buffer, arraysize(buffer), add_offset, add_length, add_parsed_length);
   EXPECT_TRUE(bitstream != nullptr);
 
-  // check there are 2 NAL units
-  EXPECT_EQ(2, bitstream->nal_units.size());
+  // check there are 4 NAL units
+  EXPECT_EQ(4, bitstream->nal_units.size());
 
   // check the NAL unit locations
   int length = 0;
@@ -95,6 +119,22 @@ TEST_F(H264BitstreamParserTest, TestSampleBitstream601Alt) {
   EXPECT_EQ(counter, bitstream->nal_units[index]->offset);
   EXPECT_EQ(length, bitstream->nal_units[index]->length);
   EXPECT_EQ(6, bitstream->nal_units[index]->parsed_length);
+  index += 1;
+  counter += length;
+  // 3rd NAL unit
+  length = 22;
+  counter += 4;
+  EXPECT_EQ(counter, bitstream->nal_units[index]->offset);
+  EXPECT_EQ(length, bitstream->nal_units[index]->length);
+  EXPECT_EQ(5, bitstream->nal_units[index]->parsed_length);
+  index += 1;
+  counter += length;
+  // 4th NAL unit
+  length = 7;
+  counter += 4;
+  EXPECT_EQ(counter, bitstream->nal_units[index]->offset);
+  EXPECT_EQ(length, bitstream->nal_units[index]->length);
+  EXPECT_EQ(5, bitstream->nal_units[index]->parsed_length);
   //index += 1;
   //counter += length;
 }
