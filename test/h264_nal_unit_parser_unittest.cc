@@ -43,8 +43,8 @@ TEST_F(H264NalUnitParserTest, TestSampleNalUnit) {
 TEST_F(H264NalUnitParserTest, TestEmptyNalUnit) {
   const uint8_t buffer[] = {};
   H264BitstreamParserState bitstream_parser_state;
-  auto nal_unit = H264NalUnitParser::ParseNalUnit(buffer, 0,
-                                                  &bitstream_parser_state);
+  auto nal_unit =
+      H264NalUnitParser::ParseNalUnit(buffer, 0, &bitstream_parser_state);
   EXPECT_TRUE(nal_unit == nullptr);
 }
 

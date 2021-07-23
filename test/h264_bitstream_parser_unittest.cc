@@ -135,8 +135,8 @@ TEST_F(H264BitstreamParserTest, TestSampleBitstream601Alt) {
   EXPECT_EQ(counter, bitstream->nal_units[index]->offset);
   EXPECT_EQ(length, bitstream->nal_units[index]->length);
   EXPECT_EQ(5, bitstream->nal_units[index]->parsed_length);
-  //index += 1;
-  //counter += length;
+  // index += 1;
+  // counter += length;
 }
 
 }  // namespace h264nal
