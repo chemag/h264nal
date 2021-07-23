@@ -19,25 +19,21 @@ class H264RefPicListReorderingParserTest : public ::testing::Test {
   ~H264RefPicListReorderingParserTest() override {}
 };
 
-#ifdef NOTDEF
-TEST_F(H264RefPicListReorderingParserTest, TestSampleRefPicListReordering1) {
+TEST_F(H264RefPicListReorderingParserTest,
+       TestSampleRefPicListReordering601NonIDR) {
   // ref_pic_list_reordering
   // fuzzer::conv: data
-  const uint8_t buffer[] = {0x10, 0xc6};
+  const uint8_t buffer[] = {0x00};
   // fuzzer::conv: begin
+  uint32_t slice_type = SliceType::P_ALL;
   auto ref_pic_list_reordering =
-      H264RefPicListReorderingParser::ParseRefPicListReordering(buffer, arraysize(buffer), 1, 0);
+      H264RefPicListReorderingParser::ParseRefPicListReordering(
+          buffer, arraysize(buffer), slice_type);
   // fuzzer::conv: end
 
   EXPECT_TRUE(ref_pic_list_reordering != nullptr);
 
-  EXPECT_EQ(7, ref_pic_list_reordering->luma_log2_weight_denom);
-  EXPECT_EQ(-1, ref_pic_list_reordering->delta_chroma_log2_weight_denom);
-  EXPECT_THAT(ref_pic_list_reordering->luma_weight_l0_flag,
-              ::testing::ElementsAreArray({0}));
-  EXPECT_THAT(ref_pic_list_reordering->chroma_weight_l0_flag,
-              ::testing::ElementsAreArray({0}));
+  EXPECT_EQ(0, ref_pic_list_reordering->ref_pic_list_reordering_flag_l0);
 }
-#endif
 
 }  // namespace h264nal
