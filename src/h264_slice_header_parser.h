@@ -39,6 +39,7 @@ class H264SliceHeaderParser {
     // input parameters
     uint32_t nal_ref_idc = 0;
     uint32_t nal_unit_type = 0;
+    uint32_t log2_max_frame_num_minus4 = 0;
     uint32_t frame_mbs_only_flag = 0;
     uint32_t pic_order_cnt_type = 0;
     uint32_t pic_order_present_flag = 0;

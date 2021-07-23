@@ -87,10 +87,10 @@ H264SliceHeaderParser::ParseSliceHeader(
   }
 
   // frame_num  u(v)
-  uint32_t log2_max_frame_num_minus4 =
+  slice_header->log2_max_frame_num_minus4 =
       bitstream_parser_state->sps[sps_id]->log2_max_frame_num_minus4;
   uint32_t frame_num_len =
-      slice_header->getFrameNumLen(log2_max_frame_num_minus4);
+      slice_header->getFrameNumLen(slice_header->log2_max_frame_num_minus4);
   if (!bit_buffer->ReadBits(&(slice_header->frame_num), frame_num_len)) {
     return nullptr;
   }
