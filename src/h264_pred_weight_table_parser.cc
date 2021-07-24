@@ -103,12 +103,12 @@ H264PredWeightTableParser::ParsePredWeightTable(
         if (!bit_buffer->ReadSignedExponentialGolomb(&(sgolomb_tmp))) {
           return nullptr;
         }
-        pred_weight_table->chroma_weight_l0[i].push_back(sgolomb_tmp);
+        pred_weight_table->chroma_weight_l0.back().push_back(sgolomb_tmp);
 
         if (!bit_buffer->ReadSignedExponentialGolomb(&(sgolomb_tmp))) {
           return nullptr;
         }
-        pred_weight_table->chroma_offset_l0[i].push_back(sgolomb_tmp);
+        pred_weight_table->chroma_offset_l0.back().push_back(sgolomb_tmp);
       }
     }
   }
@@ -153,12 +153,12 @@ H264PredWeightTableParser::ParsePredWeightTable(
           if (!bit_buffer->ReadSignedExponentialGolomb(&(sgolomb_tmp))) {
             return nullptr;
           }
-          pred_weight_table->chroma_weight_l1[i].push_back(sgolomb_tmp);
+          pred_weight_table->chroma_weight_l1.back().push_back(sgolomb_tmp);
 
           if (!bit_buffer->ReadSignedExponentialGolomb(&(sgolomb_tmp))) {
             return nullptr;
           }
-          pred_weight_table->chroma_offset_l1[i].push_back(sgolomb_tmp);
+          pred_weight_table->chroma_offset_l1.back().push_back(sgolomb_tmp);
         }
       }
     }
