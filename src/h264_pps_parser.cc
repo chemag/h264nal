@@ -15,7 +15,7 @@
 
 namespace h264nal {
 
-// General note: this is based off the 2004 version of the H.264 standard.
+// General note: this is based off the 2012 version of the H.264 standard.
 // You can find it on this page:
 // http://www.itu.int/rec/T-REC-H.264
 
@@ -52,8 +52,9 @@ std::shared_ptr<H264PpsParser::PpsState> H264PpsParser::ParsePps(
     return nullptr;
   }
 
-  // pic_order_present_flag  u(1)
-  if (!bit_buffer->ReadBits(&(pps->pic_order_present_flag), 1)) {
+  // bottom_field_pic_order_in_frame_present_flag  u(1)
+  if (!bit_buffer->ReadBits(
+          &(pps->bottom_field_pic_order_in_frame_present_flag), 1)) {
     return nullptr;
   }
 
@@ -178,6 +179,54 @@ std::shared_ptr<H264PpsParser::PpsState> H264PpsParser::ParsePps(
     return nullptr;
   }
 
+  if (more_rbsp_data(bit_buffer)) {
+    // transform_8x8_mode_flag  u(1)
+    if (!bit_buffer->ReadBits(&(pps->transform_8x8_mode_flag), 1)) {
+      return nullptr;
+    }
+
+    // pic_scaling_matrix_present_flag  u(1)
+    if (!bit_buffer->ReadBits(&(pps->pic_scaling_matrix_present_flag), 1)) {
+      return nullptr;
+    }
+
+    if (pps->pic_scaling_matrix_present_flag) {
+#ifdef FPRINT_ERRORS
+      fprintf(
+          stderr,
+          "error: unimplemented chroma_format_idc and scaling_list in pps\n");
+#endif  // FPRINT_ERRORS
+#if 0
+      uint32_t max_pic_scaling_list_present_flag =
+          6 + ((sps->chroma_format_idc != 3) ? 2 : 6) *
+                  pps->transform_8x8_mode_flag;
+      for (uint32_t i = 0; i < max_pic_scaling_list_present_flag; ++i) {
+        // pic_scaling_list_present_flag  u(1)
+        if (!bit_buffer->ReadBits(&bits_tmp, 1)) {
+          return nullptr;
+        }
+        pps->pic_scaling_list_present_flag.push_back(bits_tmp);
+        if (pps->pic_scaling_list_present_flag[i]) {
+          // TODO(chemag): add support for scaling_list()
+          if (i < 6) {
+            // scaling_list(ScalingList4x4[i], 16,
+            // UseDefaultScalingMatrix4x4Flag[i])
+          } else {
+            // scaling_list(ScalingList8x8[i-6], 64,
+            // UseDefaultScalingMatrix8x8Flag[i-6])
+          }
+        }
+      }
+#endif
+    }
+
+    // second_chroma_qp_index_offset  se(v)
+    if (!bit_buffer->ReadSignedExponentialGolomb(
+            &(pps->second_chroma_qp_index_offset))) {
+      return nullptr;
+    }
+  }
+
   rbsp_trailing_bits(bit_buffer);
 
   return pps;
@@ -209,7 +258,8 @@ void H264PpsParser::PpsState::fdump(FILE* outfp, int indent_level) const {
   fprintf(outfp, "entropy_coding_mode_flag: %i", entropy_coding_mode_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "pic_order_present_flag: %i", pic_order_present_flag);
+  fprintf(outfp, "bottom_field_pic_order_in_frame_present_flag: %i",
+          bottom_field_pic_order_in_frame_present_flag);
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "num_slice_groups_minus1: %i", num_slice_groups_minus1);
@@ -299,6 +349,24 @@ void H264PpsParser::PpsState::fdump(FILE* outfp, int indent_level) const {
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "redundant_pic_cnt_present_flag: %i",
           redundant_pic_cnt_present_flag);
+
+  fdump_indent_level(outfp, indent_level);
+  fprintf(outfp, "transform_8x8_mode_flag: %i", transform_8x8_mode_flag);
+
+  fdump_indent_level(outfp, indent_level);
+  fprintf(outfp, "pic_scaling_matrix_present_flag: %i",
+          pic_scaling_matrix_present_flag);
+
+  fdump_indent_level(outfp, indent_level);
+  fprintf(outfp, "pic_scaling_list_present_flag {");
+  for (const uint32_t& v : pic_scaling_list_present_flag) {
+    fprintf(outfp, " %i", v);
+  }
+  fprintf(outfp, " }");
+
+  fdump_indent_level(outfp, indent_level);
+  fprintf(outfp, "second_chroma_qp_index_offset: %i",
+          second_chroma_qp_index_offset);
 
   indent_level = indent_level_decr(indent_level);
   fdump_indent_level(outfp, indent_level);

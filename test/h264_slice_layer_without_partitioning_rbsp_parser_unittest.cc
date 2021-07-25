@@ -45,7 +45,7 @@ TEST_F(H264SliceLayerWithoutPartitioningRbspParserTest, TestSampleSliceIDR601) {
   sps->pic_height_in_map_units_minus1 = 0;
   bitstream_parser_state.sps[0] = sps;
   auto pps = std::make_shared<H264PpsParser::PpsState>();
-  pps->pic_order_present_flag = 0;
+  pps->bottom_field_pic_order_in_frame_present_flag = 0;
   pps->redundant_pic_cnt_present_flag = 0;
   pps->weighted_pred_flag = 0;
   pps->weighted_bipred_idc = 0;
@@ -147,7 +147,7 @@ TEST_F(H264SliceLayerWithoutPartitioningRbspParserTest,
   sps->pic_height_in_map_units_minus1 = 0;
   bitstream_parser_state.sps[0] = sps;
   auto pps = std::make_shared<H264PpsParser::PpsState>();
-  pps->pic_order_present_flag = 0;
+  pps->bottom_field_pic_order_in_frame_present_flag = 0;
   pps->redundant_pic_cnt_present_flag = 0;
   pps->weighted_pred_flag = 0;
   pps->weighted_bipred_idc = 0;

@@ -42,7 +42,7 @@ class H264SliceHeaderParser {
     uint32_t log2_max_frame_num_minus4 = 0;
     uint32_t frame_mbs_only_flag = 0;
     uint32_t pic_order_cnt_type = 0;
-    uint32_t pic_order_present_flag = 0;
+    uint32_t bottom_field_pic_order_in_frame_present_flag = 0;
     uint32_t delta_pic_order_always_zero_flag = 0;
     uint32_t redundant_pic_cnt_present_flag = 0;
     uint32_t weighted_pred_flag = 0;

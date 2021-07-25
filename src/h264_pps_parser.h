@@ -35,7 +35,7 @@ class H264PpsParser {
     uint32_t pic_parameter_set_id = 0;
     uint32_t seq_parameter_set_id = 0;
     uint32_t entropy_coding_mode_flag = 0;
-    uint32_t pic_order_present_flag = 0;
+    uint32_t bottom_field_pic_order_in_frame_present_flag = 0;
     uint32_t num_slice_groups_minus1 = 0;
     uint32_t slice_group_map_type = 0;
     std::vector<uint32_t> run_length_minus1;
@@ -55,6 +55,10 @@ class H264PpsParser {
     uint32_t deblocking_filter_control_present_flag = 0;
     uint32_t constrained_intra_pred_flag = 0;
     uint32_t redundant_pic_cnt_present_flag = 0;
+    uint32_t transform_8x8_mode_flag = 0;
+    uint32_t pic_scaling_matrix_present_flag = 0;
+    std::vector<uint32_t> pic_scaling_list_present_flag;
+    int32_t second_chroma_qp_index_offset = 0;
 
     // derived values
     uint32_t getSliceGroupIdLen() noexcept;

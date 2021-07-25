@@ -130,9 +130,11 @@ H264SliceHeaderParser::ParseSliceHeader(
       return nullptr;
     }
 
-    slice_header->pic_order_present_flag =
-        bitstream_parser_state->pps[pps_id]->pic_order_present_flag;
-    if (slice_header->pic_order_present_flag && !slice_header->field_pic_flag) {
+    slice_header->bottom_field_pic_order_in_frame_present_flag =
+        bitstream_parser_state->pps[pps_id]
+            ->bottom_field_pic_order_in_frame_present_flag;
+    if (slice_header->bottom_field_pic_order_in_frame_present_flag &&
+        !slice_header->field_pic_flag) {
       // delta_pic_order_cnt_bottom  se(v)
       if (!bit_buffer->ReadSignedExponentialGolomb(
               &(slice_header->delta_pic_order_cnt_bottom))) {
@@ -151,7 +153,8 @@ H264SliceHeaderParser::ParseSliceHeader(
     }
     slice_header->delta_pic_order_cnt.push_back(sgolomb_tmp);
 
-    if (slice_header->pic_order_present_flag && !slice_header->field_pic_flag) {
+    if (slice_header->bottom_field_pic_order_in_frame_present_flag &&
+        !slice_header->field_pic_flag) {
       // delta_pic_order_cnt[1]  se(v)
       if (!bit_buffer->ReadSignedExponentialGolomb(&(sgolomb_tmp))) {
         return nullptr;
@@ -429,7 +432,7 @@ void H264SliceHeaderParser::SliceHeaderState::fdump(FILE* outfp,
     fdump_indent_level(outfp, indent_level);
     fprintf(outfp, "pic_order_cnt_lsb: %i", pic_order_cnt_lsb);
 
-    if (pic_order_present_flag && !field_pic_flag) {
+    if (bottom_field_pic_order_in_frame_present_flag && !field_pic_flag) {
       fdump_indent_level(outfp, indent_level);
       fprintf(outfp, "delta_pic_order_cnt_bottom: %i",
               delta_pic_order_cnt_bottom);
