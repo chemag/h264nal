@@ -52,7 +52,7 @@ h264_sps_parser_fuzzer.cc: ../test/h264_sps_parser_unittest.cc
 h264_vui_parameters_parser_fuzzer.cc: ../test/h264_vui_parameters_parser_unittest.cc
 	./converter.py ../test/h264_vui_parameters_parser_unittest.cc ./
 
-RUNS=1000000
+RUNS?=1000000
 
 fuzz:
 	-../build/fuzz/h264_bitstream_parser_fuzzer -artifact_prefix=corpus/h264_bitstream_parser_fuzzer/ corpus/h264_bitstream_parser_fuzzer/ -runs=$(RUNS)
