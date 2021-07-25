@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "h264_hrd_parameters_parser.h"
 #include "rtc_base/bit_buffer.h"
 
 namespace h264nal {
@@ -73,9 +74,11 @@ class H264VuiParametersParser {
     uint32_t time_scale = 0;
     uint32_t fixed_frame_rate_flag = 0;
     uint32_t nal_hrd_parameters_present_flag = 0;
-    // hrd_parameters()
+    std::unique_ptr<struct H264HrdParametersParser::HrdParametersState>
+        nal_hrd_parameters;
     uint32_t vcl_hrd_parameters_present_flag = 0;
-    // hrd_parameters()
+    std::unique_ptr<struct H264HrdParametersParser::HrdParametersState>
+        vcl_hrd_parameters;
     uint32_t low_delay_hrd_flag = 0;
     uint32_t pic_struct_present_flag = 0;
     uint32_t bitstream_restriction_flag = 0;

@@ -147,11 +147,8 @@ H264VuiParametersParser::ParseVuiParameters(
 
   if (vui->nal_hrd_parameters_present_flag) {
     // hrd_parameters()
-    // TODO(chemag): add support for hrd_parameters()
-#ifdef FPRINT_ERRORS
-    fprintf(stderr, "error: unimplemented hrd_parameters in vui\n");
-#endif  // FPRINT_ERRORS
-    return nullptr;
+    vui->nal_hrd_parameters =
+        H264HrdParametersParser::ParseHrdParameters(bit_buffer);
   }
 
   // vcl_hrd_parameters_present_flag  u(1)
@@ -161,11 +158,8 @@ H264VuiParametersParser::ParseVuiParameters(
 
   if (vui->vcl_hrd_parameters_present_flag) {
     // hrd_parameters()
-    // TODO(chemag): add support for hrd_parameters()
-#ifdef FPRINT_ERRORS
-    fprintf(stderr, "error: unimplemented hrd_parameters in vui\n");
-#endif  // FPRINT_ERRORS
-    return nullptr;
+    vui->vcl_hrd_parameters =
+        H264HrdParametersParser::ParseHrdParameters(bit_buffer);
   }
 
   if (vui->nal_hrd_parameters_present_flag ||
@@ -314,8 +308,8 @@ void H264VuiParametersParser::VuiParametersState::fdump(
           nal_hrd_parameters_present_flag);
 
   if (nal_hrd_parameters_present_flag) {
-    // hrd_parameters()
-    // TODO(chemag): add support for hrd_parameters()
+    fdump_indent_level(outfp, indent_level);
+    nal_hrd_parameters->fdump(outfp, indent_level);
   }
 
   fdump_indent_level(outfp, indent_level);
@@ -323,8 +317,8 @@ void H264VuiParametersParser::VuiParametersState::fdump(
           vcl_hrd_parameters_present_flag);
 
   if (vcl_hrd_parameters_present_flag) {
-    // hrd_parameters()
-    // TODO(chemag): add support for hrd_parameters()
+    fdump_indent_level(outfp, indent_level);
+    vcl_hrd_parameters->fdump(outfp, indent_level);
   }
 
   if (nal_hrd_parameters_present_flag || vcl_hrd_parameters_present_flag) {
