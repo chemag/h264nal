@@ -272,6 +272,9 @@ The [`webrtc`](webrtc) directory contains an RBSP parser copied from webrtc.
 
 
 # 6. Other
+The [media](media/README.md) directory contains information on testing the
+parser using media files.
+
 The [fuzz](fuzz/README.md) directory contains information on fuzzing the
 parser.
 
