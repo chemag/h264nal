@@ -89,9 +89,7 @@ TEST_F(H264SpsParserTest, TestSampleSPS2012) {
       0x00, 0x04, 0x00, 0x00, 0x03, 0x00, 0xf0, 0x3c,
       0x60, 0xc6, 0x11, 0x80
   };
-  // fuzzer::conv: begin
   auto sps = H264SpsParser::ParseSps(buffer, arraysize(buffer));
-  // fuzzer::conv: end
 
   EXPECT_TRUE(sps != nullptr);
 
