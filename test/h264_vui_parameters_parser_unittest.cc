@@ -53,7 +53,7 @@ TEST_F(H264VuiParametersParserTest, TestSampleVuiParameters601) {
   EXPECT_EQ(0, vui_parameters->max_bits_per_mb_denom);
   EXPECT_EQ(10, vui_parameters->log2_max_mv_length_horizontal);
   EXPECT_EQ(10, vui_parameters->log2_max_mv_length_vertical);
-  EXPECT_EQ(0, vui_parameters->num_reorder_frames);
+  EXPECT_EQ(0, vui_parameters->max_num_reorder_frames);
   EXPECT_EQ(16, vui_parameters->max_dec_frame_buffering);
 }
 
@@ -95,7 +95,7 @@ TEST_F(H264VuiParametersParserTest, TestSampleVuiParameters601vui) {
   EXPECT_EQ(0, vui_parameters->max_bits_per_mb_denom);
   EXPECT_EQ(10, vui_parameters->log2_max_mv_length_horizontal);
   EXPECT_EQ(10, vui_parameters->log2_max_mv_length_vertical);
-  EXPECT_EQ(0, vui_parameters->num_reorder_frames);
+  EXPECT_EQ(0, vui_parameters->max_num_reorder_frames);
   EXPECT_EQ(16, vui_parameters->max_dec_frame_buffering);
 }
 
@@ -137,7 +137,7 @@ TEST_F(H264VuiParametersParserTest, TestSampleVuiParameters709) {
   EXPECT_EQ(0, vui_parameters->max_bits_per_mb_denom);
   EXPECT_EQ(10, vui_parameters->log2_max_mv_length_horizontal);
   EXPECT_EQ(10, vui_parameters->log2_max_mv_length_vertical);
-  EXPECT_EQ(0, vui_parameters->num_reorder_frames);
+  EXPECT_EQ(0, vui_parameters->max_num_reorder_frames);
   EXPECT_EQ(16, vui_parameters->max_dec_frame_buffering);
 }
 
@@ -179,7 +179,7 @@ TEST_F(H264VuiParametersParserTest, TestSampleVuiParameters709vui) {
   EXPECT_EQ(0, vui_parameters->max_bits_per_mb_denom);
   EXPECT_EQ(10, vui_parameters->log2_max_mv_length_horizontal);
   EXPECT_EQ(10, vui_parameters->log2_max_mv_length_vertical);
-  EXPECT_EQ(0, vui_parameters->num_reorder_frames);
+  EXPECT_EQ(0, vui_parameters->max_num_reorder_frames);
   EXPECT_EQ(16, vui_parameters->max_dec_frame_buffering);
 }
 

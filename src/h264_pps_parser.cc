@@ -15,7 +15,7 @@
 
 namespace h264nal {
 
-// General note: this is based off the 2016/12 version of the H.264 standard.
+// General note: this is based off the 2004 version of the H.264 standard.
 // You can find it on this page:
 // http://www.itu.int/rec/T-REC-H.264
 

@@ -37,9 +37,20 @@ class H264SpsParser {
     uint32_t constraint_set0_flag = 0;
     uint32_t constraint_set1_flag = 0;
     uint32_t constraint_set2_flag = 0;
-    uint32_t reserved_zero_5bits = 0;
+    uint32_t constraint_set3_flag = 0;
+    uint32_t constraint_set4_flag = 0;
+    uint32_t constraint_set5_flag = 0;
+    uint32_t reserved_zero_2bits = 0;
     uint32_t level_idc = 0;
     uint32_t seq_parameter_set_id = 0;
+    uint32_t chroma_format_idc = 0;
+    uint32_t separate_colour_plane_flag = 0;
+    uint32_t bit_depth_luma_minus8 = 0;
+    uint32_t bit_depth_chroma_minus8 = 0;
+    uint32_t qpprime_y_zero_transform_bypass_flag = 0;
+    uint32_t seq_scaling_matrix_present_flag = 0;
+    std::vector<uint32_t> seq_scaling_list_present_flag;
+
     uint32_t log2_max_frame_num_minus4 = 0;
     uint32_t pic_order_cnt_type = 0;
     uint32_t log2_max_pic_order_cnt_lsb_minus4 = 0;
@@ -48,7 +59,7 @@ class H264SpsParser {
     int32_t offset_for_top_to_bottom_field = 0;
     uint32_t num_ref_frames_in_pic_order_cnt_cycle = 0;
     std::vector<int32_t> offset_for_ref_frame;
-    uint32_t num_ref_frames = 0;
+    uint32_t max_num_ref_frames = 0;
     uint32_t gaps_in_frame_num_value_allowed_flag = 0;
     uint32_t pic_width_in_mbs_minus1 = 0;
     uint32_t pic_height_in_map_units_minus1 = 0;

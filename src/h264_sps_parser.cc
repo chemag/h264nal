@@ -22,7 +22,7 @@ typedef std::shared_ptr<h264nal::H264SpsParser::SpsState> SharedPtrSps;
 
 namespace h264nal {
 
-// General note: this is based off the 2016/12 version of the H.264 standard.
+// General note: this is based off the 2012 version of the H.264 standard.
 // You can find it on this page:
 // http://www.itu.int/rec/T-REC-H.264
 
@@ -36,6 +36,7 @@ std::shared_ptr<H264SpsParser::SpsState> H264SpsParser::ParseSps(
 
 std::shared_ptr<H264SpsParser::SpsState> H264SpsParser::ParseSps(
     rtc::BitBuffer* bit_buffer) noexcept {
+  uint32_t bits_tmp;
   int32_t golomb_tmp;
 
   // H264 SPS Nal Unit (seq_parameter_set_rbsp()) parser.
@@ -63,8 +64,23 @@ std::shared_ptr<H264SpsParser::SpsState> H264SpsParser::ParseSps(
     return nullptr;
   }
 
-  // reserved_zero_5bits  u(5)
-  if (!bit_buffer->ReadBits(&sps->reserved_zero_5bits, 5)) {
+  // constraint_set3_flag  u(1)
+  if (!bit_buffer->ReadBits(&sps->constraint_set3_flag, 1)) {
+    return nullptr;
+  }
+
+  // constraint_set4_flag  u(1)
+  if (!bit_buffer->ReadBits(&sps->constraint_set4_flag, 1)) {
+    return nullptr;
+  }
+
+  // constraint_set5_flag  u(1)
+  if (!bit_buffer->ReadBits(&sps->constraint_set5_flag, 1)) {
+    return nullptr;
+  }
+
+  // reserved_zero_2bits  u(2)
+  if (!bit_buffer->ReadBits(&sps->reserved_zero_2bits, 2)) {
     return nullptr;
   }
 
@@ -76,6 +92,68 @@ std::shared_ptr<H264SpsParser::SpsState> H264SpsParser::ParseSps(
   // seq_parameter_set_id  ue(v)
   if (!bit_buffer->ReadExponentialGolomb(&(sps->seq_parameter_set_id))) {
     return nullptr;
+  }
+
+  if (sps->profile_idc == 100 || sps->profile_idc == 110 ||
+      sps->profile_idc == 122 || sps->profile_idc == 244 ||
+      sps->profile_idc == 44 || sps->profile_idc == 83 ||
+      sps->profile_idc == 86 || sps->profile_idc == 118 ||
+      sps->profile_idc == 128) {
+    // chroma_format_idc  ue(v)
+    if (!bit_buffer->ReadExponentialGolomb(&(sps->chroma_format_idc))) {
+      return nullptr;
+    }
+
+    if (sps->chroma_format_idc == 3) {
+      // separate_colour_plane_flag  u(1)
+      if (!bit_buffer->ReadBits(&sps->separate_colour_plane_flag, 1)) {
+        return nullptr;
+      }
+    }
+
+    // bit_depth_luma_minus8  ue(v)
+    if (!bit_buffer->ReadExponentialGolomb(&(sps->bit_depth_luma_minus8))) {
+      return nullptr;
+    }
+
+    // bit_depth_chroma_minus8  ue(v)
+    if (!bit_buffer->ReadExponentialGolomb(&(sps->bit_depth_chroma_minus8))) {
+      return nullptr;
+    }
+
+    // qpprime_y_zero_transform_bypass_flag  u(1)
+    if (!bit_buffer->ReadBits(&sps->qpprime_y_zero_transform_bypass_flag, 1)) {
+      return nullptr;
+    }
+
+    // seq_scaling_matrix_present_flag  u(1)
+    if (!bit_buffer->ReadBits(&sps->seq_scaling_matrix_present_flag, 1)) {
+      return nullptr;
+    }
+
+    if (sps->seq_scaling_matrix_present_flag) {
+      for (uint32_t i = 0; i < ((sps->chroma_format_idc != 3) ? 8 : 12); i++) {
+        // seq_scaling_list_present_flag[i]  u(1)
+        if (!bit_buffer->ReadBits(&bits_tmp, 1)) {
+          return nullptr;
+        }
+        sps->seq_scaling_list_present_flag.push_back(bits_tmp);
+
+        if (sps->seq_scaling_list_present_flag[i]) {
+          // TODO(chemag): add support for scaling_list()
+#ifdef FPRINT_ERRORS
+          fprintf(stderr, "error: unimplemented scaling_list in sps\n");
+#endif  // FPRINT_ERRORS
+          if (i < 6) {
+            // scaling_list(ScalingList4x4[i], 16,
+            // UseDefaultScalingMatrix4x4Flag[i])
+          } else {
+            // scaling_list( ScalingList8x8[i-6], 64,
+            // UseDefaultScalingMatrix8x8Flag[i-6])
+          }
+        }
+      }
+    }
   }
 
   // log2_max_frame_num_minus4  ue(v)
@@ -128,8 +206,8 @@ std::shared_ptr<H264SpsParser::SpsState> H264SpsParser::ParseSps(
     }
   }
 
-  // num_ref_frames  ue(v)
-  if (!bit_buffer->ReadExponentialGolomb(&(sps->num_ref_frames))) {
+  // max_num_ref_frames  ue(v)
+  if (!bit_buffer->ReadExponentialGolomb(&(sps->max_num_ref_frames))) {
     return nullptr;
   }
 
@@ -227,13 +305,56 @@ void H264SpsParser::SpsState::fdump(FILE* outfp, int indent_level) const {
   fprintf(outfp, "constraint_set2_flag: %i", constraint_set2_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "reserved_zero_5bits: %i", reserved_zero_5bits);
+  fprintf(outfp, "constraint_set3_flag: %i", constraint_set3_flag);
+
+  fdump_indent_level(outfp, indent_level);
+  fprintf(outfp, "constraint_set4_flag: %i", constraint_set4_flag);
+
+  fdump_indent_level(outfp, indent_level);
+  fprintf(outfp, "constraint_set5_flag: %i", constraint_set5_flag);
+
+  fdump_indent_level(outfp, indent_level);
+  fprintf(outfp, "reserved_zero_2bits: %i", reserved_zero_2bits);
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "level_idc: %i", level_idc);
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "seq_parameter_set_id: %i", seq_parameter_set_id);
+
+  if (profile_idc == 100 || profile_idc == 110 || profile_idc == 122 ||
+      profile_idc == 244 || profile_idc == 44 || profile_idc == 83 ||
+      profile_idc == 86 || profile_idc == 118 || profile_idc == 128) {
+    fdump_indent_level(outfp, indent_level);
+    fprintf(outfp, "chroma_format_idc: %i", chroma_format_idc);
+
+    if (chroma_format_idc == 3) {
+      fdump_indent_level(outfp, indent_level);
+      fprintf(outfp, "separate_colour_plane_flag: %i",
+              separate_colour_plane_flag);
+    }
+
+    fdump_indent_level(outfp, indent_level);
+    fprintf(outfp, "bit_depth_luma_minus8: %i", bit_depth_luma_minus8);
+
+    fdump_indent_level(outfp, indent_level);
+    fprintf(outfp, "bit_depth_chroma_minus8: %i", bit_depth_chroma_minus8);
+
+    fdump_indent_level(outfp, indent_level);
+    fprintf(outfp, "qpprime_y_zero_transform_bypass_flag: %i",
+            qpprime_y_zero_transform_bypass_flag);
+
+    fdump_indent_level(outfp, indent_level);
+    fprintf(outfp, "seq_scaling_matrix_present_flag: %i",
+            seq_scaling_matrix_present_flag);
+
+    fdump_indent_level(outfp, indent_level);
+    fprintf(outfp, "seq_scaling_list_present_flag {");
+    for (const uint32_t& v : seq_scaling_list_present_flag) {
+      fprintf(outfp, " %i", v);
+    }
+    fprintf(outfp, " }");
+  }
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "log2_max_frame_num_minus4: %i", log2_max_frame_num_minus4);
@@ -271,7 +392,7 @@ void H264SpsParser::SpsState::fdump(FILE* outfp, int indent_level) const {
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "num_ref_frames: %i", num_ref_frames);
+  fprintf(outfp, "max_num_ref_frames: %i", max_num_ref_frames);
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "gaps_in_frame_num_value_allowed_flag: %i",
