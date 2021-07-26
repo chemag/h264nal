@@ -71,7 +71,7 @@ class H264NalUnitPayloadParser {
     std::shared_ptr<struct H264PpsParser::PpsState> pps;
     std::unique_ptr<struct H264SliceLayerWithoutPartitioningRbspParser::
                         SliceLayerWithoutPartitioningRbspState>
-        h264_slice_layer_without_partitioning_rbsp_parser;
+        slice_layer_without_partitioning_rbsp;
   };
 
   // Unpack RBSP and parse NAL unit payload state from the supplied buffer.

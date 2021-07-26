@@ -136,8 +136,8 @@ H264NalUnitPayloadParser::ParseNalUnitPayload(
   // payload (Table 7-1, Section 7.4.1)
   switch (nal_unit_type) {
     case CODED_SLICE_OF_NON_IDR_PICTURE_NUT: {
-      // h264_slice_layer_without_partitioning_rbsp_parser()
-      nal_unit_payload->h264_slice_layer_without_partitioning_rbsp_parser =
+      // slice_layer_without_partitioning_rbsp()
+      nal_unit_payload->slice_layer_without_partitioning_rbsp =
           H264SliceLayerWithoutPartitioningRbspParser::
               ParseSliceLayerWithoutPartitioningRbsp(bit_buffer, nal_ref_idc,
                                                      nal_unit_type,
@@ -150,8 +150,8 @@ H264NalUnitPayloadParser::ParseNalUnitPayload(
       // unimplemented
       break;
     case CODED_SLICE_OF_IDR_PICTURE_NUT: {
-      // h264_slice_layer_without_partitioning_rbsp_parser()
-      nal_unit_payload->h264_slice_layer_without_partitioning_rbsp_parser =
+      // slice_layer_without_partitioning_rbsp()
+      nal_unit_payload->slice_layer_without_partitioning_rbsp =
           H264SliceLayerWithoutPartitioningRbspParser::
               ParseSliceLayerWithoutPartitioningRbsp(bit_buffer, nal_ref_idc,
                                                      nal_unit_type,
@@ -289,8 +289,7 @@ void H264NalUnitPayloadParser::NalUnitPayloadState::fdump(
   fdump_indent_level(outfp, indent_level);
   switch (nal_unit_type) {
     case CODED_SLICE_OF_NON_IDR_PICTURE_NUT:
-      h264_slice_layer_without_partitioning_rbsp_parser->fdump(outfp,
-                                                               indent_level);
+      slice_layer_without_partitioning_rbsp->fdump(outfp, indent_level);
       break;
     case CODED_SLICE_DATA_PARTITION_A_NUT:
     case CODED_SLICE_DATA_PARTITION_B_NUT:
@@ -298,8 +297,7 @@ void H264NalUnitPayloadParser::NalUnitPayloadState::fdump(
       // unimplemented
       break;
     case CODED_SLICE_OF_IDR_PICTURE_NUT:
-      h264_slice_layer_without_partitioning_rbsp_parser->fdump(outfp,
-                                                               indent_level);
+      slice_layer_without_partitioning_rbsp->fdump(outfp, indent_level);
       break;
     case SEI_NUT:
       // unimplemented
