@@ -12,7 +12,7 @@
 #include "h264_bitstream_parser_state.h"
 #include "h264_dec_ref_pic_marking_parser.h"
 #include "h264_pred_weight_table_parser.h"
-#include "h264_ref_pic_list_reordering_parser.h"
+#include "h264_ref_pic_list_modification_parser.h"
 #include "rtc_base/bit_buffer.h"
 
 namespace h264nal {
@@ -72,8 +72,8 @@ class H264SliceHeaderParser {
     uint32_t num_ref_idx_l0_active_minus1 = 0;
     uint32_t num_ref_idx_l1_active_minus1 = 0;
     std::unique_ptr<
-        struct H264RefPicListReorderingParser::RefPicListReorderingState>
-        ref_pic_list_reordering;
+        struct H264RefPicListModificationParser::RefPicListModificationState>
+        ref_pic_list_modification;
     std::unique_ptr<struct H264PredWeightTableParser::PredWeightTableState>
         pred_weight_table;
     std::unique_ptr<struct H264DecRefPicMarkingParser::DecRefPicMarkingState>

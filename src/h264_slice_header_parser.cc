@@ -18,7 +18,7 @@
 #include "h264_dec_ref_pic_marking_parser.h"
 #include "h264_pps_parser.h"
 #include "h264_pred_weight_table_parser.h"
-#include "h264_ref_pic_list_reordering_parser.h"
+#include "h264_ref_pic_list_modification_parser.h"
 #include "h264_sps_parser.h"
 #include "rtc_base/bit_buffer.h"
 
@@ -214,9 +214,9 @@ H264SliceHeaderParser::ParseSliceHeader(
     }
   }
 
-  // ref_pic_list_reordering(slice_type)
-  slice_header->ref_pic_list_reordering =
-      H264RefPicListReorderingParser::ParseRefPicListReordering(
+  // ref_pic_list_modification(slice_type)
+  slice_header->ref_pic_list_modification =
+      H264RefPicListModificationParser::ParseRefPicListModification(
           bit_buffer, slice_header->slice_type);
 
   slice_header->weighted_pred_flag =
@@ -485,7 +485,7 @@ void H264SliceHeaderParser::SliceHeaderState::fdump(FILE* outfp,
   }
 
   fdump_indent_level(outfp, indent_level);
-  ref_pic_list_reordering->fdump(outfp, indent_level);
+  ref_pic_list_modification->fdump(outfp, indent_level);
 
   if ((weighted_pred_flag &&
        ((slice_type == P) || (slice_type == SliceType::P_ALL) ||

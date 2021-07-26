@@ -25,8 +25,8 @@ if(H264NAL_SMALL_FOOTPRINT)
       h264_hrd_parameters_parser.h h264_hrd_parameters_parser.cc
       h264_vui_parameters_parser.h h264_vui_parameters_parser.cc
       h264_pps_parser.h h264_pps_parser.cc
-      h264_ref_pic_list_reordering_parser.h
-      h264_ref_pic_list_reordering_parser.cc
+      h264_ref_pic_list_modification_parser.h
+      h264_ref_pic_list_modification_parser.cc
       h264_pred_weight_table_parser.h h264_pred_weight_table_parser.cc
       h264_dec_ref_pic_marking_parser.h
       h264_dec_ref_pic_marking_parser.cc
@@ -44,8 +44,8 @@ else()
       h264_hrd_parameters_parser.h h264_hrd_parameters_parser.cc
       h264_vui_parameters_parser.h h264_vui_parameters_parser.cc
       h264_pps_parser.h h264_pps_parser.cc
-      h264_ref_pic_list_reordering_parser.h
-      h264_ref_pic_list_reordering_parser.cc
+      h264_ref_pic_list_modification_parser.h
+      h264_ref_pic_list_modification_parser.cc
       h264_pred_weight_table_parser.h h264_pred_weight_table_parser.cc
       h264_dec_ref_pic_marking_parser.h
       h264_dec_ref_pic_marking_parser.cc

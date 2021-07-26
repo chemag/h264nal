@@ -13,7 +13,7 @@
 
 namespace h264nal {
 
-// A class for parsing out a reference picture list reordering
+// A class for parsing out a HRD parameters
 // (`hrd_parameters()`, as defined in Section E.1.2 of the 2012
 // standard) from an H264 NALU.
 class H264HrdParametersParser {

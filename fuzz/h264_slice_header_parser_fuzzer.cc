@@ -12,7 +12,7 @@
 #include "h264_dec_ref_pic_marking_parser.h"
 #include "h264_pps_parser.h"
 #include "h264_pred_weight_table_parser.h"
-#include "h264_ref_pic_list_reordering_parser.h"
+#include "h264_ref_pic_list_modification_parser.h"
 #include "h264_sps_parser.h"
 #include "rtc_base/arraysize.h"
 #include "rtc_base/bit_buffer.h"

@@ -12,7 +12,7 @@
 #include "h264_dec_ref_pic_marking_parser.h"
 #include "h264_pps_parser.h"
 #include "h264_pred_weight_table_parser.h"
-#include "h264_ref_pic_list_reordering_parser.h"
+#include "h264_ref_pic_list_modification_parser.h"
 #include "h264_sps_parser.h"
 #include "rtc_base/arraysize.h"
 #include "rtc_base/bit_buffer.h"
@@ -82,19 +82,18 @@ TEST_F(H264SliceHeaderParserTest, TestSampleSliceIDR601) {
   EXPECT_EQ(0, slice_header->num_ref_idx_l0_active_minus1);
   EXPECT_EQ(0, slice_header->num_ref_idx_l1_active_minus1);
 
-  EXPECT_NE(nullptr, slice_header->ref_pic_list_reordering);
+  EXPECT_NE(nullptr, slice_header->ref_pic_list_modification);
+  EXPECT_EQ(0, slice_header->ref_pic_list_modification
+                   ->ref_pic_list_modification_flag_l0);
+  EXPECT_EQ(0, slice_header->ref_pic_list_modification
+                   ->ref_pic_list_modification_flag_l1);
+  EXPECT_EQ(0, slice_header->ref_pic_list_modification
+                   ->modification_of_pic_nums_idc.size());
   EXPECT_EQ(
       0,
-      slice_header->ref_pic_list_reordering->ref_pic_list_reordering_flag_l0);
-  EXPECT_EQ(
-      0,
-      slice_header->ref_pic_list_reordering->ref_pic_list_reordering_flag_l1);
-  EXPECT_EQ(
-      0,
-      slice_header->ref_pic_list_reordering->reordering_of_pic_nums_idc.size());
-  EXPECT_EQ(
-      0, slice_header->ref_pic_list_reordering->abs_diff_pic_num_minus1.size());
-  EXPECT_EQ(0, slice_header->ref_pic_list_reordering->long_term_pic_num.size());
+      slice_header->ref_pic_list_modification->abs_diff_pic_num_minus1.size());
+  EXPECT_EQ(0,
+            slice_header->ref_pic_list_modification->long_term_pic_num.size());
 
   EXPECT_EQ(nullptr, slice_header->pred_weight_table);
 
@@ -179,19 +178,18 @@ TEST_F(H264SliceHeaderParserTest, TestSampleSliceNonIDR601) {
   EXPECT_EQ(0, slice_header->num_ref_idx_l0_active_minus1);
   EXPECT_EQ(0, slice_header->num_ref_idx_l1_active_minus1);
 
-  EXPECT_NE(nullptr, slice_header->ref_pic_list_reordering);
+  EXPECT_NE(nullptr, slice_header->ref_pic_list_modification);
+  EXPECT_EQ(0, slice_header->ref_pic_list_modification
+                   ->ref_pic_list_modification_flag_l0);
+  EXPECT_EQ(0, slice_header->ref_pic_list_modification
+                   ->ref_pic_list_modification_flag_l1);
+  EXPECT_EQ(0, slice_header->ref_pic_list_modification
+                   ->modification_of_pic_nums_idc.size());
   EXPECT_EQ(
       0,
-      slice_header->ref_pic_list_reordering->ref_pic_list_reordering_flag_l0);
-  EXPECT_EQ(
-      0,
-      slice_header->ref_pic_list_reordering->ref_pic_list_reordering_flag_l1);
-  EXPECT_EQ(
-      0,
-      slice_header->ref_pic_list_reordering->reordering_of_pic_nums_idc.size());
-  EXPECT_EQ(
-      0, slice_header->ref_pic_list_reordering->abs_diff_pic_num_minus1.size());
-  EXPECT_EQ(0, slice_header->ref_pic_list_reordering->long_term_pic_num.size());
+      slice_header->ref_pic_list_modification->abs_diff_pic_num_minus1.size());
+  EXPECT_EQ(0,
+            slice_header->ref_pic_list_modification->long_term_pic_num.size());
 
   EXPECT_EQ(nullptr, slice_header->pred_weight_table);
 
