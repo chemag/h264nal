@@ -98,17 +98,16 @@ H264PredWeightTableParser::ParsePredWeightTable(
       pred_weight_table->chroma_weight_l0_flag.push_back(bits_tmp);
 
       if (pred_weight_table->chroma_weight_l0_flag[i]) {
-        // chroma_weight_l0[i][j]  se(v)
         pred_weight_table->chroma_weight_l0.emplace_back();
-
-        // chroma_offset_l0[i][j]  se(v)
         pred_weight_table->chroma_offset_l0.emplace_back();
         for (uint32_t j = 0; j < 2; ++j) {
+          // chroma_weight_l0[i][j]  se(v)
           if (!bit_buffer->ReadSignedExponentialGolomb(&(sgolomb_tmp))) {
             return nullptr;
           }
           pred_weight_table->chroma_weight_l0.back().push_back(sgolomb_tmp);
 
+          // chroma_offset_l0[i][j]  se(v)
           if (!bit_buffer->ReadSignedExponentialGolomb(&(sgolomb_tmp))) {
             return nullptr;
           }
