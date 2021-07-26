@@ -24,7 +24,7 @@
 
 namespace h264nal {
 
-// General note: this is based off the 2004 version of the H.264 standard.
+// General note: this is based off the 2012 version of the H.264 standard.
 // You can find it on this page:
 // http://www.itu.int/rec/T-REC-H.264
 
@@ -86,6 +86,15 @@ H264SliceHeaderParser::ParseSliceHeader(
     return nullptr;
   }
 
+  slice_header->separate_colour_plane_flag =
+      bitstream_parser_state->sps[sps_id]->separate_colour_plane_flag;
+  if (slice_header->separate_colour_plane_flag) {
+    // colour_plane_id  u(2)
+    if (!bit_buffer->ReadBits(&(slice_header->colour_plane_id), 2)) {
+      return nullptr;
+    }
+  }
+
   // frame_num  u(v)
   slice_header->log2_max_frame_num_minus4 =
       bitstream_parser_state->sps[sps_id]->log2_max_frame_num_minus4;
@@ -110,7 +119,8 @@ H264SliceHeaderParser::ParseSliceHeader(
     }
   }
 
-  if (slice_header->nal_unit_type == 5) {
+  uint32_t IdrPicFlag = ((nal_unit_type == 5) ? 1 : 0);
+  if (IdrPicFlag) {
     // idr_pic_id  ue(v)
     if (!bit_buffer->ReadExponentialGolomb(&(slice_header->idr_pic_id))) {
       return nullptr;
@@ -214,10 +224,19 @@ H264SliceHeaderParser::ParseSliceHeader(
     }
   }
 
-  // ref_pic_list_modification(slice_type)
-  slice_header->ref_pic_list_modification =
-      H264RefPicListModificationParser::ParseRefPicListModification(
-          bit_buffer, slice_header->slice_type);
+  if (slice_header->nal_unit_type == 20) {
+    // ref_pic_list_mvc_modification()
+#ifdef FPRINT_ERRORS
+    // TODO(chemag): add support for ref_pic_list_mvc_modification()
+    fprintf(stderr,
+            "error: unimplemented ref_pic_list_mvc_modification in pps\n");
+#endif  // FPRINT_ERRORS
+  } else {
+    // ref_pic_list_modification(slice_type)
+    slice_header->ref_pic_list_modification =
+        H264RefPicListModificationParser::ParseRefPicListModification(
+            bit_buffer, slice_header->slice_type);
+  }
 
   slice_header->weighted_pred_flag =
       bitstream_parser_state->pps[pps_id]->weighted_pred_flag;
@@ -332,7 +351,7 @@ H264SliceHeaderParser::ParseSliceHeader(
             slice_header->pic_width_in_mbs_minus1,
             slice_header->pic_height_in_map_units_minus1,
             slice_header->slice_group_change_rate_minus1);
-    // Rec. ITU-T H.264 (2004) Page 67, Section 7.4.3
+    // Rec. ITU-T H.264 (2012) Page 67, Section 7.4.3
     if (!bit_buffer->ReadBits(&(slice_header->slice_group_change_cycle),
                               slice_group_change_cycle_len)) {
       return nullptr;
@@ -344,7 +363,7 @@ H264SliceHeaderParser::ParseSliceHeader(
 
 uint32_t H264SliceHeaderParser::SliceHeaderState::getFrameNumLen(
     uint32_t log2_max_frame_num_minus4) noexcept {
-  // Rec. ITU-T H.264 (2004) Page 62, Section 7.4.3
+  // Rec. ITU-T H.264 (2012) Page 62, Section 7.4.3
   // frame_num is used as an identifier for pictures and shall be
   // represented by log2_max_frame_num_minus4 + 4 bits in the bitstream.
   return log2_max_frame_num_minus4 + 4;
@@ -352,7 +371,7 @@ uint32_t H264SliceHeaderParser::SliceHeaderState::getFrameNumLen(
 
 uint32_t H264SliceHeaderParser::SliceHeaderState::getPicOrderCntLsbLen(
     uint32_t log2_max_pic_order_cnt_lsb_minus4) noexcept {
-  // Rec. ITU-T H.264 (2004) Page 64, Section 7.4.3
+  // Rec. ITU-T H.264 (2012) Page 64, Section 7.4.3
   // The size of the pic_order_cnt_lsb syntax element is
   // log2_max_pic_order_cnt_lsb_minus4 + 4 bits.
   return log2_max_pic_order_cnt_lsb_minus4 + 4;
@@ -361,7 +380,7 @@ uint32_t H264SliceHeaderParser::SliceHeaderState::getPicOrderCntLsbLen(
 uint32_t H264SliceHeaderParser::SliceHeaderState::getSliceGroupChangeCycleLen(
     uint32_t pic_width_in_mbs_minus1, uint32_t pic_height_in_map_units_minus1,
     uint32_t slice_group_change_rate_minus1) noexcept {
-  // Rec. ITU-T H.264 (2004) Page 67, Section 7.4.3
+  // Rec. ITU-T H.264 (2012) Page 67, Section 7.4.3
   // The value of slice_group_change_cycle is represented in the bitstream
   // by the following number of bits
   // Ceil(Log2(PicSizeInMapUnits ÷ SliceGroupChangeRate + 1)) (7-21)
@@ -411,6 +430,11 @@ void H264SliceHeaderParser::SliceHeaderState::fdump(FILE* outfp,
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "pic_parameter_set_id: %i", pic_parameter_set_id);
+
+  if (separate_colour_plane_flag) {
+    fdump_indent_level(outfp, indent_level);
+    fprintf(outfp, "colour_plane_id: %i", colour_plane_id);
+  }
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "frame_num: %i", frame_num);
