@@ -22,7 +22,7 @@ typedef std::shared_ptr<struct h264nal::H264PpsParser::PpsState>
 
 namespace h264nal {
 
-// General note: this is based off the 2004 version of the H.264 standard.
+// General note: this is based off the 2012 version of the H.264 standard.
 // You can find it on this page:
 // http://www.itu.int/rec/T-REC-H.264
 

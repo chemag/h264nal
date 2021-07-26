@@ -233,7 +233,7 @@ std::shared_ptr<H264PpsParser::PpsState> H264PpsParser::ParsePps(
 }
 
 uint32_t H264PpsParser::PpsState::getSliceGroupIdLen() noexcept {
-  // Rec. ITU-T H.264 (2004) Page 70, Section 7.4.2.2
+  // Rec. ITU-T H.264 (2012) Page 70, Section 7.4.2.2
   // slice_group_id[i] identifies a slice group of the i-th slice group
   // map unit in raster scan order. The size of the slice_group_id[i]
   // syntax element is `Ceil(Log2(num_slice_groups_minus1 + 1))` bits.
