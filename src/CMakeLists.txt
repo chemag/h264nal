@@ -49,6 +49,8 @@ else()
       h264_pred_weight_table_parser.h h264_pred_weight_table_parser.cc
       h264_dec_ref_pic_marking_parser.h
       h264_dec_ref_pic_marking_parser.cc
+      h264_rtp_single_parser.h h264_rtp_single_parser.cc
+      h264_rtp_parser.h h264_rtp_parser.cc
       h264_slice_header_parser.h h264_slice_header_parser.cc
       h264_slice_layer_without_partitioning_rbsp_parser.h
       h264_slice_layer_without_partitioning_rbsp_parser.cc
