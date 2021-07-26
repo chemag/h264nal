@@ -21,7 +21,7 @@ class H264CommonTest : public ::testing::Test {
 };
 
 TEST_F(H264CommonTest, TestIsNalUnitTypeReserved) {
-  EXPECT_TRUE(IsNalUnitTypeReserved(RSV13_NUT));
+  EXPECT_TRUE(IsNalUnitTypeReserved(RSV16_NUT));
   EXPECT_TRUE(IsNalUnitTypeReserved(RSV23_NUT));
   EXPECT_FALSE(IsNalUnitTypeReserved(UNSPEC24_NUT));
 }
@@ -29,7 +29,7 @@ TEST_F(H264CommonTest, TestIsNalUnitTypeReserved) {
 TEST_F(H264CommonTest, TestIsNalUnitTypeUnspecified) {
   EXPECT_TRUE(IsNalUnitTypeUnspecified(UNSPEC24_NUT));
   EXPECT_TRUE(IsNalUnitTypeUnspecified(UNSPEC31_NUT));
-  EXPECT_FALSE(IsNalUnitTypeUnspecified(RSV13_NUT));
+  EXPECT_FALSE(IsNalUnitTypeUnspecified(RSV16_NUT));
 }
 
 struct H264CommonMoreRbspDataParameterTestData {

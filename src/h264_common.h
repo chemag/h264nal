@@ -14,6 +14,7 @@
 
 namespace h264nal {
 
+// Table 7-1 of the 2012 standard.
 enum NalUnitType : uint8_t {
   UNSPECIFIED_NUT = 0,
   CODED_SLICE_OF_NON_IDR_PICTURE_NUT = 1,
@@ -28,15 +29,16 @@ enum NalUnitType : uint8_t {
   EOSEQ_NUT = 10,
   EOSTREAM_NUT = 11,
   FILLER_DATA_NUT = 12,
-  // 13-23: reserved
-  RSV13_NUT = 13,
-  RSV14_NUT = 14,
-  RSV15_NUT = 15,
+  SPS_EXTENSION_NUT = 13,
+  PREFIX_NUT = 14,
+  SUBSET_SPS_NUT = 15,
+  // 16-18: reserved
   RSV16_NUT = 16,
   RSV17_NUT = 17,
   RSV18_NUT = 18,
-  RSV19_NUT = 19,
-  RSV20_NUT = 20,
+  CODED_SLICE_OF_AUXILIARY_CODED_PICTURE_NUT = 19,
+  CODED_SLICE_EXTENSION = 20,
+  // 21-23: reserved
   RSV21_NUT = 21,
   RSV22_NUT = 22,
   RSV23_NUT = 23,

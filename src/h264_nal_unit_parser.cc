@@ -184,16 +184,20 @@ H264NalUnitPayloadParser::ParseNalUnitPayload(
     case EOSEQ_NUT:
     case EOSTREAM_NUT:
     case FILLER_DATA_NUT:
+    case SPS_EXTENSION_NUT:
+    case PREFIX_NUT:
+    case SUBSET_SPS_NUT:
       // unimplemented
       break;
-    case RSV13_NUT:
-    case RSV14_NUT:
-    case RSV15_NUT:
     case RSV16_NUT:
     case RSV17_NUT:
     case RSV18_NUT:
-    case RSV19_NUT:
-    case RSV20_NUT:
+      // reserved
+      break;
+    case CODED_SLICE_OF_AUXILIARY_CODED_PICTURE_NUT:
+    case CODED_SLICE_EXTENSION:
+      // unimplemented
+      break;
     case RSV21_NUT:
     case RSV22_NUT:
     case RSV23_NUT:
@@ -314,16 +318,20 @@ void H264NalUnitPayloadParser::NalUnitPayloadState::fdump(
     case EOSEQ_NUT:
     case EOSTREAM_NUT:
     case FILLER_DATA_NUT:
+    case SPS_EXTENSION_NUT:
+    case PREFIX_NUT:
+    case SUBSET_SPS_NUT:
       // unimplemented
       break;
-    case RSV13_NUT:
-    case RSV14_NUT:
-    case RSV15_NUT:
     case RSV16_NUT:
     case RSV17_NUT:
     case RSV18_NUT:
-    case RSV19_NUT:
-    case RSV20_NUT:
+      // reserved
+      break;
+    case CODED_SLICE_OF_AUXILIARY_CODED_PICTURE_NUT:
+    case CODED_SLICE_EXTENSION:
+      // unimplemented
+      break;
     case RSV21_NUT:
     case RSV22_NUT:
     case RSV23_NUT:

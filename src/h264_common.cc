@@ -15,14 +15,9 @@ namespace h264nal {
 bool IsNalUnitTypeReserved(uint32_t nal_unit_type) {
   // payload (Table 7-1, Section 7.4.1)
   switch (nal_unit_type) {
-    case RSV13_NUT:
-    case RSV14_NUT:
-    case RSV15_NUT:
     case RSV16_NUT:
     case RSV17_NUT:
     case RSV18_NUT:
-    case RSV19_NUT:
-    case RSV20_NUT:
     case RSV21_NUT:
     case RSV22_NUT:
     case RSV23_NUT:
