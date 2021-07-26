@@ -70,12 +70,18 @@ if(H264NAL_SMALL_FOOTPRINT)
 else()
   message(STATUS "test: normal footprint selected")
   add_compile_definitions(RTP_DEFINE)
+
   add_executable(h264_rtp_single_parser_unittest h264_rtp_single_parser_unittest.cc)
   add_test(h264_rtp_single_parser_unittest h264_rtp_single_parser_unittest)
   target_link_libraries(h264_rtp_single_parser_unittest PUBLIC h264nal)
   target_link_libraries(h264_rtp_single_parser_unittest PUBLIC ${GTEST_LIBRARY} gtest_main)
   target_link_libraries(h264_rtp_single_parser_unittest PUBLIC ${GMOCK_LIBRARY} gmock_main)
 
+  add_executable(h264_rtp_stapa_parser_unittest h264_rtp_stapa_parser_unittest.cc)
+  add_test(h264_rtp_stapa_parser_unittest h264_rtp_stapa_parser_unittest)
+  target_link_libraries(h264_rtp_stapa_parser_unittest PUBLIC h264nal)
+  target_link_libraries(h264_rtp_stapa_parser_unittest PUBLIC ${GTEST_LIBRARY} gtest_main)
+  target_link_libraries(h264_rtp_stapa_parser_unittest PUBLIC ${GMOCK_LIBRARY} gmock_main)
 endif()
 
 add_executable(h264_slice_header_parser_unittest h264_slice_header_parser_unittest.cc)
