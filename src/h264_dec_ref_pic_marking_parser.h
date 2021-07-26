@@ -14,7 +14,7 @@
 namespace h264nal {
 
 // A class for parsing out a reference picture list reordering
-// (`dec_ref_pic_marking()`, as defined in Section 7.3.3.3 of the 2004
+// (`dec_ref_pic_marking()`, as defined in Section 7.3.3.3 of the 2012
 // standard) from an H264 NALU.
 class H264DecRefPicMarkingParser {
  public:

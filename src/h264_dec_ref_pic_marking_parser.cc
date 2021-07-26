@@ -16,7 +16,7 @@
 
 namespace h264nal {
 
-// General note: this is based off the 2004 version of the H.264 standard.
+// General note: this is based off the 2012 version of the H.264 standard.
 // You can find it on this page:
 // http://www.itu.int/rec/T-REC-H.264
 
@@ -42,7 +42,10 @@ H264DecRefPicMarkingParser::ParseDecRefPicMarking(
   // store input values
   dec_ref_pic_marking->nal_unit_type = nal_unit_type;
 
-  if (nal_unit_type == 5) {
+  // Equation (7-1)
+  uint32_t IdrPicFlag = ((nal_unit_type == 5) ? 1 : 0);
+
+  if (IdrPicFlag) {
     // no_output_of_prior_pics_flag  u(1)
     if (!bit_buffer->ReadBits(
             &(dec_ref_pic_marking->no_output_of_prior_pics_flag), 1)) {
