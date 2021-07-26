@@ -52,6 +52,7 @@ else()
       h264_rtp_single_parser.h h264_rtp_single_parser.cc
       h264_rtp_parser.h h264_rtp_parser.cc
       h264_rtp_stapa_parser.h h264_rtp_stapa_parser.cc
+      h264_rtp_fua_parser.h h264_rtp_fua_parser.cc
       h264_slice_header_parser.h h264_slice_header_parser.cc
       h264_slice_layer_without_partitioning_rbsp_parser.h
       h264_slice_layer_without_partitioning_rbsp_parser.cc

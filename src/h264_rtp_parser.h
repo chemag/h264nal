@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "h264_rtp_fua_parser.h"
 #include "h264_rtp_single_parser.h"
 #include "h264_rtp_stapa_parser.h"
 #include "rtc_base/bit_buffer.h"
@@ -35,6 +36,7 @@ class H264RtpParser {
         nal_unit_header;
     std::unique_ptr<struct H264RtpSingleParser::RtpSingleState> rtp_single;
     std::unique_ptr<struct H264RtpStapAParser::RtpStapAState> rtp_stapa;
+    std::unique_ptr<struct H264RtpFuAParser::RtpFuAState> rtp_fua;
   };
 
   // Unpack RBSP and parse RTP NAL Unit state from the supplied buffer.
