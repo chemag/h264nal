@@ -287,6 +287,22 @@ std::shared_ptr<H264SpsParser::SpsState> H264SpsParser::ParseSps(
   return sps;
 }
 
+uint32_t H264SpsParser::SpsState::getChromaArrayType() noexcept {
+  // Rec. ITU-T H.264 (2012) Page 74, Section 7.4.2.1.1
+  // the value of the variable ChromaArrayType is assigned as follows:
+  // - If separate_colour_plane_flag is equal to 0, ChromaArrayType is set
+  //   equal to chroma_format_idc.
+  // - Otherwise (separate_colour_plane_flag is equal to 1), ChromaArrayType
+  // is set equal to 0.
+  uint32_t ChromaArrayType = 0;
+  if (separate_colour_plane_flag == 0) {
+    ChromaArrayType = chroma_format_idc;
+  } else {
+    ChromaArrayType = 0;
+  }
+  return ChromaArrayType;
+}
+
 #ifdef FDUMP_DEFINE
 void H264SpsParser::SpsState::fdump(FILE* outfp, int indent_level) const {
   fprintf(outfp, "sps {");

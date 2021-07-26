@@ -74,6 +74,9 @@ class H264SpsParser {
     uint32_t vui_parameters_present_flag = 0;
     std::unique_ptr<struct H264VuiParametersParser::VuiParametersState>
         vui_parameters;
+
+    // derived values
+    uint32_t getChromaArrayType() noexcept;
   };
 
   // Unpack RBSP and parse SPS state from the supplied buffer.
