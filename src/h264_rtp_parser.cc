@@ -12,6 +12,7 @@
 
 #include "h264_common.h"
 #include "h264_nal_unit_parser.h"
+#include "h264_rtp_stapa_parser.h"
 
 namespace h264nal {
 
@@ -49,6 +50,11 @@ std::unique_ptr<H264RtpParser::RtpState> H264RtpParser::ParseRtp(
     // rtp_single()
     rtp->rtp_single =
         H264RtpSingleParser::ParseRtpSingle(bit_buffer, bitstream_parser_state);
+
+  } else if (rtp->nal_unit_header->nal_unit_type == RTP_STAPA_NUT) {
+    // rtp_stapa()
+    rtp->rtp_stapa =
+        H264RtpStapAParser::ParseRtpStapA(bit_buffer, bitstream_parser_state);
   }
 
   return rtp;
@@ -65,6 +71,9 @@ void H264RtpParser::RtpState::fdump(FILE* outfp, int indent_level) const {
   if (nal_unit_header->nal_unit_type <= 23) {
     // rtp_single()
     rtp_single->fdump(outfp, indent_level);
+  } else if (nal_unit_header->nal_unit_type == RTP_STAPA_NUT) {
+    // rtp_stapa()
+    rtp_stapa->fdump(outfp, indent_level);
   }
 
   indent_level = indent_level_decr(indent_level);

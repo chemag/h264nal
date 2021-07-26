@@ -42,6 +42,8 @@ enum NalUnitType : uint8_t {
   RSV21_NUT = 21,
   RSV22_NUT = 22,
   RSV23_NUT = 23,
+  // 24-29: RTP
+  RTP_STAPA_NUT = 24,
   // 24-31: unspecified
   UNSPEC24_NUT = 24,
   UNSPEC25_NUT = 25,
