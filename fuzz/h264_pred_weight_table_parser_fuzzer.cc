@@ -15,20 +15,22 @@
 // libfuzzer infra to test the fuzz target
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   {
+  uint32_t chroma_array_type = 1;
   uint32_t slice_type = h264nal::SliceType::P_ALL;
   uint32_t num_ref_idx_l0_active_minus1 = 0;
   uint32_t num_ref_idx_l1_active_minus1 = 0;
   auto pred_weight_table = h264nal::H264PredWeightTableParser::ParsePredWeightTable(
-      data, size, slice_type, num_ref_idx_l0_active_minus1,
-      num_ref_idx_l1_active_minus1);
+      data, size, chroma_array_type, slice_type,
+      num_ref_idx_l0_active_minus1, num_ref_idx_l1_active_minus1);
   }
   {
+  uint32_t chroma_array_type = 1;
   uint32_t slice_type = h264nal::SliceType::P_ALL;
   uint32_t num_ref_idx_l0_active_minus1 = 12;
   uint32_t num_ref_idx_l1_active_minus1 = 0;
   auto pred_weight_table = h264nal::H264PredWeightTableParser::ParsePredWeightTable(
-      data, size, slice_type, num_ref_idx_l0_active_minus1,
-      num_ref_idx_l1_active_minus1);
+      data, size, chroma_array_type, slice_type,
+      num_ref_idx_l0_active_minus1, num_ref_idx_l1_active_minus1);
   }
   return 0;
 }

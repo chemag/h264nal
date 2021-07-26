@@ -14,7 +14,7 @@
 namespace h264nal {
 
 // A class for parsing out a prediction weight table
-// (`pred_weight_table()`, as defined in Section 7.3.3.2 of the 2004
+// (`pred_weight_table()`, as defined in Section 7.3.3.2 of the 2012
 // standard) from an H264 NALU.
 class H264PredWeightTableParser {
  public:
@@ -33,6 +33,7 @@ class H264PredWeightTableParser {
 #endif  // FDUMP_DEFINE
 
     // input parameters
+    uint32_t chroma_array_type = 0;
     uint32_t slice_type = 0;
     uint32_t num_ref_idx_l0_active_minus1 = 0;
     uint32_t num_ref_idx_l1_active_minus1 = 0;
@@ -56,12 +57,12 @@ class H264PredWeightTableParser {
 
   // Unpack RBSP and parse PredWeightTable state from the supplied buffer.
   static std::unique_ptr<PredWeightTableState> ParsePredWeightTable(
-      const uint8_t* data, size_t length, uint32_t slice_type,
-      uint32_t num_ref_idx_l0_active_minus1,
+      const uint8_t* data, size_t length, uint32_t chroma_array_type,
+      uint32_t slice_type, uint32_t num_ref_idx_l0_active_minus1,
       uint32_t num_ref_idx_l1_active_minus1) noexcept;
   static std::unique_ptr<PredWeightTableState> ParsePredWeightTable(
-      rtc::BitBuffer* bit_buffer, uint32_t slice_type,
-      uint32_t num_ref_idx_l0_active_minus1,
+      rtc::BitBuffer* bit_buffer, uint32_t chroma_array_type,
+      uint32_t slice_type, uint32_t num_ref_idx_l0_active_minus1,
       uint32_t num_ref_idx_l1_active_minus1) noexcept;
 };
 

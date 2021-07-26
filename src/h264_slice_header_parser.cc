@@ -234,9 +234,11 @@ H264SliceHeaderParser::ParseSliceHeader(
         (slice_header->slice_type == SliceType::B_ALL)))) {
     // pred_weight_table(slice_type, num_ref_idx_l0_active_minus1,
     // num_ref_idx_l1_active_minus1)
+    uint32_t ChromaArrayType =
+        bitstream_parser_state->sps[sps_id]->getChromaArrayType();
     slice_header->pred_weight_table =
         H264PredWeightTableParser::ParsePredWeightTable(
-            bit_buffer, slice_header->slice_type,
+            bit_buffer, ChromaArrayType, slice_header->slice_type,
             slice_header->num_ref_idx_l0_active_minus1,
             slice_header->num_ref_idx_l1_active_minus1);
   }

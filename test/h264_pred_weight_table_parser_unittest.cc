@@ -24,13 +24,14 @@ TEST_F(H264PredWeightTableParserTest, TestSamplePredWeightTable1) {
   // fuzzer::conv: data
   const uint8_t buffer[] = {0x6c};
   // fuzzer::conv: begin
+  uint32_t chroma_array_type = 1;
   uint32_t slice_type = SliceType::P_ALL;
   uint32_t num_ref_idx_l0_active_minus1 = 0;
   uint32_t num_ref_idx_l1_active_minus1 = 0;
 
   auto pred_weight_table = H264PredWeightTableParser::ParsePredWeightTable(
-      buffer, arraysize(buffer), slice_type, num_ref_idx_l0_active_minus1,
-      num_ref_idx_l1_active_minus1);
+      buffer, arraysize(buffer), chroma_array_type, slice_type,
+      num_ref_idx_l0_active_minus1, num_ref_idx_l1_active_minus1);
   // fuzzer::conv: end
 
   EXPECT_TRUE(pred_weight_table != nullptr);
@@ -66,13 +67,14 @@ TEST_F(H264PredWeightTableParserTest, TestSamplePredWeightTable2) {
 };
 
   // fuzzer::conv: begin
+  uint32_t chroma_array_type = 1;
   uint32_t slice_type = SliceType::P_ALL;
   uint32_t num_ref_idx_l0_active_minus1 = 12;
   uint32_t num_ref_idx_l1_active_minus1 = 0;
 
   auto pred_weight_table = H264PredWeightTableParser::ParsePredWeightTable(
-      buffer, arraysize(buffer), slice_type, num_ref_idx_l0_active_minus1,
-      num_ref_idx_l1_active_minus1);
+      buffer, arraysize(buffer), chroma_array_type, slice_type,
+      num_ref_idx_l0_active_minus1, num_ref_idx_l1_active_minus1);
   // fuzzer::conv: end
 
   EXPECT_TRUE(pred_weight_table != nullptr);
