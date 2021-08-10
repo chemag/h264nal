@@ -80,7 +80,7 @@ TEST_F(H264VuiParametersParserTest, TestSampleVuiParameters601vui) {
   EXPECT_EQ(1, vui_parameters->colour_description_present_flag);
   EXPECT_EQ(6, vui_parameters->colour_primaries);
   EXPECT_EQ(6, vui_parameters->transfer_characteristics);
-  EXPECT_EQ(6, vui_parameters->matrix_coeffs);
+  EXPECT_EQ(6, vui_parameters->matrix_coefficients);
   EXPECT_EQ(0, vui_parameters->chroma_loc_info_present_flag);
   EXPECT_EQ(1, vui_parameters->timing_info_present_flag);
   EXPECT_EQ(1, vui_parameters->num_units_in_tick);
@@ -122,7 +122,7 @@ TEST_F(H264VuiParametersParserTest, TestSampleVuiParameters709) {
   EXPECT_EQ(1, vui_parameters->colour_description_present_flag);
   EXPECT_EQ(1, vui_parameters->colour_primaries);
   EXPECT_EQ(1, vui_parameters->transfer_characteristics);
-  EXPECT_EQ(1, vui_parameters->matrix_coeffs);
+  EXPECT_EQ(1, vui_parameters->matrix_coefficients);
   EXPECT_EQ(0, vui_parameters->chroma_loc_info_present_flag);
   EXPECT_EQ(1, vui_parameters->timing_info_present_flag);
   EXPECT_EQ(1, vui_parameters->num_units_in_tick);
@@ -164,7 +164,7 @@ TEST_F(H264VuiParametersParserTest, TestSampleVuiParameters709vui) {
   EXPECT_EQ(1, vui_parameters->colour_description_present_flag);
   EXPECT_EQ(1, vui_parameters->colour_primaries);
   EXPECT_EQ(1, vui_parameters->transfer_characteristics);
-  EXPECT_EQ(1, vui_parameters->matrix_coeffs);
+  EXPECT_EQ(1, vui_parameters->matrix_coefficients);
   EXPECT_EQ(0, vui_parameters->chroma_loc_info_present_flag);
   EXPECT_EQ(1, vui_parameters->timing_info_present_flag);
   EXPECT_EQ(1, vui_parameters->num_units_in_tick);

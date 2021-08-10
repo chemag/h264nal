@@ -96,8 +96,8 @@ H264VuiParametersParser::ParseVuiParameters(
       if (!bit_buffer->ReadBits(&(vui->transfer_characteristics), 8)) {
         return nullptr;
       }
-      // matrix_coeffs  u(8)
-      if (!bit_buffer->ReadBits(&(vui->matrix_coeffs), 8)) {
+      // matrix_coefficients  u(8)
+      if (!bit_buffer->ReadBits(&(vui->matrix_coefficients), 8)) {
         return nullptr;
       }
     }
@@ -271,7 +271,7 @@ void H264VuiParametersParser::VuiParametersState::fdump(
       fprintf(outfp, "transfer_characteristics: %i", transfer_characteristics);
 
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "matrix_coeffs: %i", matrix_coeffs);
+      fprintf(outfp, "matrix_coefficients: %i", matrix_coefficients);
     }
   }
 

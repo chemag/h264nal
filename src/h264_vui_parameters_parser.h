@@ -65,7 +65,7 @@ class H264VuiParametersParser {
     uint32_t colour_description_present_flag = 0;
     uint32_t colour_primaries = 0;
     uint32_t transfer_characteristics = 0;
-    uint32_t matrix_coeffs = 0;
+    uint32_t matrix_coefficients = 0;
     uint32_t chroma_loc_info_present_flag = 0;
     uint32_t chroma_sample_loc_type_top_field = 0;
     uint32_t chroma_sample_loc_type_bottom_field = 0;
