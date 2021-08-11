@@ -36,6 +36,7 @@ class H264BitstreamParser {
     bool add_offset;
     bool add_length;
     bool add_parsed_length;
+    bool add_checksum;
     // NAL units
     std::vector<std::unique_ptr<struct H264NalUnitParser::NalUnitState>>
         nal_units;
@@ -44,12 +45,13 @@ class H264BitstreamParser {
   // Unpack RBSP and parse bitstream state from the supplied buffer.
   static std::unique_ptr<BitstreamState> ParseBitstream(
       const uint8_t* data, size_t length,
-      H264BitstreamParserState* bitstream_parser_state) noexcept;
+      H264BitstreamParserState* bitstream_parser_state,
+      bool add_checksum) noexcept;
 
   // Unpack RBSP and parse bitstream (internal state)
   static std::unique_ptr<BitstreamState> ParseBitstream(
       const uint8_t* data, size_t length, bool add_offset, bool add_length,
-      bool add_parsed_length) noexcept;
+      bool add_parsed_length, bool add_checksum) noexcept;
 
   struct NaluIndex {
     // Start index of NALU, including start sequence.

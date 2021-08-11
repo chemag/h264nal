@@ -100,7 +100,7 @@ class H264NalUnitParser {
 
 #ifdef FDUMP_DEFINE
     void fdump(FILE* outfp, int indent_level, bool add_offset, bool add_length,
-               bool add_parsed_length) const;
+               bool add_parsed_length, bool add_checksum) const;
 #endif  // FDUMP_DEFINE
 
     // NAL Unit offset in the full blob
@@ -109,6 +109,8 @@ class H264NalUnitParser {
     size_t length;
     // NAL Unit parsed length
     size_t parsed_length;
+    // NAL Unit checksum
+    std::shared_ptr<NaluChecksum> checksum;
 
     std::unique_ptr<struct H264NalUnitHeaderParser::NalUnitHeaderState>
         nal_unit_header;
@@ -119,10 +121,12 @@ class H264NalUnitParser {
   // Unpack RBSP and parse NAL unit state from the supplied buffer.
   static std::unique_ptr<NalUnitState> ParseNalUnit(
       const uint8_t* data, size_t length,
-      struct H264BitstreamParserState* bitstream_parser_state) noexcept;
+      struct H264BitstreamParserState* bitstream_parser_state,
+      bool add_checksum) noexcept;
   static std::unique_ptr<NalUnitState> ParseNalUnit(
       rtc::BitBuffer* bit_buffer,
-      struct H264BitstreamParserState* bitstream_parser_state) noexcept;
+      struct H264BitstreamParserState* bitstream_parser_state,
+      bool add_checksum) noexcept;
 };
 
 }  // namespace h264nal

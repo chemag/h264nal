@@ -48,7 +48,8 @@ TEST_F(H264BitstreamParserTest, TestSampleBitstream601) {
   H264BitstreamParserState bitstream_parser_state;
 
   auto bitstream = H264BitstreamParser::ParseBitstream(
-      buffer, arraysize(buffer), &bitstream_parser_state);
+      buffer, arraysize(buffer), &bitstream_parser_state,
+      /* add_checksum */ true);
   // fuzzer::conv: end
 
   EXPECT_TRUE(bitstream != nullptr);
@@ -63,6 +64,11 @@ TEST_F(H264BitstreamParserTest, TestSampleBitstream601) {
   EXPECT_EQ(3, bitstream->nal_units[index]->nal_unit_header->nal_ref_idc);
   EXPECT_EQ(NalUnitType::SPS_NUT,
             bitstream->nal_units[index]->nal_unit_header->nal_unit_type);
+  EXPECT_THAT(
+      std::vector<char>(bitstream->nal_units[index]->checksum->GetChecksum(),
+                        bitstream->nal_units[index]->checksum->GetChecksum() +
+                            bitstream->nal_units[index]->checksum->GetLength()),
+      ::testing::ElementsAreArray({0xac, 0x71, 0x1c, 0xb4}));
 
   // check the 2nd NAL unit
   index += 1;
@@ -71,6 +77,11 @@ TEST_F(H264BitstreamParserTest, TestSampleBitstream601) {
   EXPECT_EQ(3, bitstream->nal_units[index]->nal_unit_header->nal_ref_idc);
   EXPECT_EQ(NalUnitType::PPS_NUT,
             bitstream->nal_units[index]->nal_unit_header->nal_unit_type);
+  EXPECT_THAT(
+      std::vector<char>(bitstream->nal_units[index]->checksum->GetChecksum(),
+                        bitstream->nal_units[index]->checksum->GetChecksum() +
+                            bitstream->nal_units[index]->checksum->GetLength()),
+      ::testing::ElementsAreArray({0x64, 0x6f, 0xbd, 0xfd}));
 
   // check the 3rd NAL unit
   index += 1;
@@ -79,6 +90,11 @@ TEST_F(H264BitstreamParserTest, TestSampleBitstream601) {
   EXPECT_EQ(3, bitstream->nal_units[index]->nal_unit_header->nal_ref_idc);
   EXPECT_EQ(NalUnitType::CODED_SLICE_OF_IDR_PICTURE_NUT,
             bitstream->nal_units[index]->nal_unit_header->nal_unit_type);
+  EXPECT_THAT(
+      std::vector<char>(bitstream->nal_units[index]->checksum->GetChecksum(),
+                        bitstream->nal_units[index]->checksum->GetChecksum() +
+                            bitstream->nal_units[index]->checksum->GetLength()),
+      ::testing::ElementsAreArray({0x12, 0x27, 0x07, 0x3d}));
 
   // check the 4th NAL unit
   index += 1;
@@ -87,6 +103,11 @@ TEST_F(H264BitstreamParserTest, TestSampleBitstream601) {
   EXPECT_EQ(2, bitstream->nal_units[index]->nal_unit_header->nal_ref_idc);
   EXPECT_EQ(NalUnitType::CODED_SLICE_OF_NON_IDR_PICTURE_NUT,
             bitstream->nal_units[index]->nal_unit_header->nal_unit_type);
+  EXPECT_THAT(
+      std::vector<char>(bitstream->nal_units[index]->checksum->GetChecksum(),
+                        bitstream->nal_units[index]->checksum->GetChecksum() +
+                            bitstream->nal_units[index]->checksum->GetLength()),
+      ::testing::ElementsAreArray({0xce, 0x5c, 0x77, 0xf2}));
 }
 
 TEST_F(H264BitstreamParserTest, TestSampleBitstream601Alt) {
@@ -94,8 +115,10 @@ TEST_F(H264BitstreamParserTest, TestSampleBitstream601Alt) {
   bool add_offset = true;
   bool add_length = true;
   bool add_parsed_length = true;
+  bool add_checksum = true;
   auto bitstream = H264BitstreamParser::ParseBitstream(
-      buffer, arraysize(buffer), add_offset, add_length, add_parsed_length);
+      buffer, arraysize(buffer), add_offset, add_length, add_parsed_length,
+      add_checksum);
   EXPECT_TRUE(bitstream != nullptr);
 
   // check there are 4 NAL units
@@ -111,6 +134,11 @@ TEST_F(H264BitstreamParserTest, TestSampleBitstream601Alt) {
   EXPECT_EQ(counter, bitstream->nal_units[index]->offset);
   EXPECT_EQ(length, bitstream->nal_units[index]->length);
   EXPECT_EQ(22, bitstream->nal_units[index]->parsed_length);
+  EXPECT_THAT(
+      std::vector<char>(bitstream->nal_units[index]->checksum->GetChecksum(),
+                        bitstream->nal_units[index]->checksum->GetChecksum() +
+                            bitstream->nal_units[index]->checksum->GetLength()),
+      ::testing::ElementsAreArray({0xac, 0x71, 0x1c, 0xb4}));
   index += 1;
   counter += length;
   // 2nd NAL unit
@@ -119,6 +147,11 @@ TEST_F(H264BitstreamParserTest, TestSampleBitstream601Alt) {
   EXPECT_EQ(counter, bitstream->nal_units[index]->offset);
   EXPECT_EQ(length, bitstream->nal_units[index]->length);
   EXPECT_EQ(6, bitstream->nal_units[index]->parsed_length);
+  EXPECT_THAT(
+      std::vector<char>(bitstream->nal_units[index]->checksum->GetChecksum(),
+                        bitstream->nal_units[index]->checksum->GetChecksum() +
+                            bitstream->nal_units[index]->checksum->GetLength()),
+      ::testing::ElementsAreArray({0x64, 0x6f, 0xbd, 0xfd}));
   index += 1;
   counter += length;
   // 3rd NAL unit
@@ -127,6 +160,11 @@ TEST_F(H264BitstreamParserTest, TestSampleBitstream601Alt) {
   EXPECT_EQ(counter, bitstream->nal_units[index]->offset);
   EXPECT_EQ(length, bitstream->nal_units[index]->length);
   EXPECT_EQ(5, bitstream->nal_units[index]->parsed_length);
+  EXPECT_THAT(
+      std::vector<char>(bitstream->nal_units[index]->checksum->GetChecksum(),
+                        bitstream->nal_units[index]->checksum->GetChecksum() +
+                            bitstream->nal_units[index]->checksum->GetLength()),
+      ::testing::ElementsAreArray({0x12, 0x27, 0x07, 0x3d}));
   index += 1;
   counter += length;
   // 4th NAL unit
@@ -135,6 +173,11 @@ TEST_F(H264BitstreamParserTest, TestSampleBitstream601Alt) {
   EXPECT_EQ(counter, bitstream->nal_units[index]->offset);
   EXPECT_EQ(length, bitstream->nal_units[index]->length);
   EXPECT_EQ(5, bitstream->nal_units[index]->parsed_length);
+  EXPECT_THAT(
+      std::vector<char>(bitstream->nal_units[index]->checksum->GetChecksum(),
+                        bitstream->nal_units[index]->checksum->GetChecksum() +
+                            bitstream->nal_units[index]->checksum->GetLength()),
+      ::testing::ElementsAreArray({0xce, 0x5c, 0x77, 0xf2}));
   // index += 1;
   // counter += length;
 }
