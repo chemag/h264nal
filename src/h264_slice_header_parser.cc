@@ -78,16 +78,17 @@ H264SliceHeaderParser::ParseSliceHeader(
     // non-existent PPS id
     return nullptr;
   }
+  auto& pps = bitstream_parser_state->pps[pps_id];
 
-  uint32_t sps_id = bitstream_parser_state->pps[pps_id]->seq_parameter_set_id;
+  uint32_t sps_id = pps->seq_parameter_set_id;
   if (bitstream_parser_state->sps.find(sps_id) ==
       bitstream_parser_state->sps.end()) {
     // non-existent SPS id
     return nullptr;
   }
+  auto& sps = bitstream_parser_state->sps[sps_id];
 
-  slice_header->separate_colour_plane_flag =
-      bitstream_parser_state->sps[sps_id]->separate_colour_plane_flag;
+  slice_header->separate_colour_plane_flag = sps->separate_colour_plane_flag;
   if (slice_header->separate_colour_plane_flag) {
     // colour_plane_id  u(2)
     if (!bit_buffer->ReadBits(&(slice_header->colour_plane_id), 2)) {
@@ -96,16 +97,14 @@ H264SliceHeaderParser::ParseSliceHeader(
   }
 
   // frame_num  u(v)
-  slice_header->log2_max_frame_num_minus4 =
-      bitstream_parser_state->sps[sps_id]->log2_max_frame_num_minus4;
+  slice_header->log2_max_frame_num_minus4 = sps->log2_max_frame_num_minus4;
   uint32_t frame_num_len =
       slice_header->getFrameNumLen(slice_header->log2_max_frame_num_minus4);
   if (!bit_buffer->ReadBits(&(slice_header->frame_num), frame_num_len)) {
     return nullptr;
   }
 
-  slice_header->frame_mbs_only_flag =
-      bitstream_parser_state->sps[sps_id]->frame_mbs_only_flag;
+  slice_header->frame_mbs_only_flag = sps->frame_mbs_only_flag;
   if (!slice_header->frame_mbs_only_flag) {
     // field_pic_flag  u(1)
     if (!bit_buffer->ReadBits(&(slice_header->field_pic_flag), 1)) {
@@ -127,11 +126,10 @@ H264SliceHeaderParser::ParseSliceHeader(
     }
   }
 
-  slice_header->pic_order_cnt_type =
-      bitstream_parser_state->sps[sps_id]->pic_order_cnt_type;
+  slice_header->pic_order_cnt_type = sps->pic_order_cnt_type;
   if (slice_header->pic_order_cnt_type == 0) {
     uint32_t log2_max_pic_order_cnt_lsb_minus4 =
-        bitstream_parser_state->sps[sps_id]->log2_max_pic_order_cnt_lsb_minus4;
+        sps->log2_max_pic_order_cnt_lsb_minus4;
     // pic_order_cnt_lsb  u(v)
     uint32_t pic_order_cnt_lsb_len =
         slice_header->getPicOrderCntLsbLen(log2_max_pic_order_cnt_lsb_minus4);
@@ -141,8 +139,7 @@ H264SliceHeaderParser::ParseSliceHeader(
     }
 
     slice_header->bottom_field_pic_order_in_frame_present_flag =
-        bitstream_parser_state->pps[pps_id]
-            ->bottom_field_pic_order_in_frame_present_flag;
+        pps->bottom_field_pic_order_in_frame_present_flag;
     if (slice_header->bottom_field_pic_order_in_frame_present_flag &&
         !slice_header->field_pic_flag) {
       // delta_pic_order_cnt_bottom  se(v)
@@ -154,7 +151,7 @@ H264SliceHeaderParser::ParseSliceHeader(
   }
 
   slice_header->delta_pic_order_always_zero_flag =
-      bitstream_parser_state->sps[sps_id]->delta_pic_order_always_zero_flag;
+      sps->delta_pic_order_always_zero_flag;
   if ((slice_header->pic_order_cnt_type == 1) &&
       (!slice_header->delta_pic_order_always_zero_flag)) {
     // delta_pic_order_cnt[0]  se(v)
@@ -174,7 +171,7 @@ H264SliceHeaderParser::ParseSliceHeader(
   }
 
   slice_header->redundant_pic_cnt_present_flag =
-      bitstream_parser_state->pps[pps_id]->redundant_pic_cnt_present_flag;
+      pps->redundant_pic_cnt_present_flag;
   if (slice_header->redundant_pic_cnt_present_flag) {
     // redundant_pic_cnt  ue(v)
     if (!bit_buffer->ReadExponentialGolomb(
@@ -238,10 +235,8 @@ H264SliceHeaderParser::ParseSliceHeader(
             bit_buffer, slice_header->slice_type);
   }
 
-  slice_header->weighted_pred_flag =
-      bitstream_parser_state->pps[pps_id]->weighted_pred_flag;
-  slice_header->weighted_bipred_idc =
-      bitstream_parser_state->pps[pps_id]->weighted_bipred_idc;
+  slice_header->weighted_pred_flag = pps->weighted_pred_flag;
+  slice_header->weighted_bipred_idc = pps->weighted_bipred_idc;
 
   if ((slice_header->weighted_pred_flag &&
        ((slice_header->slice_type == P) ||
@@ -253,8 +248,7 @@ H264SliceHeaderParser::ParseSliceHeader(
         (slice_header->slice_type == SliceType::B_ALL)))) {
     // pred_weight_table(slice_type, num_ref_idx_l0_active_minus1,
     // num_ref_idx_l1_active_minus1)
-    uint32_t ChromaArrayType =
-        bitstream_parser_state->sps[sps_id]->getChromaArrayType();
+    uint32_t ChromaArrayType = sps->getChromaArrayType();
     slice_header->pred_weight_table =
         H264PredWeightTableParser::ParsePredWeightTable(
             bit_buffer, ChromaArrayType, slice_header->slice_type,
@@ -269,8 +263,7 @@ H264SliceHeaderParser::ParseSliceHeader(
             bit_buffer, slice_header->nal_unit_type);
   }
 
-  slice_header->entropy_coding_mode_flag =
-      bitstream_parser_state->pps[pps_id]->entropy_coding_mode_flag;
+  slice_header->entropy_coding_mode_flag = pps->entropy_coding_mode_flag;
   if (slice_header->entropy_coding_mode_flag &&
       (slice_header->slice_type != SliceType::I) &&
       (slice_header->slice_type != SliceType::I_ALL) &&
@@ -308,8 +301,7 @@ H264SliceHeaderParser::ParseSliceHeader(
   }
 
   slice_header->deblocking_filter_control_present_flag =
-      bitstream_parser_state->pps[pps_id]
-          ->deblocking_filter_control_present_flag;
+      pps->deblocking_filter_control_present_flag;
   if (slice_header->deblocking_filter_control_present_flag) {
     // disable_deblocking_filter_idc  ue(v)
     if (!bit_buffer->ReadExponentialGolomb(
@@ -332,20 +324,17 @@ H264SliceHeaderParser::ParseSliceHeader(
     }
   }
 
-  slice_header->num_slice_groups_minus1 =
-      bitstream_parser_state->pps[pps_id]->num_slice_groups_minus1;
-  slice_header->slice_group_map_type =
-      bitstream_parser_state->pps[pps_id]->slice_group_map_type;
+  slice_header->num_slice_groups_minus1 = pps->num_slice_groups_minus1;
+  slice_header->slice_group_map_type = pps->slice_group_map_type;
   if ((slice_header->num_slice_groups_minus1 > 0) &&
       (slice_header->slice_group_map_type >= 3) &&
       (slice_header->slice_group_map_type <= 5)) {
     // slice_group_change_cycle  u(v)
-    slice_header->pic_width_in_mbs_minus1 =
-        bitstream_parser_state->sps[sps_id]->pic_width_in_mbs_minus1;
+    slice_header->pic_width_in_mbs_minus1 = sps->pic_width_in_mbs_minus1;
     slice_header->pic_height_in_map_units_minus1 =
-        bitstream_parser_state->sps[sps_id]->pic_height_in_map_units_minus1;
+        sps->pic_height_in_map_units_minus1;
     slice_header->slice_group_change_rate_minus1 =
-        bitstream_parser_state->pps[pps_id]->slice_group_change_rate_minus1;
+        pps->slice_group_change_rate_minus1;
     uint32_t slice_group_change_cycle_len =
         slice_header->getSliceGroupChangeCycleLen(
             slice_header->pic_width_in_mbs_minus1,
