@@ -90,20 +90,20 @@ class H264SliceHeaderParser {
     uint32_t slice_group_change_cycle = 0;
 
     // derived values
-    uint32_t getFrameNumLen(uint32_t log2_max_frame_num_minus4) noexcept;
-    uint32_t getPicOrderCntLsbLen(
+    static uint32_t getFrameNumLen(uint32_t log2_max_frame_num_minus4) noexcept;
+    static uint32_t getPicOrderCntLsbLen(
         uint32_t log2_max_pic_order_cnt_lsb_minus4) noexcept;
-    uint32_t getSliceGroupChangeCycleLen(
+    static uint32_t getSliceGroupChangeCycleLen(
         uint32_t pic_width_in_mbs_minus1,
         uint32_t pic_height_in_map_units_minus1,
         uint32_t slice_group_change_rate_minus1) noexcept;
-    uint32_t getPicWidthInMbs(uint32_t pic_width_in_mbs_minus1) noexcept;
-    uint32_t getPicHeightInMapUnits(
+    static uint32_t getPicWidthInMbs(uint32_t pic_width_in_mbs_minus1) noexcept;
+    static uint32_t getPicHeightInMapUnits(
         uint32_t pic_height_in_map_units_minus1) noexcept;
-    uint32_t getPicSizeInMapUnits(
+    static uint32_t getPicSizeInMapUnits(
         uint32_t pic_width_in_mbs_minus1,
         uint32_t pic_height_in_map_units_minus1) noexcept;
-    uint32_t getSliceGroupChangeRate(
+    static uint32_t getSliceGroupChangeRate(
         uint32_t slice_group_change_rate_minus1) noexcept;
   };
 
