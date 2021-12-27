@@ -80,16 +80,15 @@ TEST_F(H264RtpSingleParserTest, TestMultipleRtpPackets) {
       EXPECT_EQ(NalUnitType::SPS_NUT, header->nal_unit_type);
       // check some values
       auto &sps = payload->sps;
-      EXPECT_EQ(66, sps->profile_idc);
-      EXPECT_EQ(19, sps->pic_width_in_mbs_minus1);
-      EXPECT_EQ(14, sps->pic_height_in_map_units_minus1);
-      auto sps_id = sps->seq_parameter_set_id;
-      EXPECT_EQ(66, bitstream_parser_state.sps[sps_id]->profile_idc);
-      EXPECT_EQ(19,
-                bitstream_parser_state.sps[sps_id]->pic_width_in_mbs_minus1);
-      EXPECT_EQ(
-          14,
-          bitstream_parser_state.sps[sps_id]->pic_height_in_map_units_minus1);
+      EXPECT_EQ(66, sps->sps_data->profile_idc);
+      EXPECT_EQ(19, sps->sps_data->pic_width_in_mbs_minus1);
+      EXPECT_EQ(14, sps->sps_data->pic_height_in_map_units_minus1);
+      auto sps_id = sps->sps_data->seq_parameter_set_id;
+      EXPECT_EQ(66, bitstream_parser_state.sps[sps_id]->sps_data->profile_idc);
+      EXPECT_EQ(19, bitstream_parser_state.sps[sps_id]
+                        ->sps_data->pic_width_in_mbs_minus1);
+      EXPECT_EQ(14, bitstream_parser_state.sps[sps_id]
+                        ->sps_data->pic_height_in_map_units_minus1);
 
     } else if (i == 1) {  // PPS
       // check the header

@@ -24,12 +24,12 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   // get some mock state
   h264nal::H264BitstreamParserState bitstream_parser_state;
   auto sps = std::make_shared<h264nal::H264SpsParser::SpsState>();
-  sps->log2_max_frame_num_minus4 = 1;
-  sps->frame_mbs_only_flag = 1;
-  sps->pic_order_cnt_type = 2;
-  sps->delta_pic_order_always_zero_flag = 0;
-  sps->pic_width_in_mbs_minus1 = 0;
-  sps->pic_height_in_map_units_minus1 = 0;
+  sps->sps_data->log2_max_frame_num_minus4 = 1;
+  sps->sps_data->frame_mbs_only_flag = 1;
+  sps->sps_data->pic_order_cnt_type = 2;
+  sps->sps_data->delta_pic_order_always_zero_flag = 0;
+  sps->sps_data->pic_width_in_mbs_minus1 = 0;
+  sps->sps_data->pic_height_in_map_units_minus1 = 0;
   bitstream_parser_state.sps[0] = sps;
   auto pps = std::make_shared<h264nal::H264PpsParser::PpsState>();
   pps->bottom_field_pic_order_in_frame_present_flag = 0;
@@ -53,12 +53,12 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   // get some mock state
   h264nal::H264BitstreamParserState bitstream_parser_state;
   auto sps = std::make_shared<h264nal::H264SpsParser::SpsState>();
-  sps->log2_max_frame_num_minus4 = 1;
-  sps->frame_mbs_only_flag = 1;
-  sps->pic_order_cnt_type = 2;
-  sps->delta_pic_order_always_zero_flag = 0;
-  sps->pic_width_in_mbs_minus1 = 0;
-  sps->pic_height_in_map_units_minus1 = 0;
+  sps->sps_data->log2_max_frame_num_minus4 = 1;
+  sps->sps_data->frame_mbs_only_flag = 1;
+  sps->sps_data->pic_order_cnt_type = 2;
+  sps->sps_data->delta_pic_order_always_zero_flag = 0;
+  sps->sps_data->pic_width_in_mbs_minus1 = 0;
+  sps->sps_data->pic_height_in_map_units_minus1 = 0;
   bitstream_parser_state.sps[0] = sps;
   auto pps = std::make_shared<h264nal::H264PpsParser::PpsState>();
   pps->bottom_field_pic_order_in_frame_present_flag = 0;

@@ -173,7 +173,7 @@ H264NalUnitPayloadParser::ParseNalUnitPayload(
       // seq_parameter_set_rbsp()
       nal_unit_payload->sps = H264SpsParser::ParseSps(bit_buffer);
       if (nal_unit_payload->sps != nullptr) {
-        uint32_t sps_id = nal_unit_payload->sps->seq_parameter_set_id;
+        uint32_t sps_id = nal_unit_payload->sps->sps_data->seq_parameter_set_id;
         bitstream_parser_state->sps[sps_id] = nal_unit_payload->sps;
       }
       break;

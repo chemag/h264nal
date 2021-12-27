@@ -87,8 +87,10 @@ H264SliceHeaderParser::ParseSliceHeader(
     return nullptr;
   }
   auto& sps = bitstream_parser_state->sps[sps_id];
+  auto& sps_data = sps->sps_data;
 
-  slice_header->separate_colour_plane_flag = sps->separate_colour_plane_flag;
+  slice_header->separate_colour_plane_flag =
+      sps_data->separate_colour_plane_flag;
   if (slice_header->separate_colour_plane_flag) {
     // colour_plane_id  u(2)
     if (!bit_buffer->ReadBits(&(slice_header->colour_plane_id), 2)) {
@@ -97,14 +99,14 @@ H264SliceHeaderParser::ParseSliceHeader(
   }
 
   // frame_num  u(v)
-  slice_header->log2_max_frame_num_minus4 = sps->log2_max_frame_num_minus4;
+  slice_header->log2_max_frame_num_minus4 = sps_data->log2_max_frame_num_minus4;
   uint32_t frame_num_len =
       slice_header->getFrameNumLen(slice_header->log2_max_frame_num_minus4);
   if (!bit_buffer->ReadBits(&(slice_header->frame_num), frame_num_len)) {
     return nullptr;
   }
 
-  slice_header->frame_mbs_only_flag = sps->frame_mbs_only_flag;
+  slice_header->frame_mbs_only_flag = sps_data->frame_mbs_only_flag;
   if (!slice_header->frame_mbs_only_flag) {
     // field_pic_flag  u(1)
     if (!bit_buffer->ReadBits(&(slice_header->field_pic_flag), 1)) {
@@ -126,10 +128,10 @@ H264SliceHeaderParser::ParseSliceHeader(
     }
   }
 
-  slice_header->pic_order_cnt_type = sps->pic_order_cnt_type;
+  slice_header->pic_order_cnt_type = sps_data->pic_order_cnt_type;
   if (slice_header->pic_order_cnt_type == 0) {
     uint32_t log2_max_pic_order_cnt_lsb_minus4 =
-        sps->log2_max_pic_order_cnt_lsb_minus4;
+        sps_data->log2_max_pic_order_cnt_lsb_minus4;
     // pic_order_cnt_lsb  u(v)
     uint32_t pic_order_cnt_lsb_len =
         slice_header->getPicOrderCntLsbLen(log2_max_pic_order_cnt_lsb_minus4);
@@ -151,7 +153,7 @@ H264SliceHeaderParser::ParseSliceHeader(
   }
 
   slice_header->delta_pic_order_always_zero_flag =
-      sps->delta_pic_order_always_zero_flag;
+      sps_data->delta_pic_order_always_zero_flag;
   if ((slice_header->pic_order_cnt_type == 1) &&
       (!slice_header->delta_pic_order_always_zero_flag)) {
     // delta_pic_order_cnt[0]  se(v)
@@ -248,7 +250,7 @@ H264SliceHeaderParser::ParseSliceHeader(
         (slice_header->slice_type == SliceType::B_ALL)))) {
     // pred_weight_table(slice_type, num_ref_idx_l0_active_minus1,
     // num_ref_idx_l1_active_minus1)
-    uint32_t ChromaArrayType = sps->getChromaArrayType();
+    uint32_t ChromaArrayType = sps_data->getChromaArrayType();
     slice_header->pred_weight_table =
         H264PredWeightTableParser::ParsePredWeightTable(
             bit_buffer, ChromaArrayType, slice_header->slice_type,
@@ -330,9 +332,9 @@ H264SliceHeaderParser::ParseSliceHeader(
       (slice_header->slice_group_map_type >= 3) &&
       (slice_header->slice_group_map_type <= 5)) {
     // slice_group_change_cycle  u(v)
-    slice_header->pic_width_in_mbs_minus1 = sps->pic_width_in_mbs_minus1;
+    slice_header->pic_width_in_mbs_minus1 = sps_data->pic_width_in_mbs_minus1;
     slice_header->pic_height_in_map_units_minus1 =
-        sps->pic_height_in_map_units_minus1;
+        sps_data->pic_height_in_map_units_minus1;
     slice_header->slice_group_change_rate_minus1 =
         pps->slice_group_change_rate_minus1;
     uint32_t slice_group_change_cycle_len =

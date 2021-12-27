@@ -14,20 +14,23 @@
 
 namespace h264nal {
 
-// A class for parsing out a video sequence parameter set (SPS) data from
+// Classes for parsing out a video sequence parameter set (SPS) data from
 // an H264 NALU.
-class H264SpsParser {
+
+// seq_parameter_set_data()
+class H264SpsDataParser {
  public:
-  // The parsed state of the SPS. Only some select values are stored.
+  // The parsed state of an seq_parameter_set_data() RBSP. Only some select
+  // values are stored.
   // Add more as they are actually needed.
-  struct SpsState {
-    SpsState() = default;
-    ~SpsState() = default;
+  struct SpsDataState {
+    SpsDataState() = default;
+    ~SpsDataState() = default;
     // disable copy ctor, move ctor, and copy&move assignments
-    SpsState(const SpsState&) = delete;
-    SpsState(SpsState&&) = delete;
-    SpsState& operator=(const SpsState&) = delete;
-    SpsState& operator=(SpsState&&) = delete;
+    SpsDataState(const SpsDataState&) = delete;
+    SpsDataState(SpsDataState&&) = delete;
+    SpsDataState& operator=(const SpsDataState&) = delete;
+    SpsDataState& operator=(SpsDataState&&) = delete;
 
 #ifdef FDUMP_DEFINE
     void fdump(FILE* outfp, int indent_level) const;
@@ -74,6 +77,37 @@ class H264SpsParser {
     uint32_t vui_parameters_present_flag = 0;
     std::unique_ptr<struct H264VuiParametersParser::VuiParametersState>
         vui_parameters;
+
+    // derived values
+    uint32_t getChromaArrayType() noexcept;
+  };
+
+  // Unpack RBSP and parse SPS data state from the supplied buffer.
+  static std::unique_ptr<SpsDataState> ParseSpsData(const uint8_t* data,
+                                                    size_t length) noexcept;
+  static std::unique_ptr<SpsDataState> ParseSpsData(
+      rtc::BitBuffer* bit_buffer) noexcept;
+};
+
+// seq_parameter_set_rbsp()
+class H264SpsParser {
+ public:
+  // The parsed state of the SPS. Only some select values are stored.
+  // Add more as they are actually needed.
+  struct SpsState {
+    SpsState() = default;
+    ~SpsState() = default;
+    // disable copy ctor, move ctor, and copy&move assignments
+    SpsState(const SpsState&) = delete;
+    SpsState(SpsState&&) = delete;
+    SpsState& operator=(const SpsState&) = delete;
+    SpsState& operator=(SpsState&&) = delete;
+
+#ifdef FDUMP_DEFINE
+    void fdump(FILE* outfp, int indent_level) const;
+#endif  // FDUMP_DEFINE
+
+    std::unique_ptr<struct H264SpsDataParser::SpsDataState> sps_data;
 
     // derived values
     uint32_t getChromaArrayType() noexcept;
