@@ -52,7 +52,12 @@ H264SubsetSpsParser::ParseSubsetSps(rtc::BitBuffer* bit_buffer) noexcept {
 
   if (subset_sps->seq_parameter_set_data->profile_idc == 83 ||
       subset_sps->seq_parameter_set_data->profile_idc == 86) {
+    uint32_t ChromaArrayType =
+        subset_sps->seq_parameter_set_data->getChromaArrayType();
     // seq_parameter_set_svc_extension()  // specified in Annex G
+    subset_sps->seq_parameter_set_svc_extension =
+        H264SpsSvcExtensionParser::ParseSpsSvcExtension(bit_buffer,
+                                                        ChromaArrayType);
 
     // svc_vui_parameters_present_flag  u(1)
     if (!bit_buffer->ReadBits(&subset_sps->svc_vui_parameters_present_flag,
@@ -135,7 +140,8 @@ void H264SubsetSpsParser::SubsetSpsState::fdump(FILE* outfp,
 
   if (seq_parameter_set_data->profile_idc == 83 ||
       seq_parameter_set_data->profile_idc == 86) {
-    // seq_parameter_set_svc_extension()  // specified in Annex G
+    fdump_indent_level(outfp, indent_level);
+    seq_parameter_set_svc_extension->fdump(outfp, indent_level);
 
     fdump_indent_level(outfp, indent_level);
     fprintf(outfp, "svc_vui_parameters_present_flag: %i",

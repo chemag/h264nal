@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "h264_sps_parser.h"
+#include "h264_sps_svc_extension_parser.h"
 #include "rtc_base/bit_buffer.h"
 
 namespace h264nal {
@@ -36,7 +37,8 @@ class H264SubsetSpsParser {
     std::unique_ptr<struct H264SpsDataParser::SpsDataState>
         seq_parameter_set_data;
 
-    // TODO(chema): seq_parameter_set_svc_extension()
+    std::unique_ptr<struct H264SpsSvcExtensionParser::SpsSvcExtensionState>
+        seq_parameter_set_svc_extension;
     uint32_t svc_vui_parameters_present_flag = 0;
     // TODO(chema): svc_vui_parameters_extension()
     uint32_t bit_equal_to_one = 0;
