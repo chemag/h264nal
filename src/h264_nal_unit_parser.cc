@@ -15,6 +15,7 @@
 #include "h264_pps_parser.h"
 #include "h264_slice_layer_without_partitioning_rbsp_parser.h"
 #include "h264_sps_parser.h"
+#include "h264_subset_sps_parser.h"
 
 namespace h264nal {
 
@@ -204,16 +205,21 @@ H264NalUnitPayloadParser::ParseNalUnitPayload(
       }
       break;
     }
-
     case AUD_NUT:
     case EOSEQ_NUT:
     case EOSTREAM_NUT:
     case FILLER_DATA_NUT:
     case SPS_EXTENSION_NUT:
     case PREFIX_NUT:
-    case SUBSET_SPS_NUT:
       // unimplemented
       break;
+    case SUBSET_SPS_NUT: {
+      // subset_seq_parameter_set_rbsp()
+      nal_unit_payload->subset_sps =
+          H264SubsetSpsParser::ParseSubsetSps(bit_buffer);
+      // TODO(chemag): add subset_sps to bitstream_parser_state->subset_sps
+      break;
+    }
     case RSV16_NUT:
     case RSV17_NUT:
     case RSV18_NUT:
@@ -362,8 +368,12 @@ void H264NalUnitPayloadParser::NalUnitPayloadState::fdump(
     case FILLER_DATA_NUT:
     case SPS_EXTENSION_NUT:
     case PREFIX_NUT:
-    case SUBSET_SPS_NUT:
       // unimplemented
+      break;
+    case SUBSET_SPS_NUT:
+      if (subset_sps) {
+        subset_sps->fdump(outfp, indent_level);
+      }
       break;
     case RSV16_NUT:
     case RSV17_NUT:
