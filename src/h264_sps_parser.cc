@@ -98,7 +98,9 @@ std::shared_ptr<H264SpsParser::SpsState> H264SpsParser::ParseSps(
       sps->profile_idc == 122 || sps->profile_idc == 244 ||
       sps->profile_idc == 44 || sps->profile_idc == 83 ||
       sps->profile_idc == 86 || sps->profile_idc == 118 ||
-      sps->profile_idc == 128) {
+      sps->profile_idc == 128 || sps->profile_idc == 138 ||
+      sps->profile_idc == 139 || sps->profile_idc == 134 ||
+      sps->profile_idc == 135) {
     // chroma_format_idc  ue(v)
     if (!bit_buffer->ReadExponentialGolomb(&(sps->chroma_format_idc))) {
       return nullptr;
@@ -338,9 +340,11 @@ void H264SpsParser::SpsState::fdump(FILE* outfp, int indent_level) const {
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "seq_parameter_set_id: %i", seq_parameter_set_id);
 
-  if (profile_idc == 100 || profile_idc == 110 || profile_idc == 122 ||
-      profile_idc == 244 || profile_idc == 44 || profile_idc == 83 ||
-      profile_idc == 86 || profile_idc == 118 || profile_idc == 128) {
+  if (profile_idc == 100 || profile_idc == 110 ||
+      profile_idc == 122 || profile_idc == 244 || profile_idc == 44 ||
+      profile_idc == 83 || profile_idc == 86 || profile_idc == 118 ||
+      profile_idc == 128 || profile_idc == 138 || profile_idc == 139 ||
+      profile_idc == 134 || profile_idc == 135) {
     fdump_indent_level(outfp, indent_level);
     fprintf(outfp, "chroma_format_idc: %i", chroma_format_idc);
 
