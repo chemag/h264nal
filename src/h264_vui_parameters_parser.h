@@ -91,7 +91,7 @@ class H264VuiParametersParser {
     uint32_t max_dec_frame_buffering = 0;
   };
 
-  // Unpack RBSP and parse VIU Parameters state from the supplied buffer.
+  // Unpack RBSP and parse VUI Parameters state from the supplied buffer.
   static std::unique_ptr<VuiParametersState> ParseVuiParameters(
       const uint8_t* data, size_t length) noexcept;
   static std::unique_ptr<VuiParametersState> ParseVuiParameters(
