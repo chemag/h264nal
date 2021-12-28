@@ -16,10 +16,10 @@
 
 namespace {
 // The size of a full NALU start sequence {0 0 0 1}, used for the first NALU
-// of an access unit, and for SPS and PPS blocks.
+// of an access unit, and for SPS, PPS, and SubsetSPS blocks.
 // const size_t kNaluLongStartSequenceSize = 4;
 // The size of a shortened NALU start sequence {0 0 1}, that may be used if
-// not the first NALU of an access unit or an SPS or PPS block.
+// not the first NALU of an access unit or an SPS, PPS, or SubsetSPS block.
 const size_t kNaluShortStartSequenceSize = 3;
 }  // namespace
 
@@ -116,7 +116,7 @@ H264BitstreamParser::ParseBitstream(const uint8_t* data, size_t length,
                                     bool add_offset, bool add_length,
                                     bool add_parsed_length,
                                     bool add_checksum) noexcept {
-  // keep a bitstream parser state (to keep the PPS/SPS NALUs)
+  // keep a bitstream parser state (to keep the SPS/PPS/SubsetSPS NALUs)
   H264BitstreamParserState bitstream_parser_state;
 
   // create bitstream parser state

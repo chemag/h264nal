@@ -19,7 +19,7 @@ namespace h264nal {
 class H264BitstreamParser {
  public:
   // The parsed state of the bitstream (a list of parsed NAL units plus
-  // the accumulated PPS/SPS state).
+  // the accumulated PPS/SPS/SubsetSPS state).
   struct BitstreamState {
     BitstreamState() = default;
     ~BitstreamState() = default;

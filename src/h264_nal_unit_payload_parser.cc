@@ -134,7 +134,14 @@ H264NalUnitPayloadParser::ParseNalUnitPayload(
       // subset_seq_parameter_set_rbsp()
       nal_unit_payload->subset_sps =
           H264SubsetSpsParser::ParseSubsetSps(bit_buffer);
-      // TODO(chemag): add subset_sps to bitstream_parser_state->subset_sps
+      // add subset_sps to bitstream_parser_state->subset_sps
+      if (nal_unit_payload->subset_sps != nullptr) {
+        uint32_t subset_sps_id =
+            nal_unit_payload->subset_sps->seq_parameter_set_data
+                ->seq_parameter_set_id;
+        bitstream_parser_state->subset_sps[subset_sps_id] =
+            nal_unit_payload->subset_sps;
+      }
       break;
     }
     case RSV16_NUT:

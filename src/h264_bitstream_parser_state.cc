@@ -12,12 +12,15 @@
 #include "h264_common.h"
 #include "h264_pps_parser.h"
 #include "h264_sps_parser.h"
+#include "h264_subset_sps_parser.h"
 
 namespace {
 typedef std::shared_ptr<struct h264nal::H264SpsParser::SpsState>
     SharedPtrSpsState;
 typedef std::shared_ptr<struct h264nal::H264PpsParser::PpsState>
     SharedPtrPpsState;
+typedef std::shared_ptr<struct h264nal::H264SubsetSpsParser::SubsetSpsState>
+    SharedPtrSubsetSpsState;
 }  // namespace
 
 namespace h264nal {
@@ -44,6 +47,16 @@ H264BitstreamParserState::GetPps(uint32_t pps_id) const {
     return SharedPtrPpsState(nullptr);
   }
   return SharedPtrPpsState(it->second);
+}
+
+std::shared_ptr<struct H264SubsetSpsParser::SubsetSpsState>
+H264BitstreamParserState::GetSubsetSps(uint32_t subset_sps_id) const {
+  // check the SubsetSPS exists in the bitstream parser state
+  auto it = subset_sps.find(subset_sps_id);
+  if (it == subset_sps.end()) {
+    return SharedPtrSubsetSpsState(nullptr);
+  }
+  return SharedPtrSubsetSpsState(it->second);
 }
 
 }  // namespace h264nal
