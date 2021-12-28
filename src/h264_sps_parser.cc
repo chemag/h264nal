@@ -496,8 +496,8 @@ void H264SpsDataParser::SpsDataState::fdump(FILE* outfp,
   fprintf(outfp, "vui_parameters_present_flag: %i",
           vui_parameters_present_flag);
 
-  fdump_indent_level(outfp, indent_level);
   if (vui_parameters_present_flag) {
+    fdump_indent_level(outfp, indent_level);
     vui_parameters->fdump(outfp, indent_level);
   }
 
@@ -510,6 +510,7 @@ void H264SpsParser::SpsState::fdump(FILE* outfp, int indent_level) const {
   fprintf(outfp, "sps {");
   indent_level = indent_level_incr(indent_level);
 
+  fdump_indent_level(outfp, indent_level);
   sps_data->fdump(outfp, indent_level);
 
   indent_level = indent_level_decr(indent_level);
