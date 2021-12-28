@@ -24,6 +24,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   // get some mock state
   h264nal::H264BitstreamParserState bitstream_parser_state;
   auto sps = std::make_shared<h264nal::H264SpsParser::SpsState>();
+  sps->sps_data = std::make_unique<h264nal::H264SpsDataParser::SpsDataState>();
   sps->sps_data->log2_max_frame_num_minus4 = 1;
   sps->sps_data->frame_mbs_only_flag = 1;
   sps->sps_data->pic_order_cnt_type = 2;
@@ -53,6 +54,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   // get some mock state
   h264nal::H264BitstreamParserState bitstream_parser_state;
   auto sps = std::make_shared<h264nal::H264SpsParser::SpsState>();
+  sps->sps_data = std::make_unique<h264nal::H264SpsDataParser::SpsDataState>();
   sps->sps_data->log2_max_frame_num_minus4 = 1;
   sps->sps_data->frame_mbs_only_flag = 1;
   sps->sps_data->pic_order_cnt_type = 2;
