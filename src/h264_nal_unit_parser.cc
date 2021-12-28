@@ -13,6 +13,7 @@
 #include "h264_bitstream_parser_state.h"
 #include "h264_common.h"
 #include "h264_pps_parser.h"
+#include "h264_prefix_nal_unit_parser.h"
 #include "h264_slice_layer_without_partitioning_rbsp_parser.h"
 #include "h264_sps_parser.h"
 #include "h264_subset_sps_parser.h"
@@ -230,9 +231,23 @@ H264NalUnitPayloadParser::ParseNalUnitPayload(
     case EOSTREAM_NUT:
     case FILLER_DATA_NUT:
     case SPS_EXTENSION_NUT:
-    case PREFIX_NUT:
       // unimplemented
       break;
+    case PREFIX_NUT: {
+      // subset_seq_parameter_set_rbsp()
+      if (nal_unit_header.svc_extension_flag) {
+        uint32_t use_ref_base_pic_flag =
+            nal_unit_header.nal_unit_header_svc_extension
+                ->use_ref_base_pic_flag;
+        uint32_t idr_flag =
+            nal_unit_header.nal_unit_header_svc_extension->idr_flag;
+        nal_unit_payload->prefix_nal_unit =
+            H264PrefixNalUnitRbspParser::ParsePrefixNalUnitRbsp(
+                bit_buffer, nal_unit_header.svc_extension_flag,
+                nal_unit_header.nal_ref_idc, use_ref_base_pic_flag, idr_flag);
+      }
+      break;
+    }
     case SUBSET_SPS_NUT: {
       // subset_seq_parameter_set_rbsp()
       nal_unit_payload->subset_sps =
@@ -391,8 +406,12 @@ void H264NalUnitPayloadParser::NalUnitPayloadState::fdump(
     case EOSTREAM_NUT:
     case FILLER_DATA_NUT:
     case SPS_EXTENSION_NUT:
-    case PREFIX_NUT:
       // unimplemented
+      break;
+    case PREFIX_NUT:
+      if (prefix_nal_unit) {
+        prefix_nal_unit->fdump(outfp, indent_level);
+      }
       break;
     case SUBSET_SPS_NUT:
       if (subset_sps) {
