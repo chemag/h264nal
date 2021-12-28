@@ -235,7 +235,8 @@ H264NalUnitPayloadParser::ParseNalUnitPayload(
       break;
     case PREFIX_NUT: {
       // subset_seq_parameter_set_rbsp()
-      if (nal_unit_header.svc_extension_flag) {
+      if (nal_unit_header.svc_extension_flag &&
+          nal_unit_header.nal_unit_header_svc_extension != nullptr) {
         uint32_t use_ref_base_pic_flag =
             nal_unit_header.nal_unit_header_svc_extension
                 ->use_ref_base_pic_flag;
@@ -353,7 +354,7 @@ void H264NalUnitHeaderParser::NalUnitHeaderState::fdump(
     if (nal_unit_type != 21) {
       fdump_indent_level(outfp, indent_level);
       fprintf(outfp, "svc_extension_flag: %i", svc_extension_flag);
-      if (svc_extension_flag == 1) {
+      if (svc_extension_flag && nal_unit_header_svc_extension != nullptr) {
         fdump_indent_level(outfp, indent_level);
         nal_unit_header_svc_extension->fdump(outfp, indent_level);
       }
