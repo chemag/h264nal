@@ -37,6 +37,8 @@ if(H264NAL_SMALL_FOOTPRINT)
       h264_sps_svc_extension_parser.h h264_sps_svc_extension_parser.cc
       h264_bitstream_parser_state.h h264_bitstream_parser_state.cc
       h264_bitstream_parser.h h264_bitstream_parser.cc
+      h264_nal_unit_header_svc_extension_parser.h
+      h264_nal_unit_header_svc_extension_parser.cc
       h264_nal_unit_parser.h h264_nal_unit_parser.cc
 )
 else()
@@ -62,6 +64,8 @@ else()
       h264_sps_svc_extension_parser.h h264_sps_svc_extension_parser.cc
       h264_bitstream_parser_state.h h264_bitstream_parser_state.cc
       h264_bitstream_parser.h h264_bitstream_parser.cc
+      h264_nal_unit_header_svc_extension_parser.h
+      h264_nal_unit_header_svc_extension_parser.cc
       h264_nal_unit_parser.h h264_nal_unit_parser.cc
 )
 endif()
