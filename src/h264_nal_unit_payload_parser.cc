@@ -14,6 +14,7 @@
 #include "h264_common.h"
 #include "h264_pps_parser.h"
 #include "h264_prefix_nal_unit_parser.h"
+#include "h264_slice_layer_extension_rbsp_parser.h"
 #include "h264_slice_layer_without_partitioning_rbsp_parser.h"
 #include "h264_sps_parser.h"
 #include "h264_subset_sps_parser.h"
@@ -150,8 +151,13 @@ H264NalUnitPayloadParser::ParseNalUnitPayload(
       // reserved
       break;
     case CODED_SLICE_OF_AUXILIARY_CODED_PICTURE_NUT:
-    case CODED_SLICE_EXTENSION:
       // unimplemented
+      break;
+    case CODED_SLICE_EXTENSION:
+      // slice_layer_extension_rbsp()
+      nal_unit_payload->slice_layer_extension_rbsp =
+          H264SliceLayerExtensionRbspParser::ParseSliceLayerExtensionRbsp(
+              bit_buffer, nal_unit_header, bitstream_parser_state);
       break;
     case RSV21_NUT:
     case RSV22_NUT:
@@ -230,8 +236,10 @@ void H264NalUnitPayloadParser::NalUnitPayloadState::fdump(
       // reserved
       break;
     case CODED_SLICE_OF_AUXILIARY_CODED_PICTURE_NUT:
-    case CODED_SLICE_EXTENSION:
       // unimplemented
+      break;
+    case CODED_SLICE_EXTENSION:
+      slice_layer_extension_rbsp->fdump(outfp, indent_level);
       break;
     case RSV21_NUT:
     case RSV22_NUT:
