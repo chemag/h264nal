@@ -196,10 +196,10 @@ H264NalUnitPayloadParser::ParseNalUnitPayload(
       break;
     }
     case PPS_NUT: {
-      // seq_parameter_set_rbsp()
+      // pic_parameter_set_rbsp()
       nal_unit_payload->pps = H264PpsParser::ParsePps(bit_buffer);
       if (nal_unit_payload->pps != nullptr) {
-        uint32_t pps_id = nal_unit_payload->pps->seq_parameter_set_id;
+        uint32_t pps_id = nal_unit_payload->pps->pic_parameter_set_rbsp;
         bitstream_parser_state->pps[pps_id] = nal_unit_payload->pps;
       }
       break;
