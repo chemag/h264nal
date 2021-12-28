@@ -20,6 +20,7 @@ all: \
     h264_subset_sps_parser_fuzzer.cc \
     h264_sps_svc_extension_parser_fuzzer.cc \
     h264_bitstream_parser_fuzzer.cc \
+    h264_prefix_nal_unit_parser_fuzzer.cc \
     h264_nal_unit_header_svc_extension_parser_fuzzer.cc \
     h264_nal_unit_parser_fuzzer.cc
 
@@ -75,6 +76,9 @@ h264_sps_svc_extension_parser_fuzzer.cc: ../test/h264_sps_svc_extension_parser_u
 h264_bitstream_parser_fuzzer.cc: ../test/h264_bitstream_parser_unittest.cc
 	./converter.py ../test/h264_bitstream_parser_unittest.cc ./
 
+h264_prefix_nal_unit_parser_fuzzer.cc: ../test/h264_prefix_nal_unit_parser_unittest.cc
+	./converter.py ../test/h264_prefix_nal_unit_parser_unittest.cc ./
+
 h264_nal_unit_header_svc_extension_parser_fuzzer.cc: ../test/h264_nal_unit_header_svc_extension_parser_unittest.cc
 	./converter.py ../test/h264_nal_unit_header_svc_extension_parser_unittest.cc ./
 
@@ -103,5 +107,6 @@ fuzz:
 	-../build/fuzz/h264_subset_sps_parser_fuzzer -artifact_prefix=corpus/h264_subset_sps_parser_fuzzer/ corpus/h264_subset_sps_parser_fuzzer/ -runs=$(RUNS)
 	-../build/fuzz/h264_sps_svc_extension_parser_fuzzer -artifact_prefix=corpus/h264_sps_svc_extension_parser_fuzzer/ corpus/h264_sps_svc_extension_parser_fuzzer/ -runs=$(RUNS)
 	-../build/fuzz/h264_bitstream_parser_fuzzer -artifact_prefix=corpus/h264_bitstream_parser_fuzzer/ corpus/h264_bitstream_parser_fuzzer/ -runs=$(RUNS)
+	-../build/fuzz/h264_prefix_nal_unit_parser_fuzzer -artifact_prefix=corpus/h264_prefix_nal_unit_parser_fuzzer/ corpus/h264_prefix_nal_unit_parser_fuzzer/ -runs=$(RUNS)
 	-../build/fuzz/h264_nal_unit_header_svc_extension_parser_fuzzer -artifact_prefix=corpus/h264_nal_unit_header_svc_extension_parser_fuzzer/ corpus/h264_nal_unit_header_svc_extension_parser_fuzzer/ -runs=$(RUNS)
 	-../build/fuzz/h264_nal_unit_parser_fuzzer -artifact_prefix=corpus/h264_nal_unit_parser_fuzzer/ corpus/h264_nal_unit_parser_fuzzer/ -runs=$(RUNS)
