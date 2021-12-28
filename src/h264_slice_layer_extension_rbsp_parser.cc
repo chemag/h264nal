@@ -58,6 +58,10 @@ H264SliceLayerExtensionRbspParser::ParseSliceLayerExtensionRbsp(
 
   if (slice_layer_extension_rbsp->svc_extension_flag) {
     // slice_header_in_scalable_extension()  // specified in Annex G
+    slice_layer_extension_rbsp->slice_header_in_scalable_extension =
+        H264SliceHeaderInScalableExtensionParser::
+            ParseSliceHeaderInScalableExtension(bit_buffer, nal_unit_header,
+                                                bitstream_parser_state);
     // if (!slice_skip_flag) {
     //   slice_data_in_scalable_extension()  // specified in Annex G
     // }
@@ -87,7 +91,8 @@ void H264SliceLayerExtensionRbspParser::SliceLayerExtensionRbspState::fdump(
   indent_level = indent_level_incr(indent_level);
 
   if (svc_extension_flag) {
-    // slice_header_in_scalable_extension()  // specified in Annex G
+    fdump_indent_level(outfp, indent_level);
+    slice_header_in_scalable_extension->fdump(outfp, indent_level);
     // if (!slice_skip_flag) {
     //   slice_data_in_scalable_extension()  // specified in Annex G
     // }

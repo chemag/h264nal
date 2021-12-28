@@ -11,6 +11,7 @@
 
 #include "h264_bitstream_parser_state.h"
 #include "h264_nal_unit_header_parser.h"
+#include "h264_slice_header_in_scalable_extension_parser.h"
 #include "h264_slice_header_parser.h"
 #include "rtc_base/bit_buffer.h"
 
@@ -45,6 +46,9 @@ class H264SliceLayerExtensionRbspParser {
 
     // contents
     // TODO(chemag): slice_header_in_scalable_extension()
+    std::unique_ptr<struct H264SliceHeaderInScalableExtensionParser::
+                        SliceHeaderInScalableExtensionState>
+        slice_header_in_scalable_extension;
     // slice_data_in_scalable_extension()
     // slice_header_in_3davc_extension()
     // slice_data_in_3davc_extension()
