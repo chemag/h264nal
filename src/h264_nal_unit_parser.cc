@@ -63,8 +63,7 @@ H264NalUnitParser::ParseNalUnit(
 
   // nal_unit_payload()
   nal_unit->nal_unit_payload = H264NalUnitPayloadParser::ParseNalUnitPayload(
-      bit_buffer, nal_unit->nal_unit_header->nal_ref_idc,
-      nal_unit->nal_unit_header->nal_unit_type, bitstream_parser_state);
+      bit_buffer, *(nal_unit->nal_unit_header), bitstream_parser_state);
 
   // update the parsed length
   nal_unit->parsed_length = get_current_offset(bit_buffer);
@@ -146,13 +145,13 @@ H264NalUnitHeaderParser::ParseNalUnitHeader(
 // Unpack RBSP and parse NAL Unit payload state from the supplied buffer.
 std::unique_ptr<H264NalUnitPayloadParser::NalUnitPayloadState>
 H264NalUnitPayloadParser::ParseNalUnitPayload(
-    const uint8_t* data, size_t length, uint32_t nal_ref_idc,
-    uint32_t nal_unit_type,
+    const uint8_t* data, size_t length,
+    H264NalUnitHeaderParser::NalUnitHeaderState& nal_unit_header,
     struct H264BitstreamParserState* bitstream_parser_state) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
   rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
 
-  return ParseNalUnitPayload(&bit_buffer, nal_ref_idc, nal_unit_type,
+  return ParseNalUnitPayload(&bit_buffer, nal_unit_header,
                              bitstream_parser_state);
 }
 
@@ -160,20 +159,35 @@ std::unique_ptr<H264NalUnitPayloadParser::NalUnitPayloadState>
 H264NalUnitPayloadParser::ParseNalUnitPayload(
     rtc::BitBuffer* bit_buffer, uint32_t nal_ref_idc, uint32_t nal_unit_type,
     struct H264BitstreamParserState* bitstream_parser_state) noexcept {
+  H264NalUnitHeaderParser::NalUnitHeaderState nal_unit_header;
+  nal_unit_header.forbidden_zero_bit = 0;
+  nal_unit_header.nal_ref_idc = nal_ref_idc;
+  nal_unit_header.nal_unit_type = nal_unit_type;
+  nal_unit_header.svc_extension_flag = 0;
+  nal_unit_header.avc_3d_extension_flag = 0;
+  return ParseNalUnitPayload(bit_buffer, nal_unit_header,
+                             bitstream_parser_state);
+}
+
+std::unique_ptr<H264NalUnitPayloadParser::NalUnitPayloadState>
+H264NalUnitPayloadParser::ParseNalUnitPayload(
+    rtc::BitBuffer* bit_buffer,
+    H264NalUnitHeaderParser::NalUnitHeaderState& nal_unit_header,
+    struct H264BitstreamParserState* bitstream_parser_state) noexcept {
   // H264 NAL Unit Payload (nal_unit()) parser.
   // Section 7.3.1 ("NAL unit syntax") of the H.264
   // standard for a complete description.
   auto nal_unit_payload = std::make_unique<NalUnitPayloadState>();
 
   // payload (Table 7-1, Section 7.4.1)
-  switch (nal_unit_type) {
+  switch (nal_unit_header.nal_unit_type) {
     case CODED_SLICE_OF_NON_IDR_PICTURE_NUT: {
       // slice_layer_without_partitioning_rbsp()
       nal_unit_payload->slice_layer_without_partitioning_rbsp =
           H264SliceLayerWithoutPartitioningRbspParser::
-              ParseSliceLayerWithoutPartitioningRbsp(bit_buffer, nal_ref_idc,
-                                                     nal_unit_type,
-                                                     bitstream_parser_state);
+              ParseSliceLayerWithoutPartitioningRbsp(
+                  bit_buffer, nal_unit_header.nal_ref_idc,
+                  nal_unit_header.nal_unit_type, bitstream_parser_state);
       break;
     }
     case CODED_SLICE_DATA_PARTITION_A_NUT:
@@ -185,9 +199,9 @@ H264NalUnitPayloadParser::ParseNalUnitPayload(
       // slice_layer_without_partitioning_rbsp()
       nal_unit_payload->slice_layer_without_partitioning_rbsp =
           H264SliceLayerWithoutPartitioningRbspParser::
-              ParseSliceLayerWithoutPartitioningRbsp(bit_buffer, nal_ref_idc,
-                                                     nal_unit_type,
-                                                     bitstream_parser_state);
+              ParseSliceLayerWithoutPartitioningRbsp(
+                  bit_buffer, nal_unit_header.nal_ref_idc,
+                  nal_unit_header.nal_unit_type, bitstream_parser_state);
       break;
     }
     case SEI_NUT:

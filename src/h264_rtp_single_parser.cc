@@ -48,8 +48,7 @@ H264RtpSingleParser::ParseRtpSingle(
 
   // nal_unit_payload()
   rtp_single->nal_unit_payload = H264NalUnitPayloadParser::ParseNalUnitPayload(
-      bit_buffer, rtp_single->nal_unit_header->nal_ref_idc,
-      rtp_single->nal_unit_header->nal_unit_type, bitstream_parser_state);
+      bit_buffer, *(rtp_single->nal_unit_header), bitstream_parser_state);
 
   return rtp_single;
 }

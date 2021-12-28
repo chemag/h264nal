@@ -86,9 +86,14 @@ class H264NalUnitPayloadParser {
 
   // Unpack RBSP and parse NAL unit payload state from the supplied buffer.
   static std::unique_ptr<NalUnitPayloadState> ParseNalUnitPayload(
-      const uint8_t* data, size_t length, uint32_t nal_ref_idc,
-      uint32_t nal_unit_type,
+      const uint8_t* data, size_t length,
+      H264NalUnitHeaderParser::NalUnitHeaderState& nal_unit_header,
       struct H264BitstreamParserState* bitstream_parser_state) noexcept;
+  static std::unique_ptr<NalUnitPayloadState> ParseNalUnitPayload(
+      rtc::BitBuffer* bit_buffer,
+      H264NalUnitHeaderParser::NalUnitHeaderState& nal_unit_header,
+      struct H264BitstreamParserState* bitstream_parser_state) noexcept;
+  // used by RTP fu-a, which has a pseudo-NALU header
   static std::unique_ptr<NalUnitPayloadState> ParseNalUnitPayload(
       rtc::BitBuffer* bit_buffer, uint32_t nal_ref_idc, uint32_t nal_unit_type,
       struct H264BitstreamParserState* bitstream_parser_state) noexcept;
