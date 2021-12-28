@@ -120,7 +120,7 @@ H264SliceHeaderParser::ParseSliceHeader(
     }
   }
 
-  uint32_t IdrPicFlag = ((nal_unit_type == 5) ? 1 : 0);
+  uint32_t IdrPicFlag = ((slice_header->nal_unit_type == 5) ? 1 : 0);
   if (IdrPicFlag) {
     // idr_pic_id  ue(v)
     if (!bit_buffer->ReadExponentialGolomb(&(slice_header->idr_pic_id))) {
@@ -241,7 +241,7 @@ H264SliceHeaderParser::ParseSliceHeader(
   slice_header->weighted_bipred_idc = pps->weighted_bipred_idc;
 
   if ((slice_header->weighted_pred_flag &&
-       ((slice_header->slice_type == P) ||
+       ((slice_header->slice_type == SliceType::P) ||
         (slice_header->slice_type == SliceType::P_ALL) ||
         (slice_header->slice_type == SliceType::SP) ||
         (slice_header->slice_type == SliceType::SP_ALL))) ||
@@ -503,7 +503,7 @@ void H264SliceHeaderParser::SliceHeaderState::fdump(FILE* outfp,
   ref_pic_list_modification->fdump(outfp, indent_level);
 
   if ((weighted_pred_flag &&
-       ((slice_type == P) || (slice_type == SliceType::P_ALL) ||
+       ((slice_type == SliceType::P) || (slice_type == SliceType::P_ALL) ||
         (slice_type == SliceType::SP) || (slice_type == SliceType::SP_ALL))) ||
       ((weighted_bipred_idc == 1) &&
        ((slice_type == SliceType::B) || (slice_type == SliceType::B_ALL)))) {
