@@ -43,4 +43,29 @@ TEST_F(H264NalUnitHeaderSvcExtensionParserTest,
   EXPECT_EQ(3, nal_unit_header_svc_extension->reserved_three_2bits);
 }
 
+TEST_F(H264NalUnitHeaderSvcExtensionParserTest,
+       TestNalUnitHeaderSvcExtensionForeman) {
+  // fuzzer::conv: data
+  const uint8_t buffer[] = {0x81, 0x00, 0x2e};
+  // fuzzer::conv: begin
+  auto nal_unit_header_svc_extension =
+      H264NalUnitHeaderSvcExtensionParser::ParseNalUnitHeaderSvcExtension(
+          buffer, arraysize(buffer));
+  // fuzzer::conv: end
+
+  EXPECT_TRUE(nal_unit_header_svc_extension != nullptr);
+
+  // check the values
+  EXPECT_EQ(1, nal_unit_header_svc_extension->idr_flag);
+  EXPECT_EQ(0, nal_unit_header_svc_extension->priority_id);
+  EXPECT_EQ(1, nal_unit_header_svc_extension->no_inter_layer_pred_flag);
+  EXPECT_EQ(0, nal_unit_header_svc_extension->dependency_id);
+  EXPECT_EQ(0, nal_unit_header_svc_extension->quality_id);
+  EXPECT_EQ(0, nal_unit_header_svc_extension->temporal_id);
+  EXPECT_EQ(1, nal_unit_header_svc_extension->use_ref_base_pic_flag);
+  EXPECT_EQ(0, nal_unit_header_svc_extension->discardable_flag);
+  EXPECT_EQ(1, nal_unit_header_svc_extension->output_flag);
+  EXPECT_EQ(3, nal_unit_header_svc_extension->reserved_three_2bits);
+}
+
 }  // namespace h264nal
