@@ -40,6 +40,8 @@ if(H264NAL_SMALL_FOOTPRINT)
       h264_prefix_nal_unit_parser.h h264_prefix_nal_unit_parser.cc
       h264_nal_unit_header_svc_extension_parser.h
       h264_nal_unit_header_svc_extension_parser.cc
+      h264_nal_unit_header_parser.h h264_nal_unit_header_parser.cc
+      h264_nal_unit_payload_parser.h h264_nal_unit_payload_parser.cc
       h264_nal_unit_parser.h h264_nal_unit_parser.cc
 )
 else()
@@ -68,6 +70,8 @@ else()
       h264_prefix_nal_unit_parser.h h264_prefix_nal_unit_parser.cc
       h264_nal_unit_header_svc_extension_parser.h
       h264_nal_unit_header_svc_extension_parser.cc
+      h264_nal_unit_header_parser.h h264_nal_unit_header_parser.cc
+      h264_nal_unit_payload_parser.h h264_nal_unit_payload_parser.cc
       h264_nal_unit_parser.h h264_nal_unit_parser.cc
 )
 endif()
