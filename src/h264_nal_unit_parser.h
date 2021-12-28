@@ -10,6 +10,7 @@
 
 #include "h264_bitstream_parser_state.h"
 #include "h264_common.h"
+#include "h264_nal_unit_header_svc_extension_parser.h"
 #include "h264_pps_parser.h"
 #include "h264_slice_layer_without_partitioning_rbsp_parser.h"
 #include "h264_sps_parser.h"
@@ -40,7 +41,9 @@ class H264NalUnitHeaderParser {
     uint32_t nal_unit_type = 0;
     uint32_t svc_extension_flag = 0;
     uint32_t avc_3d_extension_flag = 0;
-    // TODO(chema): nal_unit_header_svc_extension()  // specified in Annex G
+    std::unique_ptr<struct H264NalUnitHeaderSvcExtensionParser::
+                        NalUnitHeaderSvcExtensionState>
+        nal_unit_header_svc_extension;
     // TODO(chema): nal_unit_header_3davc_extension()  // specified in Annex J
     // TODO(chema): nal_unit_header_mvc_extension()  // specified in Annex H
   };

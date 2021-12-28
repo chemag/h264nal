@@ -125,6 +125,12 @@ H264NalUnitHeaderParser::ParseNalUnitHeader(
       if (!bit_buffer->ReadBits(&nal_unit_header->svc_extension_flag, 1)) {
         return nullptr;
       }
+      if (nal_unit_header->svc_extension_flag == 1) {
+        // nal_unit_header_svc_extension()
+        nal_unit_header->nal_unit_header_svc_extension =
+            H264NalUnitHeaderSvcExtensionParser::ParseNalUnitHeaderSvcExtension(
+                bit_buffer);
+      }
 
     } else {
       // avc_3d_extension_flag  u(1)
@@ -318,6 +324,10 @@ void H264NalUnitHeaderParser::NalUnitHeaderState::fdump(
     if (nal_unit_type != 21) {
       fdump_indent_level(outfp, indent_level);
       fprintf(outfp, "svc_extension_flag: %i", svc_extension_flag);
+      if (svc_extension_flag == 1) {
+        fdump_indent_level(outfp, indent_level);
+        nal_unit_header_svc_extension->fdump(outfp, indent_level);
+      }
     } else {
       fdump_indent_level(outfp, indent_level);
       fprintf(outfp, "avc_3d_extension_flag: %i", avc_3d_extension_flag);
