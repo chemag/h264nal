@@ -77,6 +77,16 @@ enum SliceType : uint8_t {
   SI_ALL = 9,
 };
 
+// Table G-1
+enum SvcSliceType : uint8_t {
+  EPa = 0,
+  EBa = 1,
+  EIa = 2,
+  EPb = 5,
+  EBb = 6,
+  EIb = 7,
+};
+
 // Methods for parsing RBSP. See section 7.4 of the H264 spec.
 //
 // Decoding is simply a matter of finding any 00 00 03 sequence and removing
