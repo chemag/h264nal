@@ -16,7 +16,8 @@
 // libfuzzer infra to test the fuzz target
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   {
-  auto subset_sps = h264nal::H264SubsetSpsParser::ParseSubsetSps(data, size);
+  auto subset_sps =
+      h264nal::H264SubsetSpsParser::ParseSubsetSps(data, size);
   }
   return 0;
 }

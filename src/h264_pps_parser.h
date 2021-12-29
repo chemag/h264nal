@@ -32,6 +32,10 @@ class H264PpsParser {
     void fdump(FILE* outfp, int indent_level) const;
 #endif  // FDUMP_DEFINE
 
+    // input parameters
+    uint32_t chroma_format_idc = 0;
+
+    // contents
     uint32_t pic_parameter_set_id = 0;
     uint32_t seq_parameter_set_id = 0;
     uint32_t entropy_coding_mode_flag = 0;
@@ -58,17 +62,29 @@ class H264PpsParser {
     uint32_t transform_8x8_mode_flag = 0;
     uint32_t pic_scaling_matrix_present_flag = 0;
     std::vector<uint32_t> pic_scaling_list_present_flag;
+    // scaling_list()
+    std::vector<uint32_t> ScalingList4x4;
+    std::vector<uint32_t> UseDefaultScalingMatrix4x4Flag;
+    std::vector<uint32_t> ScalingList8x8;
+    std::vector<uint32_t> UseDefaultScalingMatrix8x8Flag;
+    int32_t delta_scale = 0;
     int32_t second_chroma_qp_index_offset = 0;
 
     // derived values
     uint32_t getSliceGroupIdLen() noexcept;
+
+    // helper functions
+    bool scaling_list(
+        rtc::BitBuffer* bit_buffer, uint32_t i,
+        std::vector<uint32_t>& scalingList, uint32_t sizeOfScalingList,
+        std::vector<uint32_t>& useDefaultScalingMatrixFlag) noexcept;
   };
 
   // Unpack RBSP and parse PPS state from the supplied buffer.
-  static std::shared_ptr<PpsState> ParsePps(const uint8_t* data,
-                                            size_t length) noexcept;
   static std::shared_ptr<PpsState> ParsePps(
-      rtc::BitBuffer* bit_buffer) noexcept;
+      const uint8_t* data, size_t length, uint32_t chroma_format_idc) noexcept;
+  static std::shared_ptr<PpsState> ParsePps(
+      rtc::BitBuffer* bit_buffer, uint32_t chroma_format_idc) noexcept;
 };
 
 }  // namespace h264nal

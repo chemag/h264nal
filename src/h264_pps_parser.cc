@@ -21,14 +21,14 @@ namespace h264nal {
 
 // Unpack RBSP and parse PPS state from the supplied buffer.
 std::shared_ptr<H264PpsParser::PpsState> H264PpsParser::ParsePps(
-    const uint8_t* data, size_t length) noexcept {
+    const uint8_t* data, size_t length, uint32_t chroma_format_idc) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
   rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
-  return ParsePps(&bit_buffer);
+  return ParsePps(&bit_buffer, chroma_format_idc);
 }
 
 std::shared_ptr<H264PpsParser::PpsState> H264PpsParser::ParsePps(
-    rtc::BitBuffer* bit_buffer) noexcept {
+    rtc::BitBuffer* bit_buffer, uint32_t chroma_format_idc) noexcept {
   uint32_t bits_tmp;
   uint32_t golomb_tmp;
 
@@ -36,6 +36,9 @@ std::shared_ptr<H264PpsParser::PpsState> H264PpsParser::ParsePps(
   // Section 7.3.2.2 ("Picture parameter set RBSP syntax") of the H.264
   // standard for a complete description.
   auto pps = std::make_shared<PpsState>();
+
+  // input parameters
+  pps->chroma_format_idc = chroma_format_idc;
 
   // pic_parameter_set_id  ue(v)
   if (!bit_buffer->ReadExponentialGolomb(&(pps->pic_parameter_set_id))) {
@@ -191,15 +194,8 @@ std::shared_ptr<H264PpsParser::PpsState> H264PpsParser::ParsePps(
     }
 
     if (pps->pic_scaling_matrix_present_flag) {
-#ifdef FPRINT_ERRORS
-      fprintf(
-          stderr,
-          "error: unimplemented chroma_format_idc and scaling_list in pps\n");
-#endif  // FPRINT_ERRORS
-#if 0
       uint32_t max_pic_scaling_list_present_flag =
-          6 + ((sps->chroma_format_idc != 3) ? 2 : 6) *
-                  pps->transform_8x8_mode_flag;
+          6 + ((chroma_format_idc != 3) ? 2 : 6) * pps->transform_8x8_mode_flag;
       for (uint32_t i = 0; i < max_pic_scaling_list_present_flag; ++i) {
         // pic_scaling_list_present_flag  u(1)
         if (!bit_buffer->ReadBits(&bits_tmp, 1)) {
@@ -207,17 +203,16 @@ std::shared_ptr<H264PpsParser::PpsState> H264PpsParser::ParsePps(
         }
         pps->pic_scaling_list_present_flag.push_back(bits_tmp);
         if (pps->pic_scaling_list_present_flag[i]) {
-          // TODO(chemag): add support for scaling_list()
+          // scaling_list()
           if (i < 6) {
-            // scaling_list(ScalingList4x4[i], 16,
-            // UseDefaultScalingMatrix4x4Flag[i])
+            (void)pps->scaling_list(bit_buffer, i, pps->ScalingList4x4, 16,
+                                    pps->UseDefaultScalingMatrix4x4Flag);
           } else {
-            // scaling_list(ScalingList8x8[i-6], 64,
-            // UseDefaultScalingMatrix8x8Flag[i-6])
+            (void)pps->scaling_list(bit_buffer, i - 6, pps->ScalingList8x8, 64,
+                                    pps->UseDefaultScalingMatrix4x4Flag);
           }
         }
       }
-#endif
     }
 
     // second_chroma_qp_index_offset  se(v)
@@ -241,6 +236,36 @@ uint32_t H264PpsParser::PpsState::getSliceGroupIdLen() noexcept {
   // num_slice_groups_minus1, inclusive.
   return static_cast<uint32_t>(
       std::ceil(std::log2(1.0 * num_slice_groups_minus1 + 1)));
+}
+
+// Section 7.3.2.1.1.1
+bool H264PpsParser::PpsState::scaling_list(
+    rtc::BitBuffer* bit_buffer, uint32_t i, std::vector<uint32_t>& scalingList,
+    uint32_t sizeOfScalingList,
+    std::vector<uint32_t>& useDefaultScalingMatrixFlag) noexcept {
+  uint32_t lastScale = 8;
+  uint32_t nextScale = 8;
+  for (uint32_t j = 0; j < sizeOfScalingList; j++) {
+    if (nextScale != 0) {
+      // delta_scale  se(v)
+      if (!bit_buffer->ReadSignedExponentialGolomb(&delta_scale)) {
+        return false;
+      }
+      nextScale = (lastScale + (delta_scale) + 256) % 256;
+      // make sure vector has ith element
+      while (useDefaultScalingMatrixFlag.size() <= i) {
+        useDefaultScalingMatrixFlag.push_back(0);
+      }
+      useDefaultScalingMatrixFlag[i] = (j == 0 && nextScale == 0);
+    }
+    // make sure vector has jth element
+    while (scalingList.size() <= j) {
+      scalingList.push_back(0);
+    }
+    scalingList[j] = (nextScale == 0) ? lastScale : nextScale;
+    lastScale = scalingList[j];
+  }
+  return true;
 }
 
 #ifdef FDUMP_DEFINE
@@ -363,6 +388,37 @@ void H264PpsParser::PpsState::fdump(FILE* outfp, int indent_level) const {
     fprintf(outfp, " %i", v);
   }
   fprintf(outfp, " }");
+
+  fdump_indent_level(outfp, indent_level);
+  fprintf(outfp, "ScalingList4x4 {");
+  for (const uint32_t& v : ScalingList4x4) {
+    fprintf(outfp, " %i", v);
+  }
+  fprintf(outfp, " }");
+
+  fdump_indent_level(outfp, indent_level);
+  fprintf(outfp, "UseDefaultScalingMatrix4x4Flag {");
+  for (const uint32_t& v : UseDefaultScalingMatrix4x4Flag) {
+    fprintf(outfp, " %i", v);
+  }
+  fprintf(outfp, " }");
+
+  fdump_indent_level(outfp, indent_level);
+  fprintf(outfp, "ScalingList8x8 {");
+  for (const uint32_t& v : ScalingList8x8) {
+    fprintf(outfp, " %i", v);
+  }
+  fprintf(outfp, " }");
+
+  fdump_indent_level(outfp, indent_level);
+  fprintf(outfp, "UseDefaultScalingMatrix8x8Flag {");
+  for (const uint32_t& v : UseDefaultScalingMatrix8x8Flag) {
+    fprintf(outfp, " %i", v);
+  }
+  fprintf(outfp, " }");
+
+  fdump_indent_level(outfp, indent_level);
+  fprintf(outfp, "delta_scale: %i", delta_scale);
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "second_chroma_qp_index_offset: %i",

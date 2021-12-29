@@ -101,7 +101,24 @@ H264NalUnitPayloadParser::ParseNalUnitPayload(
     }
     case PPS_NUT: {
       // pic_parameter_set_rbsp()
-      nal_unit_payload->pps = H264PpsParser::ParsePps(bit_buffer);
+      // TODO(chemag): Fix this
+      // This is a big pita in the h264 standard. The dependency on
+      // this field (`chroma_format_idc`, defined in the SPS) forces the
+      // parser to pass the full SPS map to the PPS parser: This would
+      // allow the PPS parser to first read the `seq_parameter_set_id`
+      // field, and then uses it with the SPS map to get the right
+      // `chroma_format_idc` value tp use.
+      // Unfortunately the SPS map is part of the BitstreamParserState,
+      // which itself depends on the PPS. This creates a circular
+      // dependency.
+      // A better solution would be to pass the SPS map to the PPS
+      // parser. This increases significantly the complexity of the
+      // parser, and the usage of the `chroma_format_idc` field
+      // For now, let's use the most common value, which corresponds
+      // to 4:2:0 subsampling.
+      uint32_t chroma_format_idc = 1;
+      nal_unit_payload->pps =
+          H264PpsParser::ParsePps(bit_buffer, chroma_format_idc);
       if (nal_unit_payload->pps != nullptr) {
         uint32_t pps_id = nal_unit_payload->pps->pic_parameter_set_id;
         bitstream_parser_state->pps[pps_id] = nal_unit_payload->pps;
