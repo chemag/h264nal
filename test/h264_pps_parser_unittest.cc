@@ -24,7 +24,8 @@ TEST_F(H264PpsParserTest, TestSamplePPS601) {
   // fuzzer::conv: data
   const uint8_t buffer[] = {0xc8, 0x42, 0x02, 0x32, 0xc8};
   // fuzzer::conv: begin
-  auto pps = H264PpsParser::ParsePps(buffer, arraysize(buffer));
+  uint32_t chroma_format_idc = 1;
+  auto pps = H264PpsParser::ParsePps(buffer, arraysize(buffer), chroma_format_idc);
   // fuzzer::conv: end
 
   EXPECT_TRUE(pps != nullptr);
@@ -56,7 +57,8 @@ TEST_F(H264PpsParserTest, TestSamplePPS2012) {
   const uint8_t buffer[] = {0xe8, 0x43, 0x82, 0x92, 0xc8, 0xb0};
 
   // fuzzer::conv: begin
-  auto pps = H264PpsParser::ParsePps(buffer, arraysize(buffer));
+  uint32_t chroma_format_idc = 1;
+  auto pps = H264PpsParser::ParsePps(buffer, arraysize(buffer), chroma_format_idc);
   // fuzzer::conv: end
 
   EXPECT_TRUE(pps != nullptr);
