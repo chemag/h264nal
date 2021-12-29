@@ -102,6 +102,12 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
   }
   auto& subset_sps = bitstream_parser_state->subset_sps[subset_sps_id];
   auto& subset_sps_svc_extension = subset_sps->seq_parameter_set_svc_extension;
+  if (subset_sps_svc_extension == nullptr) {
+    // slice_header_in_scalable_extension() (defined inside
+    // slice_layer_extension_rbsp()) requires accessing
+    // seq_parameter_set_svc_extension(() inside the subset SPS
+    return nullptr;
+  }
 
   shise->separate_colour_plane_flag = sps_data->separate_colour_plane_flag;
   if (shise->separate_colour_plane_flag == 1) {
