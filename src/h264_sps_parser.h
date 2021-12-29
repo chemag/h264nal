@@ -53,7 +53,12 @@ class H264SpsDataParser {
     uint32_t qpprime_y_zero_transform_bypass_flag = 0;
     uint32_t seq_scaling_matrix_present_flag = 0;
     std::vector<uint32_t> seq_scaling_list_present_flag;
-
+    // scaling_list()
+    std::vector<uint32_t> ScalingList4x4;
+    std::vector<uint32_t> UseDefaultScalingMatrix4x4Flag;
+    std::vector<uint32_t> ScalingList8x8;
+    std::vector<uint32_t> UseDefaultScalingMatrix8x8Flag;
+    int32_t delta_scale = 0;
     uint32_t log2_max_frame_num_minus4 = 0;
     uint32_t pic_order_cnt_type = 0;
     uint32_t log2_max_pic_order_cnt_lsb_minus4 = 0;
@@ -80,6 +85,12 @@ class H264SpsDataParser {
 
     // derived values
     uint32_t getChromaArrayType() noexcept;
+
+    // helper functions
+    bool scaling_list(
+        rtc::BitBuffer* bit_buffer, uint32_t i,
+        std::vector<uint32_t>& scalingList, uint32_t sizeOfScalingList,
+        std::vector<uint32_t>& useDefaultScalingMatrixFlag) noexcept;
   };
 
   // Unpack RBSP and parse SPS data state from the supplied buffer.

@@ -142,16 +142,15 @@ H264SpsDataParser::ParseSpsData(rtc::BitBuffer* bit_buffer) noexcept {
         sps_data->seq_scaling_list_present_flag.push_back(bits_tmp);
 
         if (sps_data->seq_scaling_list_present_flag[i]) {
-          // TODO(chemag): add support for scaling_list()
-#ifdef FPRINT_ERRORS
-          fprintf(stderr, "error: unimplemented scaling_list in sps_data\n");
-#endif  // FPRINT_ERRORS
+          // scaling_list()
           if (i < 6) {
-            // scaling_list(ScalingList4x4[i], 16,
-            // UseDefaultScalingMatrix4x4Flag[i])
+            (void)sps_data->scaling_list(
+                bit_buffer, i, sps_data->ScalingList4x4, 16,
+                sps_data->UseDefaultScalingMatrix4x4Flag);
           } else {
-            // scaling_list( ScalingList8x8[i-6], 64,
-            // UseDefaultScalingMatrix8x8Flag[i-6])
+            (void)sps_data->scaling_list(
+                bit_buffer, i - 6, sps_data->ScalingList8x8, 64,
+                sps_data->UseDefaultScalingMatrix4x4Flag);
           }
         }
       }
@@ -311,6 +310,36 @@ uint32_t H264SpsDataParser::SpsDataState::getChromaArrayType() noexcept {
   return ChromaArrayType;
 }
 
+// Section 7.3.2.1.1.1
+bool H264SpsDataParser::SpsDataState::scaling_list(
+    rtc::BitBuffer* bit_buffer, uint32_t i, std::vector<uint32_t>& scalingList,
+    uint32_t sizeOfScalingList,
+    std::vector<uint32_t>& useDefaultScalingMatrixFlag) noexcept {
+  uint32_t lastScale = 8;
+  uint32_t nextScale = 8;
+  for (uint32_t j = 0; j < sizeOfScalingList; j++) {
+    if (nextScale != 0) {
+      // delta_scale  se(v)
+      if (!bit_buffer->ReadSignedExponentialGolomb(&delta_scale)) {
+        return false;
+      }
+      nextScale = (lastScale + (delta_scale) + 256) % 256;
+      // make sure vector has ith element
+      while (useDefaultScalingMatrixFlag.size() <= i) {
+        useDefaultScalingMatrixFlag.push_back(0);
+      }
+      useDefaultScalingMatrixFlag[i] = (j == 0 && nextScale == 0);
+    }
+    // make sure vector has jth element
+    while (scalingList.size() <= j) {
+      scalingList.push_back(0);
+    }
+    scalingList[j] = (nextScale == 0) ? lastScale : nextScale;
+    lastScale = scalingList[j];
+  }
+  return true;
+}
+
 // Unpack RBSP and parse SPS state from the supplied buffer.
 std::shared_ptr<H264SpsParser::SpsState> H264SpsParser::ParseSps(
     const uint8_t* data, size_t length) noexcept {
@@ -412,6 +441,37 @@ void H264SpsDataParser::SpsDataState::fdump(FILE* outfp,
       fprintf(outfp, " %i", v);
     }
     fprintf(outfp, " }");
+
+    fdump_indent_level(outfp, indent_level);
+    fprintf(outfp, "ScalingList4x4 {");
+    for (const uint32_t& v : ScalingList4x4) {
+      fprintf(outfp, " %i", v);
+    }
+    fprintf(outfp, " }");
+
+    fdump_indent_level(outfp, indent_level);
+    fprintf(outfp, "UseDefaultScalingMatrix4x4Flag {");
+    for (const uint32_t& v : UseDefaultScalingMatrix4x4Flag) {
+      fprintf(outfp, " %i", v);
+    }
+    fprintf(outfp, " }");
+
+    fdump_indent_level(outfp, indent_level);
+    fprintf(outfp, "ScalingList8x8 {");
+    for (const uint32_t& v : ScalingList8x8) {
+      fprintf(outfp, " %i", v);
+    }
+    fprintf(outfp, " }");
+
+    fdump_indent_level(outfp, indent_level);
+    fprintf(outfp, "UseDefaultScalingMatrix8x8Flag {");
+    for (const uint32_t& v : UseDefaultScalingMatrix8x8Flag) {
+      fprintf(outfp, " %i", v);
+    }
+    fprintf(outfp, " }");
+
+    fdump_indent_level(outfp, indent_level);
+    fprintf(outfp, "delta_scale: %i", delta_scale);
   }
 
   fdump_indent_level(outfp, indent_level);
