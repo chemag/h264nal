@@ -68,7 +68,7 @@ H264DecRefPicMarkingParser::ParseDecRefPicMarking(
     if (dec_ref_pic_marking->adaptive_ref_pic_marking_mode_flag) {
       do {
         // memory_management_control_operation[i]  ue(v)
-        if (!bit_buffer->ReadExponentialGolomb(&(golomb_tmp))) {
+        if (!bit_buffer->ReadExponentialGolomb(&golomb_tmp)) {
           return nullptr;
         }
         dec_ref_pic_marking->memory_management_control_operation.push_back(
@@ -79,7 +79,7 @@ H264DecRefPicMarkingParser::ParseDecRefPicMarking(
             (dec_ref_pic_marking->memory_management_control_operation.back() ==
              3)) {
           // difference_of_pic_nums_minus1[i]  ue(v)
-          if (!bit_buffer->ReadExponentialGolomb(&(golomb_tmp))) {
+          if (!bit_buffer->ReadExponentialGolomb(&golomb_tmp)) {
             return nullptr;
           }
           dec_ref_pic_marking->difference_of_pic_nums_minus1.push_back(
@@ -89,7 +89,7 @@ H264DecRefPicMarkingParser::ParseDecRefPicMarking(
         if (dec_ref_pic_marking->memory_management_control_operation.back() ==
             2) {
           // long_term_pic_num[i]  ue(v)
-          if (!bit_buffer->ReadExponentialGolomb(&(golomb_tmp))) {
+          if (!bit_buffer->ReadExponentialGolomb(&golomb_tmp)) {
             return nullptr;
           }
           dec_ref_pic_marking->long_term_pic_num.push_back(golomb_tmp);
@@ -100,7 +100,7 @@ H264DecRefPicMarkingParser::ParseDecRefPicMarking(
             (dec_ref_pic_marking->memory_management_control_operation.back() ==
              6)) {
           // long_term_frame_idx[i]  ue(v)
-          if (!bit_buffer->ReadExponentialGolomb(&(golomb_tmp))) {
+          if (!bit_buffer->ReadExponentialGolomb(&golomb_tmp)) {
             return nullptr;
           }
           dec_ref_pic_marking->long_term_frame_idx.push_back(golomb_tmp);
@@ -109,7 +109,7 @@ H264DecRefPicMarkingParser::ParseDecRefPicMarking(
         if (dec_ref_pic_marking->memory_management_control_operation.back() ==
             4) {
           // max_long_term_frame_idx_plus1[i]  ue(v)
-          if (!bit_buffer->ReadExponentialGolomb(&(golomb_tmp))) {
+          if (!bit_buffer->ReadExponentialGolomb(&golomb_tmp)) {
             return nullptr;
           }
           dec_ref_pic_marking->max_long_term_frame_idx_plus1.push_back(

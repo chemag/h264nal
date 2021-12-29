@@ -58,19 +58,19 @@ H264HrdParametersParser::ParseHrdParameters(
   for (uint32_t SchedSelIdx = 0; SchedSelIdx <= hrd_parameters->cpb_cnt_minus1;
        SchedSelIdx++) {
     // bit_rate_value_minus1[i]  ue(v)
-    if (!bit_buffer->ReadExponentialGolomb(&(golomb_tmp))) {
+    if (!bit_buffer->ReadExponentialGolomb(&golomb_tmp)) {
       return nullptr;
     }
     hrd_parameters->bit_rate_value_minus1.push_back(golomb_tmp);
 
     // cpb_size_value_minus1[i]  ue(v)
-    if (!bit_buffer->ReadExponentialGolomb(&(golomb_tmp))) {
+    if (!bit_buffer->ReadExponentialGolomb(&golomb_tmp)) {
       return nullptr;
     }
     hrd_parameters->cpb_size_value_minus1.push_back(golomb_tmp);
 
     // cbr_flag[i]  u(1)
-    if (!bit_buffer->ReadBits(&(bits_tmp), 1)) {
+    if (!bit_buffer->ReadBits(&bits_tmp, 1)) {
       return nullptr;
     }
     hrd_parameters->cbr_flag.push_back(bits_tmp);

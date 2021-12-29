@@ -71,20 +71,20 @@ H264PredWeightTableParser::ParsePredWeightTable(
   for (uint32_t i = 0; i <= pred_weight_table->num_ref_idx_l0_active_minus1;
        ++i) {
     // luma_weight_l0_flag[i]  u(1)
-    if (!bit_buffer->ReadBits(&(bits_tmp), 1)) {
+    if (!bit_buffer->ReadBits(&bits_tmp, 1)) {
       return nullptr;
     }
     pred_weight_table->luma_weight_l0_flag.push_back(bits_tmp);
 
     if (pred_weight_table->luma_weight_l0_flag[i]) {
       // luma_weight_l0[i]  se(v)
-      if (!bit_buffer->ReadSignedExponentialGolomb(&(sgolomb_tmp))) {
+      if (!bit_buffer->ReadSignedExponentialGolomb(&sgolomb_tmp)) {
         return nullptr;
       }
       pred_weight_table->luma_weight_l0.push_back(sgolomb_tmp);
 
       // luma_offset_l0[i]  se(v)
-      if (!bit_buffer->ReadSignedExponentialGolomb(&(sgolomb_tmp))) {
+      if (!bit_buffer->ReadSignedExponentialGolomb(&sgolomb_tmp)) {
         return nullptr;
       }
       pred_weight_table->luma_offset_l0.push_back(sgolomb_tmp);
@@ -92,7 +92,7 @@ H264PredWeightTableParser::ParsePredWeightTable(
 
     if (pred_weight_table->chroma_array_type != 0) {
       // chroma_weight_l0_flag[i]  u(1)
-      if (!bit_buffer->ReadBits(&(bits_tmp), 1)) {
+      if (!bit_buffer->ReadBits(&bits_tmp, 1)) {
         return nullptr;
       }
       pred_weight_table->chroma_weight_l0_flag.push_back(bits_tmp);
@@ -102,13 +102,13 @@ H264PredWeightTableParser::ParsePredWeightTable(
         pred_weight_table->chroma_offset_l0.emplace_back();
         for (uint32_t j = 0; j < 2; ++j) {
           // chroma_weight_l0[i][j]  se(v)
-          if (!bit_buffer->ReadSignedExponentialGolomb(&(sgolomb_tmp))) {
+          if (!bit_buffer->ReadSignedExponentialGolomb(&sgolomb_tmp)) {
             return nullptr;
           }
           pred_weight_table->chroma_weight_l0.back().push_back(sgolomb_tmp);
 
           // chroma_offset_l0[i][j]  se(v)
-          if (!bit_buffer->ReadSignedExponentialGolomb(&(sgolomb_tmp))) {
+          if (!bit_buffer->ReadSignedExponentialGolomb(&sgolomb_tmp)) {
             return nullptr;
           }
           pred_weight_table->chroma_offset_l0.back().push_back(sgolomb_tmp);
@@ -122,20 +122,20 @@ H264PredWeightTableParser::ParsePredWeightTable(
     for (uint32_t i = 0; i <= pred_weight_table->num_ref_idx_l1_active_minus1;
          ++i) {
       // luma_weight_l1_flag[i]  u(1)
-      if (!bit_buffer->ReadBits(&(bits_tmp), 1)) {
+      if (!bit_buffer->ReadBits(&bits_tmp, 1)) {
         return nullptr;
       }
       pred_weight_table->luma_weight_l1_flag.push_back(bits_tmp);
 
       if (pred_weight_table->luma_weight_l1_flag[i]) {
         // luma_weight_l1[i]  se(v)
-        if (!bit_buffer->ReadSignedExponentialGolomb(&(sgolomb_tmp))) {
+        if (!bit_buffer->ReadSignedExponentialGolomb(&sgolomb_tmp)) {
           return nullptr;
         }
         pred_weight_table->luma_weight_l1.push_back(sgolomb_tmp);
 
         // luma_offset_l1[i]  se(v)
-        if (!bit_buffer->ReadSignedExponentialGolomb(&(sgolomb_tmp))) {
+        if (!bit_buffer->ReadSignedExponentialGolomb(&sgolomb_tmp)) {
           return nullptr;
         }
         pred_weight_table->luma_offset_l1.push_back(sgolomb_tmp);
@@ -143,7 +143,7 @@ H264PredWeightTableParser::ParsePredWeightTable(
 
       if (pred_weight_table->chroma_array_type != 0) {
         // chroma_weight_l1_flag[i]  u(1)
-        if (!bit_buffer->ReadBits(&(bits_tmp), 1)) {
+        if (!bit_buffer->ReadBits(&bits_tmp, 1)) {
           return nullptr;
         }
         pred_weight_table->chroma_weight_l1_flag.push_back(bits_tmp);
@@ -155,12 +155,12 @@ H264PredWeightTableParser::ParsePredWeightTable(
           // chroma_offset_l1[i][j]  se(v)
           pred_weight_table->chroma_offset_l1.emplace_back();
           for (uint32_t j = 0; j < 2; ++j) {
-            if (!bit_buffer->ReadSignedExponentialGolomb(&(sgolomb_tmp))) {
+            if (!bit_buffer->ReadSignedExponentialGolomb(&sgolomb_tmp)) {
               return nullptr;
             }
             pred_weight_table->chroma_weight_l1.back().push_back(sgolomb_tmp);
 
-            if (!bit_buffer->ReadSignedExponentialGolomb(&(sgolomb_tmp))) {
+            if (!bit_buffer->ReadSignedExponentialGolomb(&sgolomb_tmp)) {
               return nullptr;
             }
             pred_weight_table->chroma_offset_l1.back().push_back(sgolomb_tmp);

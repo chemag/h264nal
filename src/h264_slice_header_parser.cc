@@ -157,7 +157,7 @@ H264SliceHeaderParser::ParseSliceHeader(
   if ((slice_header->pic_order_cnt_type == 1) &&
       (!slice_header->delta_pic_order_always_zero_flag)) {
     // delta_pic_order_cnt[0]  se(v)
-    if (!bit_buffer->ReadSignedExponentialGolomb(&(sgolomb_tmp))) {
+    if (!bit_buffer->ReadSignedExponentialGolomb(&sgolomb_tmp)) {
       return nullptr;
     }
     slice_header->delta_pic_order_cnt.push_back(sgolomb_tmp);
@@ -165,7 +165,7 @@ H264SliceHeaderParser::ParseSliceHeader(
     if (slice_header->bottom_field_pic_order_in_frame_present_flag &&
         !slice_header->field_pic_flag) {
       // delta_pic_order_cnt[1]  se(v)
-      if (!bit_buffer->ReadSignedExponentialGolomb(&(sgolomb_tmp))) {
+      if (!bit_buffer->ReadSignedExponentialGolomb(&sgolomb_tmp)) {
         return nullptr;
       }
       slice_header->delta_pic_order_cnt.push_back(sgolomb_tmp);
