@@ -166,8 +166,10 @@ void H264PrefixNalUnitRbspParser::PrefixNalUnitRbspState::fdump(
   indent_level = indent_level_incr(indent_level);
 
   if (svc_extension_flag) {
-    fdump_indent_level(outfp, indent_level);
-    prefix_nal_unit_svc->fdump(outfp, indent_level);
+    if (prefix_nal_unit_svc) {
+      fdump_indent_level(outfp, indent_level);
+      prefix_nal_unit_svc->fdump(outfp, indent_level);
+    }
   }
 
   indent_level = indent_level_decr(indent_level);
