@@ -235,6 +235,9 @@ H264SliceHeaderParser::ParseSliceHeader(
     slice_header->ref_pic_list_modification =
         H264RefPicListModificationParser::ParseRefPicListModification(
             bit_buffer, slice_header->slice_type);
+    if (slice_header->ref_pic_list_modification == nullptr) {
+      return nullptr;
+    }
   }
 
   slice_header->weighted_pred_flag = pps->weighted_pred_flag;
@@ -256,6 +259,9 @@ H264SliceHeaderParser::ParseSliceHeader(
             bit_buffer, ChromaArrayType, slice_header->slice_type,
             slice_header->num_ref_idx_l0_active_minus1,
             slice_header->num_ref_idx_l1_active_minus1);
+    if (slice_header->pred_weight_table == nullptr) {
+      return nullptr;
+    }
   }
 
   if (slice_header->nal_ref_idc != 0) {
@@ -263,6 +269,9 @@ H264SliceHeaderParser::ParseSliceHeader(
     slice_header->dec_ref_pic_marking =
         H264DecRefPicMarkingParser::ParseDecRefPicMarking(
             bit_buffer, slice_header->nal_unit_type);
+    if (slice_header->dec_ref_pic_marking == nullptr) {
+      return nullptr;
+    }
   }
 
   slice_header->entropy_coding_mode_flag = pps->entropy_coding_mode_flag;

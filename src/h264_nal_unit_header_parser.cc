@@ -77,6 +77,9 @@ H264NalUnitHeaderParser::ParseNalUnitHeader(
         nal_unit_header->nal_unit_header_svc_extension =
             H264NalUnitHeaderSvcExtensionParser::ParseNalUnitHeaderSvcExtension(
                 bit_buffer);
+        if (nal_unit_header->nal_unit_header_svc_extension == nullptr) {
+          return nullptr;
+        }
       }
 
     } else {

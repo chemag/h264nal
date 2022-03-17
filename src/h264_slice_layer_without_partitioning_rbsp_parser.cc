@@ -61,6 +61,9 @@ H264SliceLayerWithoutPartitioningRbspParser::
           bit_buffer, slice_layer_without_partitioning_rbsp->nal_ref_idc,
           slice_layer_without_partitioning_rbsp->nal_unit_type,
           bitstream_parser_state);
+  if (slice_layer_without_partitioning_rbsp->slice_header == nullptr) {
+    return nullptr;
+  }
 
   // slice_data()
   // rbsp_slice_trailing_bits()

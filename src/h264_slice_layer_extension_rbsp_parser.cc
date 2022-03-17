@@ -76,6 +76,9 @@ H264SliceLayerExtensionRbspParser::ParseSliceLayerExtensionRbsp(
         H264SliceHeaderParser::ParseSliceHeader(
             bit_buffer, slice_layer_extension_rbsp->nal_ref_idc,
             slice_layer_extension_rbsp->nal_unit_type, bitstream_parser_state);
+    if (slice_layer_extension_rbsp->slice_header == nullptr) {
+      return nullptr;
+    }
     // slice_data()
   }
 

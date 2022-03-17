@@ -58,6 +58,10 @@ H264PrefixNalUnitSvcParser::ParsePrefixNalUnitSvc(
          prefix_nal_unit_svc->store_ref_base_pic_flag) &&
         !prefix_nal_unit_svc->idr_flag) {
       // dec_ref_base_pic_marking()
+#ifdef FPRINT_ERRORS
+      fprintf(stderr, "error: dec_ref_base_pic_marking undefined\n");
+#endif  // FPRINT_ERRORS
+      return nullptr;
     }
 
     // additional_prefix_nal_unit_extension_flag  u(1)
@@ -131,6 +135,9 @@ H264PrefixNalUnitRbspParser::ParsePrefixNalUnitRbsp(
             bit_buffer, prefix_nal_unit_rbsp->nal_ref_idc,
             prefix_nal_unit_rbsp->use_ref_base_pic_flag,
             prefix_nal_unit_rbsp->idr_flag);
+    if (prefix_nal_unit_rbsp->prefix_nal_unit_svc == nullptr) {
+      return nullptr;
+    }
   }
 
   return prefix_nal_unit_rbsp;

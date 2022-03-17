@@ -249,6 +249,9 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
     shise->ref_pic_list_modification =
         H264RefPicListModificationParser::ParseRefPicListModification(
             bit_buffer, shise->slice_type);
+    if (shise->ref_pic_list_modification == nullptr) {
+      return nullptr;
+    }
 
     shise->weighted_pred_flag = pps->weighted_pred_flag;
     shise->weighted_bipred_idc = pps->weighted_bipred_idc;
@@ -277,6 +280,9 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
                 bit_buffer, shise->ChromaArrayType, shise->slice_type,
                 shise->num_ref_idx_l0_active_minus1,
                 shise->num_ref_idx_l1_active_minus1);
+        if (shise->pred_weight_table == nullptr) {
+          return nullptr;
+        }
       }
     }
 
@@ -285,6 +291,9 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
       shise->dec_ref_pic_marking =
           H264DecRefPicMarkingParser::ParseDecRefPicMarking(
               bit_buffer, shise->nal_unit_type);
+      if (shise->dec_ref_pic_marking == nullptr) {
+        return nullptr;
+      }
 
       shise->slice_header_restriction_flag =
           subset_sps_svc_extension->slice_header_restriction_flag;
