@@ -289,6 +289,9 @@ H264SpsDataParser::ParseSpsData(rtc::BitBuffer* bit_buffer) noexcept {
     // vui_parameters()
     sps_data->vui_parameters =
         H264VuiParametersParser::ParseVuiParameters(bit_buffer);
+    if (sps_data->vui_parameters == nullptr) {
+      return nullptr;
+    }
   }
 
   return sps_data;
@@ -357,7 +360,6 @@ std::shared_ptr<H264SpsParser::SpsState> H264SpsParser::ParseSps(
 
   // seq_parameter_set_data()
   sps->sps_data = H264SpsDataParser::ParseSpsData(bit_buffer);
-
   if (sps->sps_data == nullptr) {
     return nullptr;
   }

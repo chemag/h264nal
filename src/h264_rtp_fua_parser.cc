@@ -40,6 +40,9 @@ std::unique_ptr<H264RtpFuAParser::RtpFuAState> H264RtpFuAParser::ParseRtpFuA(
 
   // first read the common header
   rtp_fua->header = H264NalUnitHeaderParser::ParseNalUnitHeader(bit_buffer);
+  if (rtp_fua->header == nullptr) {
+    return nullptr;
+  }
 
   // read the fu-A header
   if (!bit_buffer->ReadBits(&(rtp_fua->s_bit), 1)) {
@@ -64,6 +67,9 @@ std::unique_ptr<H264RtpFuAParser::RtpFuAState> H264RtpFuAParser::ParseRtpFuA(
   rtp_fua->nal_unit_payload = H264NalUnitPayloadParser::ParseNalUnitPayload(
       bit_buffer, rtp_fua->nal_ref_idc, rtp_fua->fu_type,
       bitstream_parser_state);
+  if (rtp_fua->nal_unit_payload == nullptr) {
+    return nullptr;
+  }
 
   return rtp_fua;
 }

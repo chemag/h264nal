@@ -149,6 +149,9 @@ H264VuiParametersParser::ParseVuiParameters(
     // hrd_parameters()
     vui->nal_hrd_parameters =
         H264HrdParametersParser::ParseHrdParameters(bit_buffer);
+    if (vui->nal_hrd_parameters == nullptr) {
+      return nullptr;
+    }
   }
 
   // vcl_hrd_parameters_present_flag  u(1)
@@ -160,6 +163,9 @@ H264VuiParametersParser::ParseVuiParameters(
     // hrd_parameters()
     vui->vcl_hrd_parameters =
         H264HrdParametersParser::ParseHrdParameters(bit_buffer);
+    if (vui->vcl_hrd_parameters == nullptr) {
+      return nullptr;
+    }
   }
 
   if (vui->nal_hrd_parameters_present_flag ||

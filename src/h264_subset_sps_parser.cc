@@ -58,6 +58,9 @@ H264SubsetSpsParser::ParseSubsetSps(rtc::BitBuffer* bit_buffer) noexcept {
     subset_sps->seq_parameter_set_svc_extension =
         H264SpsSvcExtensionParser::ParseSpsSvcExtension(bit_buffer,
                                                         ChromaArrayType);
+    if (subset_sps->seq_parameter_set_svc_extension == nullptr) {
+      return nullptr;
+    }
 
     // svc_vui_parameters_present_flag  u(1)
     if (!bit_buffer->ReadBits(&subset_sps->svc_vui_parameters_present_flag,

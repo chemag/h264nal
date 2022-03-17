@@ -50,16 +50,25 @@ std::unique_ptr<H264RtpParser::RtpState> H264RtpParser::ParseRtp(
     // rtp_single()
     rtp->rtp_single =
         H264RtpSingleParser::ParseRtpSingle(bit_buffer, bitstream_parser_state);
+    if (rtp->rtp_single == nullptr) {
+      return nullptr;
+    }
 
   } else if (rtp->nal_unit_header->nal_unit_type == RTP_STAPA_NUT) {
     // rtp_stapa()
     rtp->rtp_stapa =
         H264RtpStapAParser::ParseRtpStapA(bit_buffer, bitstream_parser_state);
+    if (rtp->rtp_stapa == nullptr) {
+      return nullptr;
+    }
 
   } else if (rtp->nal_unit_header->nal_unit_type == RTP_FUA_NUT) {
     // rtp_fua()
     rtp->rtp_fua = H264RtpFuAParser::ParseRtpFuA(
         bit_buffer, rtp->nal_unit_header->nal_ref_idc, bitstream_parser_state);
+    if (rtp->rtp_fua == nullptr) {
+      return nullptr;
+    }
   }
 
   return rtp;

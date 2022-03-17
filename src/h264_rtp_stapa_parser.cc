@@ -70,6 +70,9 @@ H264RtpStapAParser::ParseRtpStapA(
         H264NalUnitPayloadParser::ParseNalUnitPayload(
             bit_buffer, *(rtp_stapa->nal_unit_headers.back()),
             bitstream_parser_state));
+    if (rtp_stapa->nal_unit_payloads.back() == nullptr) {
+      return nullptr;
+    }
   }
   return rtp_stapa;
 }
