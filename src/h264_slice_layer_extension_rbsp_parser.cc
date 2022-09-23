@@ -95,7 +95,9 @@ void H264SliceLayerExtensionRbspParser::SliceLayerExtensionRbspState::fdump(
 
   if (svc_extension_flag) {
     fdump_indent_level(outfp, indent_level);
-    slice_header_in_scalable_extension->fdump(outfp, indent_level);
+    if (slice_header_in_scalable_extension) {
+      slice_header_in_scalable_extension->fdump(outfp, indent_level);
+    }
     // if (!slice_skip_flag) {
     //   slice_data_in_scalable_extension()  // specified in Annex G
     // }

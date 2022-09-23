@@ -207,7 +207,9 @@ void H264NalUnitPayloadParser::NalUnitPayloadState::fdump(
   fdump_indent_level(outfp, indent_level);
   switch (nal_unit_type) {
     case CODED_SLICE_OF_NON_IDR_PICTURE_NUT:
-      slice_layer_without_partitioning_rbsp->fdump(outfp, indent_level);
+      if (slice_layer_without_partitioning_rbsp) {
+        slice_layer_without_partitioning_rbsp->fdump(outfp, indent_level);
+      }
       break;
     case CODED_SLICE_DATA_PARTITION_A_NUT:
     case CODED_SLICE_DATA_PARTITION_B_NUT:
@@ -215,7 +217,9 @@ void H264NalUnitPayloadParser::NalUnitPayloadState::fdump(
       // unimplemented
       break;
     case CODED_SLICE_OF_IDR_PICTURE_NUT:
-      slice_layer_without_partitioning_rbsp->fdump(outfp, indent_level);
+      if (slice_layer_without_partitioning_rbsp) {
+        slice_layer_without_partitioning_rbsp->fdump(outfp, indent_level);
+      }
       break;
     case SEI_NUT:
       // unimplemented
@@ -256,7 +260,9 @@ void H264NalUnitPayloadParser::NalUnitPayloadState::fdump(
       // unimplemented
       break;
     case CODED_SLICE_EXTENSION:
-      slice_layer_extension_rbsp->fdump(outfp, indent_level);
+      if (slice_layer_extension_rbsp) {
+        slice_layer_extension_rbsp->fdump(outfp, indent_level);
+      }
       break;
     case RSV21_NUT:
     case RSV22_NUT:
