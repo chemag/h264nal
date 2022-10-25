@@ -63,8 +63,7 @@ H264SubsetSpsParser::ParseSubsetSps(rtc::BitBuffer* bit_buffer) noexcept {
     }
 
     // svc_vui_parameters_present_flag  u(1)
-    if (!bit_buffer->ReadBits(&subset_sps->svc_vui_parameters_present_flag,
-                              1)) {
+    if (!bit_buffer->ReadBits(1, subset_sps->svc_vui_parameters_present_flag)) {
       return nullptr;
     }
 
@@ -76,15 +75,14 @@ H264SubsetSpsParser::ParseSubsetSps(rtc::BitBuffer* bit_buffer) noexcept {
              subset_sps->seq_parameter_set_data->profile_idc == 128 ||
              subset_sps->seq_parameter_set_data->profile_idc == 134) {
     // bit_equal_to_one  u(1)
-    if (!bit_buffer->ReadBits(&subset_sps->bit_equal_to_one, 1)) {
+    if (!bit_buffer->ReadBits(1, subset_sps->bit_equal_to_one)) {
       return nullptr;
     }
 
     // seq_parameter_set_mvc_extension() // specified in Annex H
 
     // mvc_vui_parameters_present_flag  u(1)
-    if (!bit_buffer->ReadBits(&subset_sps->mvc_vui_parameters_present_flag,
-                              1)) {
+    if (!bit_buffer->ReadBits(1, subset_sps->mvc_vui_parameters_present_flag)) {
       return nullptr;
     }
 
@@ -95,7 +93,7 @@ H264SubsetSpsParser::ParseSubsetSps(rtc::BitBuffer* bit_buffer) noexcept {
   } else if (subset_sps->seq_parameter_set_data->profile_idc == 138 ||
              subset_sps->seq_parameter_set_data->profile_idc == 135) {
     // bit_equal_to_one  u(1)
-    if (!bit_buffer->ReadBits(&subset_sps->bit_equal_to_one, 1)) {
+    if (!bit_buffer->ReadBits(1, subset_sps->bit_equal_to_one)) {
       return nullptr;
     }
 
@@ -103,7 +101,7 @@ H264SubsetSpsParser::ParseSubsetSps(rtc::BitBuffer* bit_buffer) noexcept {
 
   } else if (subset_sps->seq_parameter_set_data->profile_idc == 139) {
     // bit_equal_to_one  u(1)
-    if (!bit_buffer->ReadBits(&subset_sps->bit_equal_to_one, 1)) {
+    if (!bit_buffer->ReadBits(1, subset_sps->bit_equal_to_one)) {
       return nullptr;
     }
 
@@ -113,15 +111,15 @@ H264SubsetSpsParser::ParseSubsetSps(rtc::BitBuffer* bit_buffer) noexcept {
   }
 
   // additional_extension2_flag  u(1)
-  if (!bit_buffer->ReadBits(&subset_sps->additional_extension2_flag, 1)) {
+  if (!bit_buffer->ReadBits(1, subset_sps->additional_extension2_flag)) {
     return nullptr;
   }
 
   if (subset_sps->additional_extension2_flag == 1) {
     while (more_rbsp_data(bit_buffer)) {
       // additional_extension2_data_flag  u(1)
-      if (!bit_buffer->ReadBits(&subset_sps->additional_extension2_data_flag,
-                                1)) {
+      if (!bit_buffer->ReadBits(1,
+                                subset_sps->additional_extension2_data_flag)) {
         return nullptr;
       }
     }

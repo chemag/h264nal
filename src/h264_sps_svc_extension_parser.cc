@@ -40,30 +40,29 @@ H264SpsSvcExtensionParser::ParseSpsSvcExtension(
 
   // inter_layer_deblocking_filter_control_present_flag  u(1)
   if (!bit_buffer->ReadBits(
-          &(sps_svc_extension
-                ->inter_layer_deblocking_filter_control_present_flag),
-          1)) {
+          1, sps_svc_extension
+                 ->inter_layer_deblocking_filter_control_present_flag)) {
     return nullptr;
   }
 
   // extended_spatial_scalability_idc  u(2)
   if (!bit_buffer->ReadBits(
-          &(sps_svc_extension->extended_spatial_scalability_idc), 2)) {
+          2, sps_svc_extension->extended_spatial_scalability_idc)) {
     return nullptr;
   }
 
   if (sps_svc_extension->ChromaArrayType == 1 ||
       sps_svc_extension->ChromaArrayType == 2) {
     // chroma_phase_x_plus1_flag  u(1)
-    if (!bit_buffer->ReadBits(&(sps_svc_extension->chroma_phase_x_plus1_flag),
-                              1)) {
+    if (!bit_buffer->ReadBits(1,
+                              sps_svc_extension->chroma_phase_x_plus1_flag)) {
       return nullptr;
     }
   }
 
   if (sps_svc_extension->ChromaArrayType == 1) {
     // chroma_phase_y_plus1  u(2)
-    if (!bit_buffer->ReadBits(&(sps_svc_extension->chroma_phase_y_plus1), 2)) {
+    if (!bit_buffer->ReadBits(2, sps_svc_extension->chroma_phase_y_plus1)) {
       return nullptr;
     }
   }
@@ -72,60 +71,59 @@ H264SpsSvcExtensionParser::ParseSpsSvcExtension(
     if (sps_svc_extension->ChromaArrayType > 0) {
       // seq_ref_layer_chroma_phase_x_plus1_flag  u(1)
       if (!bit_buffer->ReadBits(
-              &(sps_svc_extension->seq_ref_layer_chroma_phase_x_plus1_flag),
-              1)) {
+              1, sps_svc_extension->seq_ref_layer_chroma_phase_x_plus1_flag)) {
         return nullptr;
       }
 
       // seq_ref_layer_chroma_phase_y_plus1  u(2)
       if (!bit_buffer->ReadBits(
-              &(sps_svc_extension->seq_ref_layer_chroma_phase_y_plus1), 2)) {
+              2, sps_svc_extension->seq_ref_layer_chroma_phase_y_plus1)) {
         return nullptr;
       }
     }
 
     // seq_scaled_ref_layer_left_offset  se(v)
     if (!bit_buffer->ReadSignedExponentialGolomb(
-            &(sps_svc_extension->seq_scaled_ref_layer_left_offset))) {
+            sps_svc_extension->seq_scaled_ref_layer_left_offset)) {
       return nullptr;
     }
 
     // seq_scaled_ref_layer_top_offset  se(v)
     if (!bit_buffer->ReadSignedExponentialGolomb(
-            &(sps_svc_extension->seq_scaled_ref_layer_top_offset))) {
+            sps_svc_extension->seq_scaled_ref_layer_top_offset)) {
       return nullptr;
     }
 
     // seq_scaled_ref_layer_right_offset  se(v)
     if (!bit_buffer->ReadSignedExponentialGolomb(
-            &(sps_svc_extension->seq_scaled_ref_layer_right_offset))) {
+            sps_svc_extension->seq_scaled_ref_layer_right_offset)) {
       return nullptr;
     }
 
     // seq_scaled_ref_layer_bottom_offset  se(v)
     if (!bit_buffer->ReadSignedExponentialGolomb(
-            &(sps_svc_extension->seq_scaled_ref_layer_bottom_offset))) {
+            sps_svc_extension->seq_scaled_ref_layer_bottom_offset)) {
       return nullptr;
     }
   }
 
   // seq_tcoeff_level_prediction_flag  u(1)
   if (!bit_buffer->ReadBits(
-          &(sps_svc_extension->seq_tcoeff_level_prediction_flag), 1)) {
+          1, sps_svc_extension->seq_tcoeff_level_prediction_flag)) {
     return nullptr;
   }
 
   if (sps_svc_extension->seq_tcoeff_level_prediction_flag == 1) {
     // adaptive_tcoeff_level_prediction_flag  u(1)
     if (!bit_buffer->ReadBits(
-            &(sps_svc_extension->adaptive_tcoeff_level_prediction_flag), 1)) {
+            1, sps_svc_extension->adaptive_tcoeff_level_prediction_flag)) {
       return nullptr;
     }
   }
 
   // slice_header_restriction_flag  u(1)
-  if (!bit_buffer->ReadBits(&(sps_svc_extension->slice_header_restriction_flag),
-                            1)) {
+  if (!bit_buffer->ReadBits(1,
+                            sps_svc_extension->slice_header_restriction_flag)) {
     return nullptr;
   }
 

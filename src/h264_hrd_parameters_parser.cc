@@ -41,36 +41,36 @@ H264HrdParametersParser::ParseHrdParameters(
   auto hrd_parameters = std::make_unique<HrdParametersState>();
 
   // cpb_cnt_minus1[i]  ue(v)
-  if (!bit_buffer->ReadExponentialGolomb(&(hrd_parameters->cpb_cnt_minus1))) {
+  if (!bit_buffer->ReadExponentialGolomb(hrd_parameters->cpb_cnt_minus1)) {
     return nullptr;
   }
 
   // bit_rate_scale  u(4)
-  if (!bit_buffer->ReadBits(&(hrd_parameters->bit_rate_scale), 4)) {
+  if (!bit_buffer->ReadBits(4, (hrd_parameters->bit_rate_scale))) {
     return nullptr;
   }
 
   // cpb_size_scale  u(4)
-  if (!bit_buffer->ReadBits(&(hrd_parameters->cpb_size_scale), 4)) {
+  if (!bit_buffer->ReadBits(4, (hrd_parameters->cpb_size_scale))) {
     return nullptr;
   }
 
   for (uint32_t SchedSelIdx = 0; SchedSelIdx <= hrd_parameters->cpb_cnt_minus1;
        SchedSelIdx++) {
     // bit_rate_value_minus1[i]  ue(v)
-    if (!bit_buffer->ReadExponentialGolomb(&golomb_tmp)) {
+    if (!bit_buffer->ReadExponentialGolomb(golomb_tmp)) {
       return nullptr;
     }
     hrd_parameters->bit_rate_value_minus1.push_back(golomb_tmp);
 
     // cpb_size_value_minus1[i]  ue(v)
-    if (!bit_buffer->ReadExponentialGolomb(&golomb_tmp)) {
+    if (!bit_buffer->ReadExponentialGolomb(golomb_tmp)) {
       return nullptr;
     }
     hrd_parameters->cpb_size_value_minus1.push_back(golomb_tmp);
 
     // cbr_flag[i]  u(1)
-    if (!bit_buffer->ReadBits(&bits_tmp, 1)) {
+    if (!bit_buffer->ReadBits(1, bits_tmp)) {
       return nullptr;
     }
     hrd_parameters->cbr_flag.push_back(bits_tmp);
@@ -78,24 +78,24 @@ H264HrdParametersParser::ParseHrdParameters(
 
   // initial_cpb_removal_delay_length_minus1  u(5)
   if (!bit_buffer->ReadBits(
-          &(hrd_parameters->initial_cpb_removal_delay_length_minus1), 5)) {
+          5, (hrd_parameters->initial_cpb_removal_delay_length_minus1))) {
     return nullptr;
   }
 
   // cpb_removal_delay_length_minus1  u(5)
-  if (!bit_buffer->ReadBits(&(hrd_parameters->cpb_removal_delay_length_minus1),
-                            5)) {
+  if (!bit_buffer->ReadBits(
+          5, (hrd_parameters->cpb_removal_delay_length_minus1))) {
     return nullptr;
   }
 
   // dpb_output_delay_length_minus1  u(5)
-  if (!bit_buffer->ReadBits(&(hrd_parameters->dpb_output_delay_length_minus1),
-                            5)) {
+  if (!bit_buffer->ReadBits(5,
+                            (hrd_parameters->dpb_output_delay_length_minus1))) {
     return nullptr;
   }
 
   // time_offset_length  u(5)
-  if (!bit_buffer->ReadBits(&(hrd_parameters->time_offset_length), 5)) {
+  if (!bit_buffer->ReadBits(5, (hrd_parameters->time_offset_length))) {
     return nullptr;
   }
 

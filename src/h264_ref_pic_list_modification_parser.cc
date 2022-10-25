@@ -50,15 +50,15 @@ H264RefPicListModificationParser::ParseRefPicListModification(
        SliceType::SI_ALL)) {  // slice_type != I && slice_type != SI
     // ref_pic_list_modification_flag_l0  u(1)
     if (!bit_buffer->ReadBits(
-            &(ref_pic_list_modification->ref_pic_list_modification_flag_l0),
-            1)) {
+            1,
+            (ref_pic_list_modification->ref_pic_list_modification_flag_l0))) {
       return nullptr;
     }
 
     if (ref_pic_list_modification->ref_pic_list_modification_flag_l0) {
       do {
         // modification_of_pic_nums_idc[i]  ue(v)
-        if (!bit_buffer->ReadExponentialGolomb(&golomb_tmp)) {
+        if (!bit_buffer->ReadExponentialGolomb(golomb_tmp)) {
           return nullptr;
         }
         ref_pic_list_modification->modification_of_pic_nums_idc.push_back(
@@ -69,7 +69,7 @@ H264RefPicListModificationParser::ParseRefPicListModification(
             (ref_pic_list_modification->modification_of_pic_nums_idc.back() ==
              1)) {
           // abs_diff_pic_num_minus1[i]  ue(v)
-          if (!bit_buffer->ReadExponentialGolomb(&golomb_tmp)) {
+          if (!bit_buffer->ReadExponentialGolomb(golomb_tmp)) {
             return nullptr;
           }
           ref_pic_list_modification->abs_diff_pic_num_minus1.push_back(
@@ -78,7 +78,7 @@ H264RefPicListModificationParser::ParseRefPicListModification(
         } else if (ref_pic_list_modification->modification_of_pic_nums_idc
                        .back() == 2) {
           // long_term_pic_num[i]  ue(v)
-          if (!bit_buffer->ReadExponentialGolomb(&golomb_tmp)) {
+          if (!bit_buffer->ReadExponentialGolomb(golomb_tmp)) {
             return nullptr;
           }
           ref_pic_list_modification->long_term_pic_num.push_back(golomb_tmp);
@@ -92,15 +92,15 @@ H264RefPicListModificationParser::ParseRefPicListModification(
       (slice_type == SliceType::B_ALL)) {  // slice_type == B
     // ref_pic_list_modification_flag_l1  u(1)
     if (!bit_buffer->ReadBits(
-            &(ref_pic_list_modification->ref_pic_list_modification_flag_l1),
-            1)) {
+            1,
+            (ref_pic_list_modification->ref_pic_list_modification_flag_l1))) {
       return nullptr;
     }
 
     if (ref_pic_list_modification->ref_pic_list_modification_flag_l1) {
       do {
         // modification_of_pic_nums_idc[i]  ue(v)
-        if (!bit_buffer->ReadExponentialGolomb(&golomb_tmp)) {
+        if (!bit_buffer->ReadExponentialGolomb(golomb_tmp)) {
           return nullptr;
         }
         ref_pic_list_modification->modification_of_pic_nums_idc.push_back(
@@ -111,7 +111,7 @@ H264RefPicListModificationParser::ParseRefPicListModification(
             (ref_pic_list_modification->modification_of_pic_nums_idc.back() ==
              1)) {
           // abs_diff_pic_num_minus1[i]  ue(v)
-          if (!bit_buffer->ReadExponentialGolomb(&golomb_tmp)) {
+          if (!bit_buffer->ReadExponentialGolomb(golomb_tmp)) {
             return nullptr;
           }
           ref_pic_list_modification->abs_diff_pic_num_minus1.push_back(
@@ -120,7 +120,7 @@ H264RefPicListModificationParser::ParseRefPicListModification(
         } else if (ref_pic_list_modification->modification_of_pic_nums_idc
                        .back() == 2) {
           // long_term_pic_num[i]  ue(v)
-          if (!bit_buffer->ReadExponentialGolomb(&golomb_tmp)) {
+          if (!bit_buffer->ReadExponentialGolomb(golomb_tmp)) {
             return nullptr;
           }
           ref_pic_list_modification->long_term_pic_num.push_back(golomb_tmp);

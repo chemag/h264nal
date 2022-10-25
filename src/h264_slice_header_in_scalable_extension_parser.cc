@@ -62,17 +62,17 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
   shise->nal_unit_type = nal_unit_header.nal_unit_type;
 
   // first_mb_in_slice  ue(v)
-  if (!bit_buffer->ReadExponentialGolomb(&(shise->first_mb_in_slice))) {
+  if (!bit_buffer->ReadExponentialGolomb(shise->first_mb_in_slice)) {
     return nullptr;
   }
 
   // slice_type  ue(v)
-  if (!bit_buffer->ReadExponentialGolomb(&(shise->slice_type))) {
+  if (!bit_buffer->ReadExponentialGolomb(shise->slice_type)) {
     return nullptr;
   }
 
   // pic_parameter_set_id  ue(v)
-  if (!bit_buffer->ReadExponentialGolomb(&(shise->pic_parameter_set_id))) {
+  if (!bit_buffer->ReadExponentialGolomb(shise->pic_parameter_set_id)) {
     return nullptr;
   }
 
@@ -112,7 +112,7 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
   shise->separate_colour_plane_flag = sps_data->separate_colour_plane_flag;
   if (shise->separate_colour_plane_flag == 1) {
     // colour_plane_id  u(2)
-    if (!bit_buffer->ReadBits(&(shise->colour_plane_id), 2)) {
+    if (!bit_buffer->ReadBits(2, shise->colour_plane_id)) {
       return nullptr;
     }
   }
@@ -121,19 +121,19 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
   shise->log2_max_frame_num_minus4 = sps_data->log2_max_frame_num_minus4;
   uint32_t frame_num_len =
       shise->getFrameNumLen(shise->log2_max_frame_num_minus4);
-  if (!bit_buffer->ReadBits(&(shise->frame_num), frame_num_len)) {
+  if (!bit_buffer->ReadBits(frame_num_len, shise->frame_num)) {
     return nullptr;
   }
 
   shise->frame_mbs_only_flag = sps_data->frame_mbs_only_flag;
   if (!shise->frame_mbs_only_flag) {
     // field_pic_flag  u(1)
-    if (!bit_buffer->ReadBits(&(shise->field_pic_flag), 1)) {
+    if (!bit_buffer->ReadBits(1, shise->field_pic_flag)) {
       return nullptr;
     }
     if (shise->field_pic_flag) {
       // bottom_field_flag  u(1)
-      if (!bit_buffer->ReadBits(&(shise->bottom_field_flag), 1)) {
+      if (!bit_buffer->ReadBits(1, shise->bottom_field_flag)) {
         return nullptr;
       }
     }
@@ -142,7 +142,7 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
   uint32_t IdrPicFlag = ((shise->nal_unit_type == 5) ? 1 : 0);
   if (IdrPicFlag) {
     // idr_pic_id  ue(v)
-    if (!bit_buffer->ReadExponentialGolomb(&(shise->idr_pic_id))) {
+    if (!bit_buffer->ReadExponentialGolomb(shise->idr_pic_id)) {
       return nullptr;
     }
   }
@@ -154,8 +154,8 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
     // pic_order_cnt_lsb  u(v)
     uint32_t pic_order_cnt_lsb_len =
         shise->getPicOrderCntLsbLen(log2_max_pic_order_cnt_lsb_minus4);
-    if (!bit_buffer->ReadBits(&(shise->pic_order_cnt_lsb),
-                              pic_order_cnt_lsb_len)) {
+    if (!bit_buffer->ReadBits(pic_order_cnt_lsb_len,
+                              shise->pic_order_cnt_lsb)) {
       return nullptr;
     }
 
@@ -165,7 +165,7 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
         !shise->field_pic_flag) {
       // delta_pic_order_cnt_bottom  se(v)
       if (!bit_buffer->ReadSignedExponentialGolomb(
-              &(shise->delta_pic_order_cnt_bottom))) {
+              shise->delta_pic_order_cnt_bottom)) {
         return nullptr;
       }
     }
@@ -176,7 +176,7 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
   if ((shise->pic_order_cnt_type == 1) &&
       (!shise->delta_pic_order_always_zero_flag)) {
     // delta_pic_order_cnt[0]  se(v)
-    if (!bit_buffer->ReadSignedExponentialGolomb(&sgolomb_tmp)) {
+    if (!bit_buffer->ReadSignedExponentialGolomb(sgolomb_tmp)) {
       return nullptr;
     }
     shise->delta_pic_order_cnt.push_back(sgolomb_tmp);
@@ -184,7 +184,7 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
     if (shise->bottom_field_pic_order_in_frame_present_flag &&
         !shise->field_pic_flag) {
       // delta_pic_order_cnt[1]  se(v)
-      if (!bit_buffer->ReadSignedExponentialGolomb(&sgolomb_tmp)) {
+      if (!bit_buffer->ReadSignedExponentialGolomb(sgolomb_tmp)) {
         return nullptr;
       }
       shise->delta_pic_order_cnt.push_back(sgolomb_tmp);
@@ -194,7 +194,7 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
   shise->redundant_pic_cnt_present_flag = pps->redundant_pic_cnt_present_flag;
   if (shise->redundant_pic_cnt_present_flag) {
     // redundant_pic_cnt  ue(v)
-    if (!bit_buffer->ReadExponentialGolomb(&(shise->redundant_pic_cnt))) {
+    if (!bit_buffer->ReadExponentialGolomb(shise->redundant_pic_cnt)) {
       return nullptr;
     }
   }
@@ -211,7 +211,7 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
     if ((shise->slice_type == SvcSliceType::EBa) ||
         (shise->slice_type == SvcSliceType::EBb)) {  // slice_type == EB
       // direct_spatial_mv_pred_flag  u(1)
-      if (!bit_buffer->ReadBits(&(shise->direct_spatial_mv_pred_flag), 1)) {
+      if (!bit_buffer->ReadBits(1, shise->direct_spatial_mv_pred_flag)) {
         return nullptr;
       }
     }
@@ -222,15 +222,14 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
         (shise->slice_type ==
          SvcSliceType::EBb)) {  // slice_type == EP || slice_type == EB
       // num_ref_idx_active_override_flag  u(1)
-      if (!bit_buffer->ReadBits(&(shise->num_ref_idx_active_override_flag),
-                                1)) {
+      if (!bit_buffer->ReadBits(1, shise->num_ref_idx_active_override_flag)) {
         return nullptr;
       }
 
       if (shise->num_ref_idx_active_override_flag) {
         // num_ref_idx_l0_active_minus1  ue(v)
         if (!bit_buffer->ReadExponentialGolomb(
-                &(shise->num_ref_idx_l0_active_minus1))) {
+                shise->num_ref_idx_l0_active_minus1)) {
           return nullptr;
         }
 
@@ -238,7 +237,7 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
             (shise->slice_type == SvcSliceType::EBb)) {  // slice_type == EB
           // num_ref_idx_l1_active_minus1  ue(v)
           if (!bit_buffer->ReadExponentialGolomb(
-                  &(shise->num_ref_idx_l1_active_minus1))) {
+                  shise->num_ref_idx_l1_active_minus1)) {
             return nullptr;
           }
         }
@@ -266,7 +265,7 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
           nal_unit_header_svc_extension->no_inter_layer_pred_flag;
       if (!shise->no_inter_layer_pred_flag) {
         // base_pred_weight_table_flag  u(1)
-        if (!bit_buffer->ReadBits(&(shise->base_pred_weight_table_flag), 1)) {
+        if (!bit_buffer->ReadBits(1, shise->base_pred_weight_table_flag)) {
           return nullptr;
         }
       }
@@ -299,7 +298,7 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
           subset_sps_svc_extension->slice_header_restriction_flag;
       if (!shise->slice_header_restriction_flag) {
         // store_ref_base_pic_flag  u(1)
-        if (!bit_buffer->ReadBits(&(shise->store_ref_base_pic_flag), 1)) {
+        if (!bit_buffer->ReadBits(1, shise->store_ref_base_pic_flag)) {
           return nullptr;
         }
 
@@ -323,13 +322,13 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
       (shise->slice_type != SvcSliceType::EIa) &&
       (shise->slice_type != SvcSliceType::EIb)) {
     // cabac_init_idc  ue(v)
-    if (!bit_buffer->ReadExponentialGolomb(&(shise->cabac_init_idc))) {
+    if (!bit_buffer->ReadExponentialGolomb(shise->cabac_init_idc)) {
       return nullptr;
     }
   }
 
   // slice_qp_delta  se(v)
-  if (!bit_buffer->ReadSignedExponentialGolomb(&(shise->slice_qp_delta))) {
+  if (!bit_buffer->ReadSignedExponentialGolomb(shise->slice_qp_delta)) {
     return nullptr;
   }
 
@@ -338,20 +337,20 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
   if (shise->deblocking_filter_control_present_flag) {
     // disable_deblocking_filter_idc  ue(v)
     if (!bit_buffer->ReadExponentialGolomb(
-            &(shise->disable_deblocking_filter_idc))) {
+            shise->disable_deblocking_filter_idc)) {
       return nullptr;
     }
 
     if (shise->disable_deblocking_filter_idc != 1) {
       // slice_alpha_c0_offset_div2  se(v)
       if (!bit_buffer->ReadSignedExponentialGolomb(
-              &(shise->slice_alpha_c0_offset_div2))) {
+              shise->slice_alpha_c0_offset_div2)) {
         return nullptr;
       }
 
       // slice_beta_offset_div2  se(v)
       if (!bit_buffer->ReadSignedExponentialGolomb(
-              &(shise->slice_beta_offset_div2))) {
+              shise->slice_beta_offset_div2)) {
         return nullptr;
       }
     }
@@ -371,15 +370,15 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
         shise->pic_width_in_mbs_minus1, shise->pic_height_in_map_units_minus1,
         shise->slice_group_change_rate_minus1);
     // Rec. ITU-T H.264 (2012) Page 67, Section 7.4.3
-    if (!bit_buffer->ReadBits(&(shise->slice_group_change_cycle),
-                              slice_group_change_cycle_len)) {
+    if (!bit_buffer->ReadBits(slice_group_change_cycle_len,
+                              shise->slice_group_change_cycle)) {
       return nullptr;
     }
   }
 
   if (!shise->no_inter_layer_pred_flag && shise->quality_id == 0) {
     // ref_layer_dq_id  ue(v)
-    if (!bit_buffer->ReadExponentialGolomb(&(shise->ref_layer_dq_id))) {
+    if (!bit_buffer->ReadExponentialGolomb(shise->ref_layer_dq_id)) {
       return nullptr;
     }
 
@@ -389,27 +388,27 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
     if (shise->inter_layer_deblocking_filter_control_present_flag) {
       // disable_inter_layer_deblocking_filter_idc  ue(v)
       if (!bit_buffer->ReadExponentialGolomb(
-              &(shise->disable_inter_layer_deblocking_filter_idc))) {
+              shise->disable_inter_layer_deblocking_filter_idc)) {
         return nullptr;
       }
 
       if (shise->disable_inter_layer_deblocking_filter_idc != 1) {
         // inter_layer_slice_alpha_c0_offset_div2  se(v)
         if (!bit_buffer->ReadSignedExponentialGolomb(
-                &(shise->inter_layer_slice_alpha_c0_offset_div2))) {
+                shise->inter_layer_slice_alpha_c0_offset_div2)) {
           return nullptr;
         }
 
         // inter_layer_slice_beta_offset_div2  se(v)
         if (!bit_buffer->ReadSignedExponentialGolomb(
-                &(shise->inter_layer_slice_beta_offset_div2))) {
+                shise->inter_layer_slice_beta_offset_div2)) {
           return nullptr;
         }
       }
     }
 
     // constrained_intra_resampling_flag  u(1)
-    if (!bit_buffer->ReadBits(&(shise->constrained_intra_resampling_flag), 1)) {
+    if (!bit_buffer->ReadBits(1, shise->constrained_intra_resampling_flag)) {
       return nullptr;
     }
 
@@ -419,38 +418,37 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
       shise->ChromaArrayType = sps_data->getChromaArrayType();
       if (shise->ChromaArrayType > 0) {
         // ref_layer_chroma_phase_x_plus1_flag  u(1)
-        if (!bit_buffer->ReadBits(&(shise->ref_layer_chroma_phase_x_plus1_flag),
-                                  1)) {
+        if (!bit_buffer->ReadBits(1,
+                                  shise->ref_layer_chroma_phase_x_plus1_flag)) {
           return nullptr;
         }
 
         // ref_layer_chroma_phase_y_plus1  u(2)
-        if (!bit_buffer->ReadBits(&(shise->ref_layer_chroma_phase_y_plus1),
-                                  2)) {
+        if (!bit_buffer->ReadBits(2, shise->ref_layer_chroma_phase_y_plus1)) {
           return nullptr;
         }
       }
       // scaled_ref_layer_left_offset  se(v)
       if (!bit_buffer->ReadSignedExponentialGolomb(
-              &(shise->scaled_ref_layer_left_offset))) {
+              shise->scaled_ref_layer_left_offset)) {
         return nullptr;
       }
 
       // scaled_ref_layer_top_offset  se(v)
       if (!bit_buffer->ReadSignedExponentialGolomb(
-              &(shise->scaled_ref_layer_top_offset))) {
+              shise->scaled_ref_layer_top_offset)) {
         return nullptr;
       }
 
       // scaled_ref_layer_right_offset  se(v)
       if (!bit_buffer->ReadSignedExponentialGolomb(
-              &(shise->scaled_ref_layer_right_offset))) {
+              shise->scaled_ref_layer_right_offset)) {
         return nullptr;
       }
 
       // scaled_ref_layer_bottom_offset  se(v)
       if (!bit_buffer->ReadSignedExponentialGolomb(
-              &(shise->scaled_ref_layer_bottom_offset))) {
+              shise->scaled_ref_layer_bottom_offset)) {
         return nullptr;
       }
     }
@@ -458,54 +456,49 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
 
   if (!shise->no_inter_layer_pred_flag) {
     // slice_skip_flag  u(1)
-    if (!bit_buffer->ReadBits(&(shise->slice_skip_flag), 1)) {
+    if (!bit_buffer->ReadBits(1, shise->slice_skip_flag)) {
       return nullptr;
     }
 
     if (shise->slice_skip_flag) {
       // num_mbs_in_slice_minus1  ue(v)
-      if (!bit_buffer->ReadExponentialGolomb(
-              &(shise->num_mbs_in_slice_minus1))) {
+      if (!bit_buffer->ReadExponentialGolomb(shise->num_mbs_in_slice_minus1)) {
         return nullptr;
       }
 
     } else {
       // adaptive_base_mode_flag  u(1)
-      if (!bit_buffer->ReadBits(&(shise->adaptive_base_mode_flag), 1)) {
+      if (!bit_buffer->ReadBits(1, shise->adaptive_base_mode_flag)) {
         return nullptr;
       }
 
       if (!shise->adaptive_base_mode_flag) {
         // default_base_mode_flag  u(1)
-        if (!bit_buffer->ReadBits(&(shise->default_base_mode_flag), 1)) {
+        if (!bit_buffer->ReadBits(1, shise->default_base_mode_flag)) {
           return nullptr;
         }
       }
       if (!shise->default_base_mode_flag) {
         // adaptive_motion_prediction_flag  u(1)
-        if (!bit_buffer->ReadBits(&(shise->adaptive_motion_prediction_flag),
-                                  1)) {
+        if (!bit_buffer->ReadBits(1, shise->adaptive_motion_prediction_flag)) {
           return nullptr;
         }
 
         if (!shise->adaptive_motion_prediction_flag) {
           // default_motion_prediction_flag  u(1)
-          if (!bit_buffer->ReadBits(&(shise->default_motion_prediction_flag),
-                                    1)) {
+          if (!bit_buffer->ReadBits(1, shise->default_motion_prediction_flag)) {
             return nullptr;
           }
         }
       }
       // adaptive_residual_prediction_flag  u(1)
-      if (!bit_buffer->ReadBits(&(shise->adaptive_residual_prediction_flag),
-                                1)) {
+      if (!bit_buffer->ReadBits(1, shise->adaptive_residual_prediction_flag)) {
         return nullptr;
       }
 
       if (!shise->adaptive_residual_prediction_flag) {
         // default_residual_prediction_flag  u(1)
-        if (!bit_buffer->ReadBits(&(shise->default_residual_prediction_flag),
-                                  1)) {
+        if (!bit_buffer->ReadBits(1, shise->default_residual_prediction_flag)) {
           return nullptr;
         }
       }
@@ -514,7 +507,7 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
         subset_sps_svc_extension->adaptive_tcoeff_level_prediction_flag;
     if (shise->adaptive_tcoeff_level_prediction_flag) {
       // tcoeff_level_prediction_flag  u(1)
-      if (!bit_buffer->ReadBits(&(shise->tcoeff_level_prediction_flag), 1)) {
+      if (!bit_buffer->ReadBits(1, shise->tcoeff_level_prediction_flag)) {
         return nullptr;
       }
     }
@@ -522,12 +515,12 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
 
   if (!shise->slice_header_restriction_flag && !shise->slice_skip_flag) {
     // scan_idx_start  u(4)
-    if (!bit_buffer->ReadBits(&(shise->scan_idx_start), 4)) {
+    if (!bit_buffer->ReadBits(4, shise->scan_idx_start)) {
       return nullptr;
     }
 
     // scan_idx_end  u(4)
-    if (!bit_buffer->ReadBits(&(shise->scan_idx_end), 4)) {
+    if (!bit_buffer->ReadBits(4, shise->scan_idx_end)) {
       return nullptr;
     }
   }

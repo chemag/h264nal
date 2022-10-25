@@ -50,17 +50,17 @@ H264NalUnitHeaderParser::ParseNalUnitHeader(
   auto nal_unit_header = std::make_unique<NalUnitHeaderState>();
 
   // forbidden_zero_bit  f(1)
-  if (!bit_buffer->ReadBits(&nal_unit_header->forbidden_zero_bit, 1)) {
+  if (!bit_buffer->ReadBits(1, nal_unit_header->forbidden_zero_bit)) {
     return nullptr;
   }
 
   // nal_ref_idc  u(2)
-  if (!bit_buffer->ReadBits(&nal_unit_header->nal_ref_idc, 2)) {
+  if (!bit_buffer->ReadBits(2, nal_unit_header->nal_ref_idc)) {
     return nullptr;
   }
 
   // nal_unit_type  u(5)
-  if (!bit_buffer->ReadBits(&nal_unit_header->nal_unit_type, 5)) {
+  if (!bit_buffer->ReadBits(5, nal_unit_header->nal_unit_type)) {
     return nullptr;
   }
 
@@ -69,7 +69,7 @@ H264NalUnitHeaderParser::ParseNalUnitHeader(
       nal_unit_header->nal_unit_type == 21) {
     if (nal_unit_header->nal_unit_type != 21) {
       // svc_extension_flag  u(1)
-      if (!bit_buffer->ReadBits(&nal_unit_header->svc_extension_flag, 1)) {
+      if (!bit_buffer->ReadBits(1, nal_unit_header->svc_extension_flag)) {
         return nullptr;
       }
       if (nal_unit_header->svc_extension_flag == 1) {
@@ -84,7 +84,7 @@ H264NalUnitHeaderParser::ParseNalUnitHeader(
 
     } else {
       // avc_3d_extension_flag  u(1)
-      if (!bit_buffer->ReadBits(&nal_unit_header->avc_3d_extension_flag, 1)) {
+      if (!bit_buffer->ReadBits(1, nal_unit_header->avc_3d_extension_flag)) {
         return nullptr;
       }
     }

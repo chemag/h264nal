@@ -49,8 +49,8 @@ H264PrefixNalUnitSvcParser::ParsePrefixNalUnitSvc(
 
   if (prefix_nal_unit_svc->nal_ref_idc != 0) {
     // store_ref_base_pic_flag  u(1)
-    if (!bit_buffer->ReadBits(&prefix_nal_unit_svc->store_ref_base_pic_flag,
-                              1)) {
+    if (!bit_buffer->ReadBits(1,
+                              prefix_nal_unit_svc->store_ref_base_pic_flag)) {
       return nullptr;
     }
 
@@ -66,8 +66,8 @@ H264PrefixNalUnitSvcParser::ParsePrefixNalUnitSvc(
 
     // additional_prefix_nal_unit_extension_flag  u(1)
     if (!bit_buffer->ReadBits(
-            &prefix_nal_unit_svc->additional_prefix_nal_unit_extension_flag,
-            1)) {
+            1,
+            prefix_nal_unit_svc->additional_prefix_nal_unit_extension_flag)) {
       return nullptr;
     }
 
@@ -75,9 +75,8 @@ H264PrefixNalUnitSvcParser::ParsePrefixNalUnitSvc(
       while (more_rbsp_data(bit_buffer)) {
         // additional_prefix_nal_unit_extension_data_flag  u(1)
         if (!bit_buffer->ReadBits(
-                &prefix_nal_unit_svc
-                     ->additional_prefix_nal_unit_extension_data_flag,
-                1)) {
+                1, prefix_nal_unit_svc
+                       ->additional_prefix_nal_unit_extension_data_flag)) {
           return nullptr;
         }
       }
@@ -87,9 +86,8 @@ H264PrefixNalUnitSvcParser::ParsePrefixNalUnitSvc(
       while (more_rbsp_data(bit_buffer)) {
         // additional_prefix_nal_unit_extension_data_flag  u(1)
         if (!bit_buffer->ReadBits(
-                &prefix_nal_unit_svc
-                     ->additional_prefix_nal_unit_extension_data_flag,
-                1)) {
+                1, prefix_nal_unit_svc
+                       ->additional_prefix_nal_unit_extension_data_flag)) {
           return nullptr;
         }
       }

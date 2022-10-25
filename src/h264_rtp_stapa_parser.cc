@@ -50,7 +50,7 @@ H264RtpStapAParser::ParseRtpStapA(
   while (bit_buffer->RemainingBitCount() > 0) {
     // NALU size
     uint32_t nalu_size;
-    if (!bit_buffer->ReadBits(&nalu_size, 16)) {
+    if (!bit_buffer->ReadBits(16, nalu_size)) {
       return nullptr;
     }
     rtp_stapa->nal_unit_sizes.push_back(nalu_size);

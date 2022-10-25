@@ -41,52 +41,52 @@ H264SpsDataParser::ParseSpsData(rtc::BitBuffer* bit_buffer) noexcept {
   auto sps_data = std::make_unique<SpsDataState>();
 
   // profile_idc  u(8)
-  if (!bit_buffer->ReadBits(&sps_data->profile_idc, 8)) {
+  if (!bit_buffer->ReadBits(8, sps_data->profile_idc)) {
     return nullptr;
   }
 
   // constraint_set0_flag  u(1)
-  if (!bit_buffer->ReadBits(&sps_data->constraint_set0_flag, 1)) {
+  if (!bit_buffer->ReadBits(1, sps_data->constraint_set0_flag)) {
     return nullptr;
   }
 
   // constraint_set1_flag  u(1)
-  if (!bit_buffer->ReadBits(&sps_data->constraint_set1_flag, 1)) {
+  if (!bit_buffer->ReadBits(1, sps_data->constraint_set1_flag)) {
     return nullptr;
   }
 
   // constraint_set2_flag  u(1)
-  if (!bit_buffer->ReadBits(&sps_data->constraint_set2_flag, 1)) {
+  if (!bit_buffer->ReadBits(1, sps_data->constraint_set2_flag)) {
     return nullptr;
   }
 
   // constraint_set3_flag  u(1)
-  if (!bit_buffer->ReadBits(&sps_data->constraint_set3_flag, 1)) {
+  if (!bit_buffer->ReadBits(1, sps_data->constraint_set3_flag)) {
     return nullptr;
   }
 
   // constraint_set4_flag  u(1)
-  if (!bit_buffer->ReadBits(&sps_data->constraint_set4_flag, 1)) {
+  if (!bit_buffer->ReadBits(1, sps_data->constraint_set4_flag)) {
     return nullptr;
   }
 
   // constraint_set5_flag  u(1)
-  if (!bit_buffer->ReadBits(&sps_data->constraint_set5_flag, 1)) {
+  if (!bit_buffer->ReadBits(1, sps_data->constraint_set5_flag)) {
     return nullptr;
   }
 
   // reserved_zero_2bits  u(2)
-  if (!bit_buffer->ReadBits(&sps_data->reserved_zero_2bits, 2)) {
+  if (!bit_buffer->ReadBits(2, sps_data->reserved_zero_2bits)) {
     return nullptr;
   }
 
   // level_idc  u(8)
-  if (!bit_buffer->ReadBits(&sps_data->level_idc, 8)) {
+  if (!bit_buffer->ReadBits(8, sps_data->level_idc)) {
     return nullptr;
   }
 
   // seq_parameter_set_id  ue(v)
-  if (!bit_buffer->ReadExponentialGolomb(&(sps_data->seq_parameter_set_id))) {
+  if (!bit_buffer->ReadExponentialGolomb(sps_data->seq_parameter_set_id)) {
     return nullptr;
   }
 
@@ -98,37 +98,35 @@ H264SpsDataParser::ParseSpsData(rtc::BitBuffer* bit_buffer) noexcept {
       sps_data->profile_idc == 139 || sps_data->profile_idc == 134 ||
       sps_data->profile_idc == 135) {
     // chroma_format_idc  ue(v)
-    if (!bit_buffer->ReadExponentialGolomb(&(sps_data->chroma_format_idc))) {
+    if (!bit_buffer->ReadExponentialGolomb(sps_data->chroma_format_idc)) {
       return nullptr;
     }
 
     if (sps_data->chroma_format_idc == 3) {
       // separate_colour_plane_flag  u(1)
-      if (!bit_buffer->ReadBits(&sps_data->separate_colour_plane_flag, 1)) {
+      if (!bit_buffer->ReadBits(1, sps_data->separate_colour_plane_flag)) {
         return nullptr;
       }
     }
 
     // bit_depth_luma_minus8  ue(v)
-    if (!bit_buffer->ReadExponentialGolomb(
-            &(sps_data->bit_depth_luma_minus8))) {
+    if (!bit_buffer->ReadExponentialGolomb(sps_data->bit_depth_luma_minus8)) {
       return nullptr;
     }
 
     // bit_depth_chroma_minus8  ue(v)
-    if (!bit_buffer->ReadExponentialGolomb(
-            &(sps_data->bit_depth_chroma_minus8))) {
+    if (!bit_buffer->ReadExponentialGolomb(sps_data->bit_depth_chroma_minus8)) {
       return nullptr;
     }
 
     // qpprime_y_zero_transform_bypass_flag  u(1)
-    if (!bit_buffer->ReadBits(&sps_data->qpprime_y_zero_transform_bypass_flag,
-                              1)) {
+    if (!bit_buffer->ReadBits(1,
+                              sps_data->qpprime_y_zero_transform_bypass_flag)) {
       return nullptr;
     }
 
     // seq_scaling_matrix_present_flag  u(1)
-    if (!bit_buffer->ReadBits(&sps_data->seq_scaling_matrix_present_flag, 1)) {
+    if (!bit_buffer->ReadBits(1, sps_data->seq_scaling_matrix_present_flag)) {
       return nullptr;
     }
 
@@ -136,7 +134,7 @@ H264SpsDataParser::ParseSpsData(rtc::BitBuffer* bit_buffer) noexcept {
       for (uint32_t i = 0; i < ((sps_data->chroma_format_idc != 3) ? 8 : 12);
            i++) {
         // seq_scaling_list_present_flag[i]  u(1)
-        if (!bit_buffer->ReadBits(&bits_tmp, 1)) {
+        if (!bit_buffer->ReadBits(1, bits_tmp)) {
           return nullptr;
         }
         sps_data->seq_scaling_list_present_flag.push_back(bits_tmp);
@@ -158,51 +156,50 @@ H264SpsDataParser::ParseSpsData(rtc::BitBuffer* bit_buffer) noexcept {
   }
 
   // log2_max_frame_num_minus4  ue(v)
-  if (!bit_buffer->ReadExponentialGolomb(
-          &(sps_data->log2_max_frame_num_minus4))) {
+  if (!bit_buffer->ReadExponentialGolomb(sps_data->log2_max_frame_num_minus4)) {
     return nullptr;
   }
 
   // pic_order_cnt_type  ue(v)
-  if (!bit_buffer->ReadExponentialGolomb(&(sps_data->pic_order_cnt_type))) {
+  if (!bit_buffer->ReadExponentialGolomb(sps_data->pic_order_cnt_type)) {
     return nullptr;
   }
 
   if (sps_data->pic_order_cnt_type == 0) {
     // log2_max_pic_order_cnt_lsb_minus4  ue(v)
     if (!bit_buffer->ReadExponentialGolomb(
-            &(sps_data->log2_max_pic_order_cnt_lsb_minus4))) {
+            sps_data->log2_max_pic_order_cnt_lsb_minus4)) {
       return nullptr;
     }
 
   } else if (sps_data->pic_order_cnt_type == 1) {
     // delta_pic_order_always_zero_flag  u(1)
-    if (!bit_buffer->ReadBits(&sps_data->delta_pic_order_always_zero_flag, 1)) {
+    if (!bit_buffer->ReadBits(1, sps_data->delta_pic_order_always_zero_flag)) {
       return nullptr;
     }
 
     // offset_for_non_ref_pic  se(v)
     if (!bit_buffer->ReadSignedExponentialGolomb(
-            &(sps_data->offset_for_non_ref_pic))) {
+            sps_data->offset_for_non_ref_pic)) {
       return nullptr;
     }
 
     // offset_for_top_to_bottom_field  se(v)
     if (!bit_buffer->ReadSignedExponentialGolomb(
-            &(sps_data->offset_for_top_to_bottom_field))) {
+            sps_data->offset_for_top_to_bottom_field)) {
       return nullptr;
     }
 
     // num_ref_frames_in_pic_order_cnt_cycle  ue(v)
     if (!bit_buffer->ReadExponentialGolomb(
-            &(sps_data->num_ref_frames_in_pic_order_cnt_cycle))) {
+            sps_data->num_ref_frames_in_pic_order_cnt_cycle)) {
       return nullptr;
     }
 
     for (uint32_t i = 0; i < sps_data->num_ref_frames_in_pic_order_cnt_cycle;
          i++) {
       // offset_for_ref_frame[i]  se(v)
-      if (!bit_buffer->ReadSignedExponentialGolomb(&golomb_tmp)) {
+      if (!bit_buffer->ReadSignedExponentialGolomb(golomb_tmp)) {
         return nullptr;
       }
       sps_data->offset_for_ref_frame.push_back(golomb_tmp);
@@ -210,78 +207,74 @@ H264SpsDataParser::ParseSpsData(rtc::BitBuffer* bit_buffer) noexcept {
   }
 
   // max_num_ref_frames  ue(v)
-  if (!bit_buffer->ReadExponentialGolomb(&(sps_data->max_num_ref_frames))) {
+  if (!bit_buffer->ReadExponentialGolomb(sps_data->max_num_ref_frames)) {
     return nullptr;
   }
 
   // gaps_in_frame_num_value_allowed_flag  u(1)
-  if (!bit_buffer->ReadBits(&sps_data->gaps_in_frame_num_value_allowed_flag,
-                            1)) {
+  if (!bit_buffer->ReadBits(1,
+                            sps_data->gaps_in_frame_num_value_allowed_flag)) {
     return nullptr;
   }
 
   // pic_width_in_mbs_minus1  ue(v)
-  if (!bit_buffer->ReadExponentialGolomb(
-          &(sps_data->pic_width_in_mbs_minus1))) {
+  if (!bit_buffer->ReadExponentialGolomb(sps_data->pic_width_in_mbs_minus1)) {
     return nullptr;
   }
 
   // pic_height_in_map_units_minus1  ue(v)
   if (!bit_buffer->ReadExponentialGolomb(
-          &(sps_data->pic_height_in_map_units_minus1))) {
+          sps_data->pic_height_in_map_units_minus1)) {
     return nullptr;
   }
 
   // frame_mbs_only_flag  u(1)
-  if (!bit_buffer->ReadBits(&sps_data->frame_mbs_only_flag, 1)) {
+  if (!bit_buffer->ReadBits(1, sps_data->frame_mbs_only_flag)) {
     return nullptr;
   }
 
   if (!sps_data->frame_mbs_only_flag) {
     // mb_adaptive_frame_field_flag  u(1)
-    if (!bit_buffer->ReadBits(&sps_data->mb_adaptive_frame_field_flag, 1)) {
+    if (!bit_buffer->ReadBits(1, sps_data->mb_adaptive_frame_field_flag)) {
       return nullptr;
     }
   }
 
   // direct_8x8_inference_flag  u(1)
-  if (!bit_buffer->ReadBits(&sps_data->direct_8x8_inference_flag, 1)) {
+  if (!bit_buffer->ReadBits(1, sps_data->direct_8x8_inference_flag)) {
     return nullptr;
   }
 
   // frame_cropping_flag  u(1)
-  if (!bit_buffer->ReadBits(&sps_data->frame_cropping_flag, 1)) {
+  if (!bit_buffer->ReadBits(1, sps_data->frame_cropping_flag)) {
     return nullptr;
   }
 
   if (sps_data->frame_cropping_flag) {
     // frame_crop_left_offset  ue(v)
-    if (!bit_buffer->ReadExponentialGolomb(
-            &(sps_data->frame_crop_left_offset))) {
+    if (!bit_buffer->ReadExponentialGolomb(sps_data->frame_crop_left_offset)) {
       return nullptr;
     }
 
     // frame_crop_right_offset  ue(v)
-    if (!bit_buffer->ReadExponentialGolomb(
-            &(sps_data->frame_crop_right_offset))) {
+    if (!bit_buffer->ReadExponentialGolomb(sps_data->frame_crop_right_offset)) {
       return nullptr;
     }
 
     // frame_crop_top_offset  ue(v)
-    if (!bit_buffer->ReadExponentialGolomb(
-            &(sps_data->frame_crop_top_offset))) {
+    if (!bit_buffer->ReadExponentialGolomb(sps_data->frame_crop_top_offset)) {
       return nullptr;
     }
 
     // frame_crop_bottom_offset  ue(v)
     if (!bit_buffer->ReadExponentialGolomb(
-            &(sps_data->frame_crop_bottom_offset))) {
+            sps_data->frame_crop_bottom_offset)) {
       return nullptr;
     }
   }
 
   // vui_parameters_present_flag  u(1)
-  if (!bit_buffer->ReadBits(&(sps_data->vui_parameters_present_flag), 1)) {
+  if (!bit_buffer->ReadBits(1, (sps_data->vui_parameters_present_flag))) {
     return nullptr;
   }
 
@@ -323,7 +316,7 @@ bool H264SpsDataParser::SpsDataState::scaling_list(
   for (uint32_t j = 0; j < sizeOfScalingList; j++) {
     if (nextScale != 0) {
       // delta_scale  se(v)
-      if (!bit_buffer->ReadSignedExponentialGolomb(&delta_scale)) {
+      if (!bit_buffer->ReadSignedExponentialGolomb(delta_scale)) {
         return false;
       }
       nextScale = (lastScale + (delta_scale) + 256) % 256;

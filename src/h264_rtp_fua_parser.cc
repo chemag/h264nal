@@ -45,16 +45,16 @@ std::unique_ptr<H264RtpFuAParser::RtpFuAState> H264RtpFuAParser::ParseRtpFuA(
   }
 
   // read the fu-A header
-  if (!bit_buffer->ReadBits(&(rtp_fua->s_bit), 1)) {
+  if (!bit_buffer->ReadBits(1, rtp_fua->s_bit)) {
     return nullptr;
   }
-  if (!bit_buffer->ReadBits(&(rtp_fua->e_bit), 1)) {
+  if (!bit_buffer->ReadBits(1, rtp_fua->e_bit)) {
     return nullptr;
   }
-  if (!bit_buffer->ReadBits(&(rtp_fua->r_bit), 1)) {
+  if (!bit_buffer->ReadBits(1, rtp_fua->r_bit)) {
     return nullptr;
   }
-  if (!bit_buffer->ReadBits(&(rtp_fua->fu_type), 5)) {
+  if (!bit_buffer->ReadBits(5, rtp_fua->fu_type)) {
     return nullptr;
   }
 

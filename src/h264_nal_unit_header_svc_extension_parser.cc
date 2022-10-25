@@ -41,52 +41,52 @@ H264NalUnitHeaderSvcExtensionParser::ParseNalUnitHeaderSvcExtension(
   auto nal_unit_header = std::make_unique<NalUnitHeaderSvcExtensionState>();
 
   // idr_flag  u(1)
-  if (!bit_buffer->ReadBits(&nal_unit_header->idr_flag, 1)) {
+  if (!bit_buffer->ReadBits(1, nal_unit_header->idr_flag)) {
     return nullptr;
   }
 
   // priority_id  u(6)
-  if (!bit_buffer->ReadBits(&nal_unit_header->priority_id, 6)) {
+  if (!bit_buffer->ReadBits(6, nal_unit_header->priority_id)) {
     return nullptr;
   }
 
   // no_inter_layer_pred_flag  u(1)
-  if (!bit_buffer->ReadBits(&nal_unit_header->no_inter_layer_pred_flag, 1)) {
+  if (!bit_buffer->ReadBits(1, nal_unit_header->no_inter_layer_pred_flag)) {
     return nullptr;
   }
 
   // dependency_id  u(3)
-  if (!bit_buffer->ReadBits(&nal_unit_header->dependency_id, 3)) {
+  if (!bit_buffer->ReadBits(3, nal_unit_header->dependency_id)) {
     return nullptr;
   }
 
   // quality_id  u(4)
-  if (!bit_buffer->ReadBits(&nal_unit_header->quality_id, 4)) {
+  if (!bit_buffer->ReadBits(4, nal_unit_header->quality_id)) {
     return nullptr;
   }
 
   // temporal_id  u(3)
-  if (!bit_buffer->ReadBits(&nal_unit_header->temporal_id, 3)) {
+  if (!bit_buffer->ReadBits(3, nal_unit_header->temporal_id)) {
     return nullptr;
   }
 
   // use_ref_base_pic_flag  u(1)
-  if (!bit_buffer->ReadBits(&nal_unit_header->use_ref_base_pic_flag, 1)) {
+  if (!bit_buffer->ReadBits(1, nal_unit_header->use_ref_base_pic_flag)) {
     return nullptr;
   }
 
   // discardable_flag  u(1)
-  if (!bit_buffer->ReadBits(&nal_unit_header->discardable_flag, 1)) {
+  if (!bit_buffer->ReadBits(1, nal_unit_header->discardable_flag)) {
     return nullptr;
   }
 
   // output_flag  u(1)
-  if (!bit_buffer->ReadBits(&nal_unit_header->output_flag, 1)) {
+  if (!bit_buffer->ReadBits(1, nal_unit_header->output_flag)) {
     return nullptr;
   }
 
   // reserved_three_2bits  u(2)
-  if (!bit_buffer->ReadBits(&nal_unit_header->reserved_three_2bits, 2)) {
+  if (!bit_buffer->ReadBits(2, nal_unit_header->reserved_three_2bits)) {
     return nullptr;
   }
 
