@@ -113,6 +113,18 @@ H264SpsDataParser::ParseSpsData(rtc::BitBuffer* bit_buffer) noexcept {
     if (!bit_buffer->ReadExponentialGolomb(sps_data->chroma_format_idc)) {
       return nullptr;
     }
+    if (sps_data->chroma_format_idc < kChromaFormatIdcMin ||
+        sps_data->chroma_format_idc > kChromaFormatIdcMax) {
+#ifdef FPRINT_ERRORS
+      fprintf(stderr,
+              "invalid chroma_format_idc: %" PRIu32
+              " not in range "
+              "[%" PRIu32 ", %" PRIu32 "]\n",
+              sps_data->chroma_format_idc, kChromaFormatIdcMin,
+              kChromaFormatIdcMax);
+#endif  // FPRINT_ERRORS
+      return nullptr;
+    }
 
     if (sps_data->chroma_format_idc == 3) {
       // separate_colour_plane_flag  u(1)
