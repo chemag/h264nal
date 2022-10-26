@@ -311,6 +311,18 @@ H264SpsDataParser::ParseSpsData(rtc::BitBuffer* bit_buffer) noexcept {
   if (!bit_buffer->ReadExponentialGolomb(sps_data->max_num_ref_frames)) {
     return nullptr;
   }
+  if (sps_data->max_num_ref_frames < 0 ||
+      sps_data->max_num_ref_frames > H264VuiParametersParser::kMaxDpbFrames) {
+#ifdef FPRINT_ERRORS
+    fprintf(stderr,
+            "invalid max_num_ref_frames: %" PRIu32
+            " not in range "
+            "[%" PRIu32 ", %" PRIu32 "]\n",
+            sps_data->max_num_ref_frames, 0,
+            H264VuiParametersParser::kMaxDpbFrames);
+#endif  // FPRINT_ERRORS
+    return nullptr;
+  }
 
   // gaps_in_frame_num_value_allowed_flag  u(1)
   if (!bit_buffer->ReadBits(1,
