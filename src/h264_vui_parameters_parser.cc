@@ -313,6 +313,19 @@ H264VuiParametersParser::ParseVuiParameters(
     if (!bit_buffer->ReadExponentialGolomb(vui->max_dec_frame_buffering)) {
       return nullptr;
     }
+    // Section E.2.1: "The value of max_dec_frame_buffering shall be greater
+    // than or equal to max_num_ref_frames."
+    // copid from ffmpeg
+    if (vui->max_dec_frame_buffering < kMaxDpbFrames) {
+#ifdef FPRINT_ERRORS
+      fprintf(stderr,
+              "invalid max_dec_frame_buffering: %" PRIu32
+              " not in range "
+              "[%" PRIu32 ", %" PRIu32 "]\n",
+              vui->max_dec_frame_buffering, 0, kMaxDpbFrames);
+#endif  // FPRINT_ERRORS
+      return nullptr;
+    }
   }
 
   return vui;
