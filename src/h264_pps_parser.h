@@ -25,6 +25,10 @@ class H264PpsParser {
   // range of 0 to 31, inclusive."
   const static uint32_t kSeqParameterSetIdMin = 0;
   const static uint32_t kSeqParameterSetIdMax = 31;
+  // Section 7.4.2.2: "The value of pic_parameter_set_id shall be in the
+  // range of 0 to 255, inclusive."
+  const static uint32_t kPicParameterSetIdMin = 0;
+  const static uint32_t kPicParameterSetIdMax = 255;
 
   // The parsed state of the PPS. Only some select values are stored.
   // Add more as they are actually needed.

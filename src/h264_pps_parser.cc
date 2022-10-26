@@ -46,6 +46,18 @@ std::shared_ptr<H264PpsParser::PpsState> H264PpsParser::ParsePps(
   if (!bit_buffer->ReadExponentialGolomb(pps->pic_parameter_set_id)) {
     return nullptr;
   }
+  if (pps->pic_parameter_set_id < kPicParameterSetIdMin ||
+      pps->pic_parameter_set_id > kPicParameterSetIdMax) {
+#ifdef FPRINT_ERRORS
+    fprintf(stderr,
+            "invalid pic_parameter_set_id: %" PRIu32
+            " not in range "
+            "[%" PRIu32 ", %" PRIu32 "]\n",
+            pps->pic_parameter_set_id, kPicParameterSetIdMin,
+            kPicParameterSetIdMax);
+#endif  // FPRINT_ERRORS
+    return nullptr;
+  }
 
   // seq_parameter_set_id  ue(v)
   if (!bit_buffer->ReadExponentialGolomb(pps->seq_parameter_set_id)) {
