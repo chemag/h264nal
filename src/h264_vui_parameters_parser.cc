@@ -245,6 +245,19 @@ H264VuiParametersParser::ParseVuiParameters(
     if (!bit_buffer->ReadExponentialGolomb(vui->max_bits_per_mb_denom)) {
       return nullptr;
     }
+    if (vui->max_bits_per_mb_denom < kMaxBitsPerMbDenomMin ||
+        vui->max_bits_per_mb_denom > kMaxBitsPerMbDenomMax) {
+#ifdef FPRINT_ERRORS
+      fprintf(stderr,
+              "invalid max_bits_per_mb_denom: %" PRIu32
+              " not in range "
+              "[%" PRIu32 ", %" PRIu32 "]\n",
+              vui->max_bits_per_mb_denom, kMaxBitsPerMbDenomMin,
+              kMaxBitsPerMbDenomMax);
+#endif  // FPRINT_ERRORS
+      return nullptr;
+    }
+
     // log2_max_mv_length_horizontal  ue(v)
     if (!bit_buffer->ReadExponentialGolomb(
             vui->log2_max_mv_length_horizontal)) {
