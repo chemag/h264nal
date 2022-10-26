@@ -20,6 +20,11 @@ namespace h264nal {
 // seq_parameter_set_data()
 class H264SpsDataParser {
  public:
+  // Section 7.4.2.1.1: "bit_depth_luma_minus8 shall be in the range of 0 to
+  // 6, inclusive."
+  const static uint32_t kBitDepthLumaMinus8Min = 0;
+  const static uint32_t kBitDepthLumaMinus8Max = 6;
+
   // The parsed state of an seq_parameter_set_data() RBSP. Only some select
   // values are stored.
   // Add more as they are actually needed.
