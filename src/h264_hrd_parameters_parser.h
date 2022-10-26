@@ -17,6 +17,11 @@ namespace h264nal {
 // (`hrd_parameters()`, as defined in Section E.1.2 of the 2012
 // standard) from an H264 NALU.
 class H264HrdParametersParser {
+  // Section E.2.2: "The value of cpb_cnt_minus1 shall be in the range of
+  // 0 to 31, inclusive."
+  const static uint32_t kCpbCntMinus1Min = 0;
+  const static uint32_t kCpbCntMinus1Max = 31;
+
  public:
   // The parsed state of the HrdParameters.
   struct HrdParametersState {

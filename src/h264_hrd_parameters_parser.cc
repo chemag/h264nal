@@ -44,6 +44,17 @@ H264HrdParametersParser::ParseHrdParameters(
   if (!bit_buffer->ReadExponentialGolomb(hrd_parameters->cpb_cnt_minus1)) {
     return nullptr;
   }
+  if (hrd_parameters->cpb_cnt_minus1 < kCpbCntMinus1Min ||
+      hrd_parameters->cpb_cnt_minus1 > kCpbCntMinus1Max) {
+#ifdef FPRINT_ERRORS
+    fprintf(stderr,
+            "invalid cpb_cnt_minus1: %" PRIu32
+            " not in range "
+            "[%" PRIu32 ", %" PRIu32 "]\n",
+            hrd_parameters->cpb_cnt_minus1, kCpbCntMinus1Min, kCpbCntMinus1Max);
+#endif  // FPRINT_ERRORS
+    return nullptr;
+  }
 
   // bit_rate_scale  u(4)
   if (!bit_buffer->ReadBits(4, (hrd_parameters->bit_rate_scale))) {
