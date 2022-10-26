@@ -281,6 +281,21 @@ H264SpsDataParser::ParseSpsData(rtc::BitBuffer* bit_buffer) noexcept {
             sps_data->num_ref_frames_in_pic_order_cnt_cycle)) {
       return nullptr;
     }
+    if (sps_data->num_ref_frames_in_pic_order_cnt_cycle <
+            kNumRefFramesInPicOrderCntCycleMin ||
+        sps_data->num_ref_frames_in_pic_order_cnt_cycle >
+            kNumRefFramesInPicOrderCntCycleMax) {
+#ifdef FPRINT_ERRORS
+      fprintf(stderr,
+              "invalid num_ref_frames_in_pic_order_cnt_cycle: %" PRIu32
+              " not in range "
+              "[%" PRIu32 ", %" PRIu32 "]\n",
+              sps_data->num_ref_frames_in_pic_order_cnt_cycle,
+              kNumRefFramesInPicOrderCntCycleMin,
+              kNumRefFramesInPicOrderCntCycleMax);
+#endif  // FPRINT_ERRORS
+      return nullptr;
+    }
 
     for (uint32_t i = 0; i < sps_data->num_ref_frames_in_pic_order_cnt_cycle;
          i++) {
