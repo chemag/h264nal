@@ -58,6 +58,10 @@ class H264VuiParametersParser {
   // the range of 0 to 16, inclusive."
   const static uint32_t kLog2MaxMvLengthHorizontalMin = 0;
   const static uint32_t kLog2MaxMvLengthHorizontalMax = 16;
+  // Section E.2.1: "The value of log2_max_mv_length_vertical shall be in
+  // the range of 0 to 16, inclusive."
+  const static uint32_t kLog2MaxMvLengthVerticalMin = 0;
+  const static uint32_t kLog2MaxMvLengthVerticalMax = 16;
   // The parsed state of the SPS VUI. Only some select values are stored.
   // Add more as they are actually needed.
   struct VuiParametersState {
