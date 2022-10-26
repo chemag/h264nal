@@ -36,6 +36,10 @@ class H264SpsDataParser {
   // range of 0 to 31, inclusive."
   const static uint32_t kSeqParameterSetIdMin = 0;
   const static uint32_t kSeqParameterSetIdMax = 31;
+  // Section 7.4.2.1.1: "The value of log2_max_frame_num_minus4 shall be in
+  // the range of 0 to 12, inclusive."
+  const static uint32_t kLog2MaxFrameNumMinus4Min = 0;
+  const static uint32_t kLog2MaxFrameNumMinus4Max = 12;
 
   // The parsed state of an seq_parameter_set_data() RBSP. Only some select
   // values are stored.
