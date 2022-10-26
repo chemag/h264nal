@@ -130,6 +130,18 @@ H264SpsDataParser::ParseSpsData(rtc::BitBuffer* bit_buffer) noexcept {
     if (!bit_buffer->ReadExponentialGolomb(sps_data->bit_depth_chroma_minus8)) {
       return nullptr;
     }
+    if (sps_data->bit_depth_chroma_minus8 < kBitDepthChromaMinus8Min ||
+        sps_data->bit_depth_chroma_minus8 > kBitDepthChromaMinus8Max) {
+#ifdef FPRINT_ERRORS
+      fprintf(stderr,
+              "invalid bit_depth_chroma_minus8: %" PRIu32
+              " not in range "
+              "[%" PRIu32 ", %" PRIu32 "]\n",
+              sps_data->bit_depth_chroma_minus8, kBitDepthChromaMinus8Min,
+              kBitDepthChromaMinus8Max);
+#endif  // FPRINT_ERRORS
+      return nullptr;
+    }
 
     // qpprime_y_zero_transform_bypass_flag  u(1)
     if (!bit_buffer->ReadBits(1,

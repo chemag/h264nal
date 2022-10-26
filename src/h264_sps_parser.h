@@ -24,6 +24,10 @@ class H264SpsDataParser {
   // 6, inclusive."
   const static uint32_t kBitDepthLumaMinus8Min = 0;
   const static uint32_t kBitDepthLumaMinus8Max = 6;
+  // Section 7.4.2.1.1: "bit_depth_chroma_minus8 shall be in the range of 0 to
+  // 6, inclusive."
+  const static uint32_t kBitDepthChromaMinus8Min = 0;
+  const static uint32_t kBitDepthChromaMinus8Max = 6;
 
   // The parsed state of an seq_parameter_set_data() RBSP. Only some select
   // values are stored.
