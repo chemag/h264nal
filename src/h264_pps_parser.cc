@@ -4,6 +4,8 @@
 
 #include "h264_pps_parser.h"
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
 #include <stdio.h>
 
 #include <cmath>
@@ -245,6 +247,18 @@ bool H264PpsParser::PpsState::scaling_list(
     if (nextScale != 0) {
       // delta_scale  se(v)
       if (!bit_buffer->ReadSignedExponentialGolomb(delta_scale)) {
+        return false;
+      }
+      if (delta_scale < H264PpsParser::kScalingDeltaMin ||
+          delta_scale > H264PpsParser::kScalingDeltaMax) {
+#ifdef FPRINT_ERRORS
+        fprintf(stderr,
+                "invalid delta_scale: %" PRIi32
+                " not in range "
+                "[%" PRIi32 ", %" PRIi32 "]\n",
+                delta_scale, H264PpsParser::kScalingDeltaMin,
+                H264PpsParser::kScalingDeltaMax);
+#endif  // FPRINT_ERRORS
         return false;
       }
       nextScale = (lastScale + (delta_scale) + 256) % 256;

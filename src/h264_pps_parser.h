@@ -17,6 +17,11 @@ namespace h264nal {
 // an H264 NALU.
 class H264PpsParser {
  public:
+  // Section 7.4.2.1.1.1: "The value of delta_scale shall be in the range
+  // of -128 to +127, inclusive."
+  const static int32_t kScalingDeltaMin = -128;
+  const static int32_t kScalingDeltaMax = 127;
+
   // The parsed state of the PPS. Only some select values are stored.
   // Add more as they are actually needed.
   struct PpsState {
