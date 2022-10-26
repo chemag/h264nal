@@ -224,6 +224,18 @@ H264SpsDataParser::ParseSpsData(rtc::BitBuffer* bit_buffer) noexcept {
   if (!bit_buffer->ReadExponentialGolomb(sps_data->pic_order_cnt_type)) {
     return nullptr;
   }
+  if (sps_data->pic_order_cnt_type < kPicOrderCntTypeMin ||
+      sps_data->pic_order_cnt_type > kPicOrderCntTypeMax) {
+#ifdef FPRINT_ERRORS
+    fprintf(stderr,
+            "invalid pic_order_cnt_type: %" PRIu32
+            " not in range "
+            "[%" PRIu32 ", %" PRIu32 "]\n",
+            sps_data->pic_order_cnt_type, kPicOrderCntTypeMin,
+            kPicOrderCntTypeMax);
+#endif  // FPRINT_ERRORS
+    return nullptr;
+  }
 
   if (sps_data->pic_order_cnt_type == 0) {
     // log2_max_pic_order_cnt_lsb_minus4  ue(v)
