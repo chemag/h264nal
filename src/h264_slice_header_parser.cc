@@ -287,6 +287,21 @@ H264SliceHeaderParser::ParseSliceHeader(
   if (!bit_buffer->ReadSignedExponentialGolomb(slice_header->slice_qp_delta)) {
     return nullptr;
   }
+  if (slice_header->slice_qp_delta <
+          (-51 - 6 * static_cast<int32_t>(sps_data->bit_depth_luma_minus8)) ||
+      slice_header->slice_qp_delta >
+          (51 + 6 * static_cast<int32_t>(sps_data->bit_depth_luma_minus8))) {
+#ifdef FPRINT_ERRORS
+    fprintf(stderr,
+            "invalid slice_qp_delta: %" PRIi32
+            " not in range "
+            "[%" PRIi32 ", %" PRIi32 "]\n",
+            slice_header->slice_qp_delta,
+            -51 - 6 * static_cast<int32_t>(sps_data->bit_depth_luma_minus8),
+            51 + 6 * static_cast<int32_t>(sps_data->bit_depth_luma_minus8));
+#endif  // FPRINT_ERRORS
+    return nullptr;
+  }
 
   if ((slice_header->slice_type == SliceType::SP) ||
       (slice_header->slice_type == SliceType::SP_ALL) ||
