@@ -51,6 +51,18 @@ std::shared_ptr<H264PpsParser::PpsState> H264PpsParser::ParsePps(
   if (!bit_buffer->ReadExponentialGolomb(pps->seq_parameter_set_id)) {
     return nullptr;
   }
+  if (pps->seq_parameter_set_id < kSeqParameterSetIdMin ||
+      pps->seq_parameter_set_id > kSeqParameterSetIdMax) {
+#ifdef FPRINT_ERRORS
+    fprintf(stderr,
+            "invalid seq_parameter_set_id: %" PRIu32
+            " not in range "
+            "[%" PRIu32 ", %" PRIu32 "]\n",
+            pps->seq_parameter_set_id, kSeqParameterSetIdMin,
+            kSeqParameterSetIdMax);
+#endif  // FPRINT_ERRORS
+    return nullptr;
+  }
 
   // entropy_coding_mode_flag  u(1)
   if (!bit_buffer->ReadBits(1, (pps->entropy_coding_mode_flag))) {
