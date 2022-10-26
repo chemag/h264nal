@@ -44,6 +44,10 @@ class H264SpsDataParser {
   // range of 0 to 2, inclusive."
   const static uint32_t kPicOrderCntTypeMin = 0;
   const static uint32_t kPicOrderCntTypeMax = 2;
+  // Section 7.4.2.1.1: "The value of log2_max_pic_order_cnt_lsb_minus4
+  // shall be in the range of 0 to 12, inclusive."
+  const static uint32_t kLog2MaxPicOrderCntLsbMinus4Min = 0;
+  const static uint32_t kLog2MaxPicOrderCntLsbMinus4Max = 12;
 
   // The parsed state of an seq_parameter_set_data() RBSP. Only some select
   // values are stored.

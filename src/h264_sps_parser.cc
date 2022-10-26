@@ -243,6 +243,20 @@ H264SpsDataParser::ParseSpsData(rtc::BitBuffer* bit_buffer) noexcept {
             sps_data->log2_max_pic_order_cnt_lsb_minus4)) {
       return nullptr;
     }
+    if (sps_data->log2_max_pic_order_cnt_lsb_minus4 <
+            kLog2MaxPicOrderCntLsbMinus4Min ||
+        sps_data->log2_max_pic_order_cnt_lsb_minus4 >
+            kLog2MaxPicOrderCntLsbMinus4Max) {
+#ifdef FPRINT_ERRORS
+      fprintf(stderr,
+              "invalid log2_max_pic_order_cnt_lsb_minus4: %" PRIu32
+              " not in range "
+              "[%" PRIu32 ", %" PRIu32 "]\n",
+              sps_data->log2_max_pic_order_cnt_lsb_minus4,
+              kLog2MaxPicOrderCntLsbMinus4Min, kLog2MaxPicOrderCntLsbMinus4Max);
+#endif  // FPRINT_ERRORS
+      return nullptr;
+    }
 
   } else if (sps_data->pic_order_cnt_type == 1) {
     // delta_pic_order_always_zero_flag  u(1)
