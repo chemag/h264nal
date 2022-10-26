@@ -297,6 +297,18 @@ H264VuiParametersParser::ParseVuiParameters(
     if (!bit_buffer->ReadExponentialGolomb(vui->max_num_reorder_frames)) {
       return nullptr;
     }
+    if (vui->max_num_reorder_frames < 0 ||
+        vui->max_num_reorder_frames > kMaxDpbFrames) {
+#ifdef FPRINT_ERRORS
+      fprintf(stderr,
+              "invalid max_num_reorder_frames: %" PRIu32
+              " not in range "
+              "[%" PRIu32 ", %" PRIu32 "]\n",
+              vui->max_num_reorder_frames, 0, kMaxDpbFrames);
+#endif  // FPRINT_ERRORS
+      return nullptr;
+    }
+
     // max_dec_frame_buffering  ue(v)
     if (!bit_buffer->ReadExponentialGolomb(vui->max_dec_frame_buffering)) {
       return nullptr;
