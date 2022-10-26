@@ -69,6 +69,18 @@ H264SliceHeaderParser::ParseSliceHeader(
   if (!bit_buffer->ReadExponentialGolomb(slice_header->pic_parameter_set_id)) {
     return nullptr;
   }
+  if (slice_header->pic_parameter_set_id < kPicParameterSetIdMin ||
+      slice_header->pic_parameter_set_id > kPicParameterSetIdMax) {
+#ifdef FPRINT_ERRORS
+    fprintf(stderr,
+            "invalid pic_parameter_set_id: %" PRIu32
+            " not in range "
+            "[%" PRIu32 ", %" PRIu32 "]\n",
+            slice_header->pic_parameter_set_id, kPicParameterSetIdMin,
+            kPicParameterSetIdMax);
+#endif  // FPRINT_ERRORS
+    return nullptr;
+  }
 
   // get pps_id and sps_id and check their existence
   uint32_t pps_id = slice_header->pic_parameter_set_id;
