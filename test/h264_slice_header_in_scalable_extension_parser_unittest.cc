@@ -48,9 +48,9 @@ const uint8_t buffer_global[] = {
     0x3e, 0xef, 0xc0, 0x08, 0x4c,
     // slice_layer_extension_rbsp
     0x00, 0x00, 0x00, 0x01,
-    0x74, 0xc0, 0x90, 0x0f, 0xb4, 0x04, 0x5f, 0xc0,
-    0xc4, 0x42, 0x00, 0x04, 0xe0, 0xcf, 0xc0, 0xf8,
-    0x00, 0x1a, 0x64, 0x05, 0x63, 0xfb, 0x13, 0x9f
+    0x74, 0xc0, 0x90, 0x0f, 0xb4, 0x05, 0x7c, 0x0c,
+    0x44, 0x20, 0x00, 0x4e, 0x0c, 0xfc, 0x0f, 0x80,
+    0x01, 0xa6, 0x40, 0x56, 0x3f, 0xb1, 0x39, 0xf0
 };
 
 TEST_F(H264SliceHeaderInScalableExtensionParserTest, TestSampleBitstream01) {
@@ -194,7 +194,7 @@ TEST_F(H264SliceHeaderInScalableExtensionParserTest, TestSampleBitstream01) {
   EXPECT_EQ(0, slice_header_in_scalable_extension->store_ref_base_pic_flag);
   EXPECT_EQ(0, slice_header_in_scalable_extension->cabac_init_idc);
   EXPECT_EQ(0, slice_header_in_scalable_extension->slice_qp_delta);
-  EXPECT_EQ(10,
+  EXPECT_EQ(1,
             slice_header_in_scalable_extension->disable_deblocking_filter_idc);
   EXPECT_EQ(0, slice_header_in_scalable_extension->slice_alpha_c0_offset_div2);
   EXPECT_EQ(0, slice_header_in_scalable_extension->slice_beta_offset_div2);
@@ -205,10 +205,10 @@ TEST_F(H264SliceHeaderInScalableExtensionParserTest, TestSampleBitstream01) {
   EXPECT_EQ(0, slice_header_in_scalable_extension
                    ->inter_layer_slice_alpha_c0_offset_div2);
   EXPECT_EQ(
-      49,
+      0,
       slice_header_in_scalable_extension->inter_layer_slice_beta_offset_div2);
   EXPECT_EQ(
-      0, slice_header_in_scalable_extension->constrained_intra_resampling_flag);
+      1, slice_header_in_scalable_extension->constrained_intra_resampling_flag);
   EXPECT_EQ(
       0,
       slice_header_in_scalable_extension->ref_layer_chroma_phase_x_plus1_flag);
@@ -223,7 +223,7 @@ TEST_F(H264SliceHeaderInScalableExtensionParserTest, TestSampleBitstream01) {
             slice_header_in_scalable_extension->scaled_ref_layer_bottom_offset);
   EXPECT_EQ(0, slice_header_in_scalable_extension->slice_skip_flag);
   EXPECT_EQ(0, slice_header_in_scalable_extension->num_mbs_in_slice_minus1);
-  EXPECT_EQ(1, slice_header_in_scalable_extension->adaptive_base_mode_flag);
+  EXPECT_EQ(0, slice_header_in_scalable_extension->adaptive_base_mode_flag);
   EXPECT_EQ(0, slice_header_in_scalable_extension->default_base_mode_flag);
   EXPECT_EQ(
       0, slice_header_in_scalable_extension->adaptive_motion_prediction_flag);
@@ -232,7 +232,7 @@ TEST_F(H264SliceHeaderInScalableExtensionParserTest, TestSampleBitstream01) {
   EXPECT_EQ(
       0, slice_header_in_scalable_extension->adaptive_residual_prediction_flag);
   EXPECT_EQ(
-      0, slice_header_in_scalable_extension->default_residual_prediction_flag);
+      1, slice_header_in_scalable_extension->default_residual_prediction_flag);
   EXPECT_EQ(0,
             slice_header_in_scalable_extension->tcoeff_level_prediction_flag);
   EXPECT_EQ(0, slice_header_in_scalable_extension->scan_idx_start);
