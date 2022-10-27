@@ -33,6 +33,10 @@ class H264SliceHeaderInScalableExtensionParser {
   // 0 to 65535, inclusive."
   const static uint32_t kIdrPicIdMin = 0;
   const static uint32_t kIdrPicIdMax = 65535;
+  // Section 7.4.3: "The value of redundant_pic_cnt shall be in the range of
+  // 0 to 127, inclusive."
+  const static uint32_t kRedundantPicCntMin = 0;
+  const static uint32_t kRedundantPicCntMax = 127;
 
   // The parsed state of the slice. Only some select values are stored.
   // Add more as they are actually needed.
