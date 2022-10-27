@@ -29,6 +29,10 @@ class H264PpsParser {
   // range of 0 to 255, inclusive."
   const static uint32_t kPicParameterSetIdMin = 0;
   const static uint32_t kPicParameterSetIdMax = 255;
+  // Section A.2.1: "Picture parameter sets shall have num_slice_groups_minus1
+  // in the range of 0 to 7, inclusive."
+  const static uint32_t kNumSliceGroupsMinus1Min = 0;
+  const static uint32_t kNumSliceGroupsMinus1Max = 7;
 
   // The parsed state of the PPS. Only some select values are stored.
   // Add more as they are actually needed.
