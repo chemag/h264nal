@@ -22,6 +22,10 @@ class H264SpsExtensionParser {
   // range of 0 to 31, inclusive."
   const static uint32_t kSeqParameterSetIdMin = 0;
   const static uint32_t kSeqParameterSetIdMax = 31;
+  // Section 7.4.2.1.2: "bit_depth_aux_minus8 shall be in the range of 0 to 4,
+  // inclusive."
+  const static uint32_t kBitDepthAuxMinus8Min = 0;
+  const static uint32_t kBitDepthAuxMinus8Max = 4;
 
   // The parsed state of the SPS extension. Only some select values are stored.
   // Add more as they are actually needed.

@@ -71,6 +71,18 @@ H264SpsExtensionParser::ParseSpsExtension(rtc::BitBuffer* bit_buffer) noexcept {
             sps_extension->bit_depth_aux_minus8)) {
       return nullptr;
     }
+    if (sps_extension->bit_depth_aux_minus8 < kBitDepthAuxMinus8Min ||
+        sps_extension->bit_depth_aux_minus8 > kBitDepthAuxMinus8Max) {
+#ifdef FPRINT_ERRORS
+      fprintf(stderr,
+              "invalid bit_depth_aux_minus8: %" PRIu32
+              " not in range "
+              "[%" PRIu32 ", %" PRIu32 "]\n",
+              sps_extension->bit_depth_aux_minus8, kBitDepthAuxMinus8Min,
+              kBitDepthAuxMinus8Max);
+#endif  // FPRINT_ERRORS
+      return nullptr;
+    }
 
     // alpha_incr_flag  u(1)
     if (!bit_buffer->ReadBits(1, sps_extension->alpha_incr_flag)) {
