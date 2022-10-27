@@ -351,6 +351,17 @@ H264SpsDataParser::ParseSpsData(rtc::BitBuffer* bit_buffer) noexcept {
           sps_data->pic_height_in_map_units_minus1)) {
     return nullptr;
   }
+  if (sps_data->pic_height_in_map_units_minus1 < 0 ||
+      sps_data->pic_height_in_map_units_minus1 > kMaxMbHeight) {
+#ifdef FPRINT_ERRORS
+    fprintf(stderr,
+            "invalid pic_height_in_map_units_minus1: %" PRIu32
+            " not in range "
+            "[%" PRIu32 ", %" PRIu32 "]\n",
+            sps_data->pic_height_in_map_units_minus1, 0, kMaxMbHeight);
+#endif  // FPRINT_ERRORS
+    return nullptr;
+  }
 
   // frame_mbs_only_flag  u(1)
   if (!bit_buffer->ReadBits(1, sps_data->frame_mbs_only_flag)) {
