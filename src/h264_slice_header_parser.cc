@@ -426,6 +426,20 @@ H264SliceHeaderParser::ParseSliceHeader(
             slice_header->disable_deblocking_filter_idc)) {
       return nullptr;
     }
+    if (slice_header->disable_deblocking_filter_idc <
+            kDisableDeblockingFilterIdcMin ||
+        slice_header->disable_deblocking_filter_idc >
+            kDisableDeblockingFilterIdcMax) {
+#ifdef FPRINT_ERRORS
+      fprintf(stderr,
+              "invalid disable_deblocking_filter_idc: %" PRIu32
+              " not in range "
+              "[%" PRIu32 ", %" PRIu32 "]\n",
+              slice_header->disable_deblocking_filter_idc,
+              kDisableDeblockingFilterIdcMin, kDisableDeblockingFilterIdcMax);
+#endif  // FPRINT_ERRORS
+      return nullptr;
+    }
 
     if (slice_header->disable_deblocking_filter_idc != 1) {
       // slice_alpha_c0_offset_div2  se(v)

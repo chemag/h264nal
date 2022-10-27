@@ -48,6 +48,10 @@ class H264SliceHeaderParser {
   // 0 to 2, inclusive."
   const static uint32_t kCabacInitIdcMin = 0;
   const static uint32_t kCabacInitIdcMax = 2;
+  // Section 7.4.3: "The value of disable_deblocking_filter_idc shall be in
+  // the range of 0 to 2, inclusive."
+  const static uint32_t kDisableDeblockingFilterIdcMin = 0;
+  const static uint32_t kDisableDeblockingFilterIdcMax = 2;
 
   // The parsed state of the slice. Only some select values are stored.
   // Add more as they are actually needed.
