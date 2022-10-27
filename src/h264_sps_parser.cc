@@ -390,6 +390,17 @@ H264SpsDataParser::ParseSpsData(rtc::BitBuffer* bit_buffer) noexcept {
     if (!bit_buffer->ReadExponentialGolomb(sps_data->frame_crop_left_offset)) {
       return nullptr;
     }
+    if (sps_data->frame_crop_left_offset < 0 ||
+        sps_data->frame_crop_left_offset > kMaxWidth) {
+#ifdef FPRINT_ERRORS
+      fprintf(stderr,
+              "invalid frame_crop_left_offset: %" PRIu32
+              " not in range "
+              "[%" PRIu32 ", %" PRIu32 "]\n",
+              sps_data->frame_crop_left_offset, 0, kMaxWidth);
+#endif  // FPRINT_ERRORS
+      return nullptr;
+    }
 
     // frame_crop_right_offset  ue(v)
     if (!bit_buffer->ReadExponentialGolomb(sps_data->frame_crop_right_offset)) {
