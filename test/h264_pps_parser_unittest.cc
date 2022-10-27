@@ -35,8 +35,8 @@ TEST_F(H264PpsParserTest, TestSamplePPS601) {
   EXPECT_EQ(0, pps->entropy_coding_mode_flag);
   EXPECT_EQ(0, pps->bottom_field_pic_order_in_frame_present_flag);
   EXPECT_EQ(0, pps->num_slice_groups_minus1);
-  EXPECT_EQ(15, pps->num_ref_idx_l0_active_minus1);
-  EXPECT_EQ(0, pps->num_ref_idx_l1_active_minus1);
+  EXPECT_EQ(15, pps->num_ref_idx_l0_default_active_minus1);
+  EXPECT_EQ(0, pps->num_ref_idx_l1_default_active_minus1);
   EXPECT_EQ(0, pps->weighted_pred_flag);
   EXPECT_EQ(0, pps->weighted_bipred_idc);
   EXPECT_EQ(-8, pps->pic_init_qp_minus26);
@@ -68,8 +68,8 @@ TEST_F(H264PpsParserTest, TestSamplePPS2012) {
   EXPECT_EQ(1, pps->entropy_coding_mode_flag);
   EXPECT_EQ(0, pps->bottom_field_pic_order_in_frame_present_flag);
   EXPECT_EQ(0, pps->num_slice_groups_minus1);
-  EXPECT_EQ(15, pps->num_ref_idx_l0_active_minus1);
-  EXPECT_EQ(0, pps->num_ref_idx_l1_active_minus1);
+  EXPECT_EQ(15, pps->num_ref_idx_l0_default_active_minus1);
+  EXPECT_EQ(0, pps->num_ref_idx_l1_default_active_minus1);
   EXPECT_EQ(1, pps->weighted_pred_flag);
   EXPECT_EQ(2, pps->weighted_bipred_idc);
   EXPECT_EQ(10, pps->pic_init_qp_minus26);

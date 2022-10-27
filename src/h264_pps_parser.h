@@ -70,8 +70,8 @@ class H264PpsParser {
     uint32_t slice_group_change_rate_minus1 = 0;
     uint32_t pic_size_in_map_units_minus1 = 0;
     std::vector<uint32_t> slice_group_id;
-    uint32_t num_ref_idx_l0_active_minus1 = 0;
-    uint32_t num_ref_idx_l1_active_minus1 = 0;
+    uint32_t num_ref_idx_l0_default_active_minus1 = 0;
+    uint32_t num_ref_idx_l1_default_active_minus1 = 0;
     uint32_t weighted_pred_flag = 0;
     uint32_t weighted_bipred_idc = 0;
     int32_t pic_init_qp_minus26 = 0;

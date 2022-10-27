@@ -178,13 +178,15 @@ std::shared_ptr<H264PpsParser::PpsState> H264PpsParser::ParsePps(
     }
   }
 
-  // num_ref_idx_l0_active_minus1  ue(v)
-  if (!bit_buffer->ReadExponentialGolomb(pps->num_ref_idx_l0_active_minus1)) {
+  // num_ref_idx_l0_default_active_minus1  ue(v)
+  if (!bit_buffer->ReadExponentialGolomb(
+          pps->num_ref_idx_l0_default_active_minus1)) {
     return nullptr;
   }
 
-  // num_ref_idx_l1_active_minus1  ue(v)
-  if (!bit_buffer->ReadExponentialGolomb(pps->num_ref_idx_l1_active_minus1)) {
+  // num_ref_idx_l1_default_active_minus1  ue(v)
+  if (!bit_buffer->ReadExponentialGolomb(
+          pps->num_ref_idx_l1_default_active_minus1)) {
     return nullptr;
   }
 
@@ -399,12 +401,12 @@ void H264PpsParser::PpsState::fdump(FILE* outfp, int indent_level) const {
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "num_ref_idx_l0_active_minus1: %i",
-          num_ref_idx_l0_active_minus1);
+  fprintf(outfp, "num_ref_idx_l0_default_active_minus1: %i",
+          num_ref_idx_l0_default_active_minus1);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "num_ref_idx_l1_active_minus1: %i",
-          num_ref_idx_l1_active_minus1);
+  fprintf(outfp, "num_ref_idx_l1_default_active_minus1: %i",
+          num_ref_idx_l1_default_active_minus1);
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "weighted_pred_flag: %i", weighted_pred_flag);
