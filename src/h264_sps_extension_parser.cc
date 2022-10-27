@@ -47,6 +47,18 @@ H264SpsExtensionParser::ParseSpsExtension(rtc::BitBuffer* bit_buffer) noexcept {
   if (!bit_buffer->ReadExponentialGolomb(sps_extension->seq_parameter_set_id)) {
     return nullptr;
   }
+  if (sps_extension->seq_parameter_set_id < kSeqParameterSetIdMin ||
+      sps_extension->seq_parameter_set_id > kSeqParameterSetIdMax) {
+#ifdef FPRINT_ERRORS
+    fprintf(stderr,
+            "invalid seq_parameter_set_id: %" PRIu32
+            " not in range "
+            "[%" PRIu32 ", %" PRIu32 "]\n",
+            sps_extension->seq_parameter_set_id, kSeqParameterSetIdMin,
+            kSeqParameterSetIdMax);
+#endif  // FPRINT_ERRORS
+    return nullptr;
+  }
 
   // aux_format_idc  ue(v)
   if (!bit_buffer->ReadExponentialGolomb(sps_extension->aux_format_idc)) {
