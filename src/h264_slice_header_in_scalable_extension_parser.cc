@@ -287,6 +287,18 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
                 shise->num_ref_idx_l0_active_minus1)) {
           return nullptr;
         }
+        if (shise->num_ref_idx_l0_active_minus1 < kNumRefIdxL0ActiveMinux1Min ||
+            shise->num_ref_idx_l0_active_minus1 > kNumRefIdxL0ActiveMinux1Max) {
+#ifdef FPRINT_ERRORS
+          fprintf(stderr,
+                  "invalid num_ref_idx_l0_active_minus1: %" PRIu32
+                  " not in range "
+                  "[%" PRIu32 ", %" PRIu32 "]\n",
+                  shise->num_ref_idx_l0_active_minus1,
+                  kNumRefIdxL0ActiveMinux1Min, kNumRefIdxL0ActiveMinux1Max);
+#endif  // FPRINT_ERRORS
+          return nullptr;
+        }
 
         if ((shise->slice_type == SvcSliceType::EBa) ||
             (shise->slice_type == SvcSliceType::EBb)) {  // slice_type == EB
