@@ -41,6 +41,10 @@ class H264PpsParser {
   // shall be in the range of 0 to 31, inclusive."
   const static uint32_t kNumRefIdxL0DefaultActiveMinus1Min = 0;
   const static uint32_t kNumRefIdxL0DefaultActiveMinus1Max = 31;
+  // Section 7.4.2.2: "The value of num_ref_idx_l1_default_active_minus1
+  // shall be in the range of 0 to 31, inclusive."
+  const static uint32_t kNumRefIdxL1DefaultActiveMinus1Min = 0;
+  const static uint32_t kNumRefIdxL1DefaultActiveMinus1Max = 31;
 
   // The parsed state of the PPS. Only some select values are stored.
   // Add more as they are actually needed.

@@ -204,6 +204,21 @@ std::shared_ptr<H264PpsParser::PpsState> H264PpsParser::ParsePps(
           pps->num_ref_idx_l1_default_active_minus1)) {
     return nullptr;
   }
+  if (pps->num_ref_idx_l1_default_active_minus1 <
+          kNumRefIdxL1DefaultActiveMinus1Min ||
+      pps->num_ref_idx_l1_default_active_minus1 >
+          kNumRefIdxL1DefaultActiveMinus1Max) {
+#ifdef FPRINT_ERRORS
+    fprintf(stderr,
+            "invalid num_ref_idx_l1_default_active_minus1: %" PRIu32
+            " not in range "
+            "[%" PRIu32 ", %" PRIu32 "]\n",
+            pps->num_ref_idx_l1_default_active_minus1,
+            kNumRefIdxL1DefaultActiveMinus1Min,
+            kNumRefIdxL1DefaultActiveMinus1Max);
+#endif  // FPRINT_ERRORS
+    return nullptr;
+  }
 
   // weighted_pred_flag  u(1)
   if (!bit_buffer->ReadBits(1, (pps->weighted_pred_flag))) {
