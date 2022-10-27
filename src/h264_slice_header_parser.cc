@@ -265,6 +265,20 @@ H264SliceHeaderParser::ParseSliceHeader(
               slice_header->num_ref_idx_l0_active_minus1)) {
         return nullptr;
       }
+      if (slice_header->num_ref_idx_l0_active_minus1 <
+              kNumRefIdxL0ActiveMinux1Min ||
+          slice_header->num_ref_idx_l0_active_minus1 >
+              kNumRefIdxL0ActiveMinux1Max) {
+#ifdef FPRINT_ERRORS
+        fprintf(stderr,
+                "invalid num_ref_idx_l0_active_minus1: %" PRIu32
+                " not in range "
+                "[%" PRIu32 ", %" PRIu32 "]\n",
+                slice_header->num_ref_idx_l0_active_minus1,
+                kNumRefIdxL0ActiveMinux1Min, kNumRefIdxL0ActiveMinux1Max);
+#endif  // FPRINT_ERRORS
+        return nullptr;
+      }
 
       if ((slice_header->slice_type == SliceType::B) ||
           (slice_header->slice_type == SliceType::B_ALL)) {  // slice_type == B
