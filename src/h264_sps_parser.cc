@@ -439,6 +439,17 @@ H264SpsDataParser::ParseSpsData(rtc::BitBuffer* bit_buffer) noexcept {
             sps_data->frame_crop_bottom_offset)) {
       return nullptr;
     }
+    if (sps_data->frame_crop_bottom_offset < 0 ||
+        sps_data->frame_crop_bottom_offset > kMaxHeight) {
+#ifdef FPRINT_ERRORS
+      fprintf(stderr,
+              "invalid frame_crop_bottom_offset: %" PRIu32
+              " not in range "
+              "[%" PRIu32 ", %" PRIu32 "]\n",
+              sps_data->frame_crop_bottom_offset, 0, kMaxHeight);
+#endif  // FPRINT_ERRORS
+      return nullptr;
+    }
   }
 
   // vui_parameters_present_flag  u(1)
