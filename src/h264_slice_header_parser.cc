@@ -59,6 +59,17 @@ H264SliceHeaderParser::ParseSliceHeader(
   if (!bit_buffer->ReadExponentialGolomb(slice_header->first_mb_in_slice)) {
     return nullptr;
   }
+  if (slice_header->first_mb_in_slice < 0 ||
+      slice_header->first_mb_in_slice > (kMaxMbPicSize - 1)) {
+#ifdef FPRINT_ERRORS
+    fprintf(stderr,
+            "invalid first_mb_in_slice: %" PRIu32
+            " not in range "
+            "[%" PRIu32 ", %" PRIu32 "]\n",
+            slice_header->first_mb_in_slice, 0, (kMaxMbPicSize - 1));
+#endif  // FPRINT_ERRORS
+    return nullptr;
+  }
 
   // slice_type  ue(v)
   if (!bit_buffer->ReadExponentialGolomb(slice_header->slice_type)) {
