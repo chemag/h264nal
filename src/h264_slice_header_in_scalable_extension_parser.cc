@@ -81,6 +81,16 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
   if (!bit_buffer->ReadExponentialGolomb(shise->slice_type)) {
     return nullptr;
   }
+  if (shise->slice_type < kSliceTypeMin || shise->slice_type > kSliceTypeMax) {
+#ifdef FPRINT_ERRORS
+    fprintf(stderr,
+            "invalid slice_type: %" PRIu32
+            " not in range "
+            "[%" PRIu32 ", %" PRIu32 "]\n",
+            shise->slice_type, kSliceTypeMin, kSliceTypeMax);
+#endif  // FPRINT_ERRORS
+    return nullptr;
+  }
 
   // pic_parameter_set_id  ue(v)
   if (!bit_buffer->ReadExponentialGolomb(shise->pic_parameter_set_id)) {

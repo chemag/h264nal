@@ -26,6 +26,9 @@ class H264SliceHeaderInScalableExtensionParser {
   // range of 0 to 255, inclusive."
   const static uint32_t kPicParameterSetIdMin = 0;
   const static uint32_t kPicParameterSetIdMax = 255;
+  // Table 7-6 lists possible values for slice_type (inclusive).
+  const static uint32_t kSliceTypeMin = 0;
+  const static uint32_t kSliceTypeMax = 9;
 
   // The parsed state of the slice. Only some select values are stored.
   // Add more as they are actually needed.
