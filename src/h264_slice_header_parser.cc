@@ -223,6 +223,18 @@ H264SliceHeaderParser::ParseSliceHeader(
     if (!bit_buffer->ReadExponentialGolomb(slice_header->redundant_pic_cnt)) {
       return nullptr;
     }
+    if (slice_header->redundant_pic_cnt < kRedundantPicCntMin ||
+        slice_header->redundant_pic_cnt > kRedundantPicCntMax) {
+#ifdef FPRINT_ERRORS
+      fprintf(stderr,
+              "invalid redundant_pic_cnt: %" PRIu32
+              " not in range "
+              "[%" PRIu32 ", %" PRIu32 "]\n",
+              slice_header->redundant_pic_cnt, kRedundantPicCntMin,
+              kRedundantPicCntMax);
+#endif  // FPRINT_ERRORS
+      return nullptr;
+    }
   }
 
   if ((slice_header->slice_type == SliceType::B) ||
