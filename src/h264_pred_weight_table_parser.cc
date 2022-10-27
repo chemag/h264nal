@@ -78,6 +78,20 @@ H264PredWeightTableParser::ParsePredWeightTable(
             pred_weight_table->chroma_log2_weight_denom)) {
       return nullptr;
     }
+    if (pred_weight_table->chroma_log2_weight_denom <
+            kChromaLog2WeightDenomMin ||
+        pred_weight_table->chroma_log2_weight_denom >
+            kChromaLog2WeightDenomMax) {
+#ifdef FPRINT_ERRORS
+      fprintf(stderr,
+              "invalid chroma_log2_weight_denom: %" PRIu32
+              " not in range "
+              "[%" PRIu32 ", %" PRIu32 "]\n",
+              pred_weight_table->chroma_log2_weight_denom,
+              kChromaLog2WeightDenomMin, kChromaLog2WeightDenomMax);
+#endif  // FPRINT_ERRORS
+      return nullptr;
+    }
   }
 
   for (uint32_t i = 0; i <= pred_weight_table->num_ref_idx_l0_active_minus1;

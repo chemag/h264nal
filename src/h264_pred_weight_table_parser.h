@@ -22,6 +22,10 @@ class H264PredWeightTableParser {
   // range of 0 to 7, inclusive."
   const static uint32_t kLumaLog2WeightDenomMin = 0;
   const static uint32_t kLumaLog2WeightDenomMax = 7;
+  // Section 7.4.3.2: "The value of chroma_log2_weight_denom shall be in the
+  // range of 0 to 7, inclusive."
+  const static uint32_t kChromaLog2WeightDenomMin = 0;
+  const static uint32_t kChromaLog2WeightDenomMax = 7;
 
   // The parsed state of the PredWeightTable.
   struct PredWeightTableState {
