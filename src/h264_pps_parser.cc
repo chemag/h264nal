@@ -109,6 +109,18 @@ std::shared_ptr<H264PpsParser::PpsState> H264PpsParser::ParsePps(
     if (!bit_buffer->ReadExponentialGolomb(pps->slice_group_map_type)) {
       return nullptr;
     }
+    if (pps->slice_group_map_type < kSliceGroupMapTypeMin ||
+        pps->slice_group_map_type > kSliceGroupMapTypeMax) {
+#ifdef FPRINT_ERRORS
+      fprintf(stderr,
+              "invalid slice_group_map_type: %" PRIu32
+              " not in range "
+              "[%" PRIu32 ", %" PRIu32 "]\n",
+              pps->slice_group_map_type, kSliceGroupMapTypeMin,
+              kSliceGroupMapTypeMax);
+#endif  // FPRINT_ERRORS
+      return nullptr;
+    }
 
     if (pps->slice_group_map_type == 0) {
       for (uint32_t iGroup = 0; iGroup < pps->num_slice_groups_minus1;

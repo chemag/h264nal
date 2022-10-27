@@ -33,6 +33,10 @@ class H264PpsParser {
   // in the range of 0 to 7, inclusive."
   const static uint32_t kNumSliceGroupsMinus1Min = 0;
   const static uint32_t kNumSliceGroupsMinus1Max = 7;
+  // Section 7.4.2.2: "The value of slice_group_map_type shall be in the
+  // range of 0 to 6, inclusive."
+  const static uint32_t kSliceGroupMapTypeMin = 0;
+  const static uint32_t kSliceGroupMapTypeMax = 6;
 
   // The parsed state of the PPS. Only some select values are stored.
   // Add more as they are actually needed.
