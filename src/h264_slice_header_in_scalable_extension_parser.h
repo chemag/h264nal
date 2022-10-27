@@ -45,6 +45,10 @@ class H264SliceHeaderInScalableExtensionParser {
   // 0 to 31, inclusive."
   const static uint32_t kNumRefIdxL1ActiveMinux1Min = 0;
   const static uint32_t kNumRefIdxL1ActiveMinux1Max = 31;
+  // Section 7.4.3: "The value of cabac_init_idc shall be in the range of
+  // 0 to 2, inclusive."
+  const static uint32_t kCabacInitIdcMin = 0;
+  const static uint32_t kCabacInitIdcMax = 2;
 
   // The parsed state of the slice. Only some select values are stored.
   // Add more as they are actually needed.

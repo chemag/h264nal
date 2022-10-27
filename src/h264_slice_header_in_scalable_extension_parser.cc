@@ -406,6 +406,17 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
     if (!bit_buffer->ReadExponentialGolomb(shise->cabac_init_idc)) {
       return nullptr;
     }
+    if (shise->cabac_init_idc < kCabacInitIdcMin ||
+        shise->cabac_init_idc > kCabacInitIdcMax) {
+#ifdef FPRINT_ERRORS
+      fprintf(stderr,
+              "invalid cabac_init_idc: %" PRIu32
+              " not in range "
+              "[%" PRIu32 ", %" PRIu32 "]\n",
+              shise->cabac_init_idc, kCabacInitIdcMin, kCabacInitIdcMax);
+#endif  // FPRINT_ERRORS
+      return nullptr;
+    }
   }
 
   // slice_qp_delta  se(v)
