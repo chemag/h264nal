@@ -178,6 +178,16 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
     if (!bit_buffer->ReadExponentialGolomb(shise->idr_pic_id)) {
       return nullptr;
     }
+    if (shise->idr_pic_id < kIdrPicIdMin || shise->idr_pic_id > kIdrPicIdMax) {
+#ifdef FPRINT_ERRORS
+      fprintf(stderr,
+              "invalid idr_pic_id: %" PRIu32
+              " not in range "
+              "[%" PRIu32 ", %" PRIu32 "]\n",
+              shise->idr_pic_id, kIdrPicIdMin, kIdrPicIdMax);
+#endif  // FPRINT_ERRORS
+      return nullptr;
+    }
   }
 
   shise->pic_order_cnt_type = sps_data->pic_order_cnt_type;
