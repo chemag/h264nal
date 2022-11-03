@@ -315,8 +315,8 @@ H264VuiParametersParser::ParseVuiParameters(
     }
     // Section E.2.1: "The value of max_dec_frame_buffering shall be greater
     // than or equal to max_num_ref_frames."
-    // copid from ffmpeg
-    if (vui->max_dec_frame_buffering < kMaxDpbFrames) {
+    // copied from ffmpeg
+    if (vui->max_dec_frame_buffering > kMaxDpbFrames) {
 #ifdef FPRINT_ERRORS
       fprintf(stderr,
               "invalid max_dec_frame_buffering: %" PRIu32

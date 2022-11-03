@@ -183,4 +183,45 @@ TEST_F(H264VuiParametersParserTest, TestSampleVuiParameters709vui) {
   EXPECT_EQ(16, vui_parameters->max_dec_frame_buffering);
 }
 
+TEST_F(H264VuiParametersParserTest, TestSampleVuiParametersSmallMaxDecFrameBuffering) {
+  // fuzzer::conv: data
+  const uint8_t buffer[] = {
+      0x37, 0x05, 0x06, 0x05, 0x40, 0x39, 0xcc, 0x66,
+      0xce, 0xe6, 0xb2, 0x80, 0x23, 0x68, 0x50, 0x9a,
+      0x80
+  };
+  // fuzzer::conv: begin
+  auto vui_parameters =
+      H264VuiParametersParser::ParseVuiParameters(buffer, arraysize(buffer));
+  // fuzzer::conv: end
+
+  EXPECT_TRUE(vui_parameters != nullptr);
+
+  EXPECT_EQ(0, vui_parameters->aspect_ratio_info_present_flag);
+  EXPECT_EQ(0, vui_parameters->overscan_info_present_flag);
+  EXPECT_EQ(1, vui_parameters->video_signal_type_present_flag);
+  EXPECT_EQ(5, vui_parameters->video_format);
+  EXPECT_EQ(1, vui_parameters->video_full_range_flag);
+  EXPECT_EQ(1, vui_parameters->colour_description_present_flag);
+  EXPECT_EQ(5, vui_parameters->colour_primaries);
+  EXPECT_EQ(6, vui_parameters->transfer_characteristics);
+  EXPECT_EQ(5, vui_parameters->matrix_coefficients);
+  EXPECT_EQ(0, vui_parameters->chroma_loc_info_present_flag);
+  EXPECT_EQ(1, vui_parameters->timing_info_present_flag);
+  EXPECT_EQ(15151515, vui_parameters->num_units_in_tick);
+  EXPECT_EQ(1000000000, vui_parameters->time_scale);
+  EXPECT_EQ(1, vui_parameters->fixed_frame_rate_flag);
+  EXPECT_EQ(0, vui_parameters->nal_hrd_parameters_present_flag);
+  EXPECT_EQ(0, vui_parameters->vcl_hrd_parameters_present_flag);
+  EXPECT_EQ(0, vui_parameters->pic_struct_present_flag);
+  EXPECT_EQ(1, vui_parameters->bitstream_restriction_flag);
+  EXPECT_EQ(1, vui_parameters->motion_vectors_over_pic_boundaries_flag);
+  EXPECT_EQ(2, vui_parameters->max_bytes_per_pic_denom);
+  EXPECT_EQ(1, vui_parameters->max_bits_per_mb_denom);
+  EXPECT_EQ(9, vui_parameters->log2_max_mv_length_horizontal);
+  EXPECT_EQ(8, vui_parameters->log2_max_mv_length_vertical);
+  EXPECT_EQ(0, vui_parameters->max_num_reorder_frames);
+  EXPECT_EQ(1, vui_parameters->max_dec_frame_buffering);
+}
+
 }  // namespace h264nal
