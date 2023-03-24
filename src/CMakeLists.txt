@@ -20,69 +20,61 @@ endif()
 
 if(H264NAL_SMALL_FOOTPRINT)
   add_library(h264nal
-      h264_common.h h264_common.cc
-      h264_sps_parser.h h264_sps_parser.cc
-      h264_hrd_parameters_parser.h h264_hrd_parameters_parser.cc
-      h264_vui_parameters_parser.h h264_vui_parameters_parser.cc
-      h264_pps_parser.h h264_pps_parser.cc
-      h264_ref_pic_list_modification_parser.h
+      h264_common.cc
+      h264_sps_parser.cc
+      h264_hrd_parameters_parser.cc
+      h264_vui_parameters_parser.cc
+      h264_pps_parser.cc
       h264_ref_pic_list_modification_parser.cc
-      h264_pred_weight_table_parser.h h264_pred_weight_table_parser.cc
-      h264_dec_ref_pic_marking_parser.h
+      h264_pred_weight_table_parser.cc
       h264_dec_ref_pic_marking_parser.cc
-      h264_slice_header_parser.h h264_slice_header_parser.cc
-      h264_slice_header_in_scalable_extension_parser.h h264_slice_header_in_scalable_extension_parser.cc
-      h264_slice_layer_without_partitioning_rbsp_parser.h
+      h264_slice_header_parser.cc
+      h264_slice_header_in_scalable_extension_parser.cc
       h264_slice_layer_without_partitioning_rbsp_parser.cc
-      h264_slice_layer_extension_rbsp_parser.h
       h264_slice_layer_extension_rbsp_parser.cc
-      h264_sps_extension_parser.h h264_sps_extension_parser.cc
-      h264_subset_sps_parser.h h264_subset_sps_parser.cc
-      h264_sps_svc_extension_parser.h h264_sps_svc_extension_parser.cc
-      h264_bitstream_parser_state.h h264_bitstream_parser_state.cc
-      h264_bitstream_parser.h h264_bitstream_parser.cc
-      h264_prefix_nal_unit_parser.h h264_prefix_nal_unit_parser.cc
-      h264_nal_unit_header_svc_extension_parser.h
+      h264_sps_extension_parser.cc
+      h264_subset_sps_parser.cc
+      h264_sps_svc_extension_parser.cc
+      h264_bitstream_parser_state.cc
+      h264_bitstream_parser.cc
+      h264_prefix_nal_unit_parser.cc
       h264_nal_unit_header_svc_extension_parser.cc
-      h264_nal_unit_header_parser.h h264_nal_unit_header_parser.cc
-      h264_nal_unit_payload_parser.h h264_nal_unit_payload_parser.cc
-      h264_nal_unit_parser.h h264_nal_unit_parser.cc
+      h264_nal_unit_header_parser.cc
+      h264_nal_unit_payload_parser.cc
+      h264_nal_unit_parser.cc
 )
 else()
   add_library(h264nal
-      h264_common.h h264_common.cc
-      h264_sps_parser.h h264_sps_parser.cc
-      h264_hrd_parameters_parser.h h264_hrd_parameters_parser.cc
-      h264_vui_parameters_parser.h h264_vui_parameters_parser.cc
-      h264_pps_parser.h h264_pps_parser.cc
-      h264_ref_pic_list_modification_parser.h
+      h264_common.cc
+      h264_sps_parser.cc
+      h264_hrd_parameters_parser.cc
+      h264_vui_parameters_parser.cc
+      h264_pps_parser.cc
       h264_ref_pic_list_modification_parser.cc
-      h264_pred_weight_table_parser.h h264_pred_weight_table_parser.cc
-      h264_dec_ref_pic_marking_parser.h
+      h264_pred_weight_table_parser.cc
       h264_dec_ref_pic_marking_parser.cc
-      h264_rtp_single_parser.h h264_rtp_single_parser.cc
-      h264_rtp_parser.h h264_rtp_parser.cc
-      h264_rtp_stapa_parser.h h264_rtp_stapa_parser.cc
-      h264_rtp_fua_parser.h h264_rtp_fua_parser.cc
-      h264_slice_header_parser.h h264_slice_header_parser.cc
-      h264_slice_header_in_scalable_extension_parser.h h264_slice_header_in_scalable_extension_parser.cc
-      h264_slice_layer_without_partitioning_rbsp_parser.h
+      h264_rtp_single_parser.cc
+      h264_rtp_parser.cc
+      h264_rtp_stapa_parser.cc
+      h264_rtp_fua_parser.cc
+      h264_slice_header_parser.cc
+      h264_slice_header_in_scalable_extension_parser.cc
       h264_slice_layer_without_partitioning_rbsp_parser.cc
-      h264_slice_layer_extension_rbsp_parser.h
       h264_slice_layer_extension_rbsp_parser.cc
-      h264_sps_extension_parser.h h264_sps_extension_parser.cc
-      h264_subset_sps_parser.h h264_subset_sps_parser.cc
-      h264_sps_svc_extension_parser.h h264_sps_svc_extension_parser.cc
-      h264_bitstream_parser_state.h h264_bitstream_parser_state.cc
-      h264_bitstream_parser.h h264_bitstream_parser.cc
-      h264_prefix_nal_unit_parser.h h264_prefix_nal_unit_parser.cc
-      h264_nal_unit_header_svc_extension_parser.h
+      h264_sps_extension_parser.cc
+      h264_subset_sps_parser.cc
+      h264_sps_svc_extension_parser.cc
+      h264_bitstream_parser_state.cc
+      h264_bitstream_parser.cc
+      h264_prefix_nal_unit_parser.cc
       h264_nal_unit_header_svc_extension_parser.cc
-      h264_nal_unit_header_parser.h h264_nal_unit_header_parser.cc
-      h264_nal_unit_payload_parser.h h264_nal_unit_payload_parser.cc
-      h264_nal_unit_parser.h h264_nal_unit_parser.cc
+      h264_nal_unit_header_parser.cc
+      h264_nal_unit_payload_parser.cc
+      h264_nal_unit_parser.cc
 )
 endif()
+
+target_include_directories(h264nal PUBLIC ../include/)
 target_include_directories(h264nal PUBLIC ../webrtc)
 target_link_libraries(h264nal PUBLIC webrtc)
 
