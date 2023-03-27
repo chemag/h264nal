@@ -118,6 +118,8 @@ class H264SpsDataParser {
 
     // derived values
     uint32_t getChromaArrayType() noexcept;
+    int getSubWidthC() noexcept;
+    int getSubHeightC() noexcept;
 
     // helper functions
     bool scaling_list(

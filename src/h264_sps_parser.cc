@@ -485,6 +485,48 @@ uint32_t H264SpsDataParser::SpsDataState::getChromaArrayType() noexcept {
   return ChromaArrayType;
 }
 
+int H264SpsDataParser::SpsDataState::getSubWidthC() noexcept {
+  // Table 6-1
+  if (chroma_format_idc == 0 && separate_colour_plane_flag == 0) {
+    // monochrome
+    return -1;
+  } else if (chroma_format_idc == 1 && separate_colour_plane_flag == 0) {
+    // 4:2:0
+    return 2;
+  } else if (chroma_format_idc == 2 && separate_colour_plane_flag == 0) {
+    // 4:2:2
+    return 2;
+  } else if (chroma_format_idc == 3 && separate_colour_plane_flag == 0) {
+    // 4:4:4
+    return 1;
+  } else if (chroma_format_idc == 3 && separate_colour_plane_flag == 1) {
+    // 4:4:0
+    return -1;
+  }
+  return -1;
+}
+
+int H264SpsDataParser::SpsDataState::getSubHeightC() noexcept {
+  // Table 6-1
+  if (chroma_format_idc == 0 && separate_colour_plane_flag == 0) {
+    // monochrome
+    return -1;
+  } else if (chroma_format_idc == 1 && separate_colour_plane_flag == 0) {
+    // 4:2:0
+    return 2;
+  } else if (chroma_format_idc == 2 && separate_colour_plane_flag == 0) {
+    // 4:2:2
+    return 1;
+  } else if (chroma_format_idc == 3 && separate_colour_plane_flag == 0) {
+    // 4:4:4
+    return 1;
+  } else if (chroma_format_idc == 3 && separate_colour_plane_flag == 1) {
+    // 4:4:0
+    return -1;
+  }
+  return -1;
+}
+
 // Section 7.3.2.1.1.1
 bool H264SpsDataParser::SpsDataState::scaling_list(
     rtc::BitBuffer* bit_buffer, uint32_t i, std::vector<uint32_t>& scalingList,
