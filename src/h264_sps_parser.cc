@@ -527,6 +527,35 @@ int H264SpsDataParser::SpsDataState::getSubHeightC() noexcept {
   return -1;
 }
 
+int H264SpsDataParser::SpsDataState::getResolution(int* width,
+                                                   int* height) noexcept {
+  if (width == nullptr || height == nullptr) {
+    return -1;
+  }
+  int ChromaArrayType = getChromaArrayType();
+  int CropUnitX = -1;
+  int CropUnitY = -1;
+  if (ChromaArrayType == 0) {
+    // Equations 7-19, 7-20
+    CropUnitX = 1;
+    CropUnitY = 2 - frame_mbs_only_flag;
+  } else {
+    // Equations 7-21, 7-22
+    int SubWidthC = getSubWidthC();
+    int SubHeightC = getSubHeightC();
+    CropUnitX = SubWidthC;
+    CropUnitY = SubHeightC * (2 - frame_mbs_only_flag);
+  }
+
+  *width = 16 * (pic_width_in_mbs_minus1 + 1);
+  *height = 16 * (pic_height_in_map_units_minus1 + 1);
+  *width -= (CropUnitX * frame_crop_left_offset +
+             CropUnitX * frame_crop_right_offset);
+  *height -= (CropUnitY * frame_crop_top_offset +
+              CropUnitY * frame_crop_bottom_offset);
+  return 0;
+}
+
 // Section 7.3.2.1.1.1
 bool H264SpsDataParser::SpsDataState::scaling_list(
     rtc::BitBuffer* bit_buffer, uint32_t i, std::vector<uint32_t>& scalingList,

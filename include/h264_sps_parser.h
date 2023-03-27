@@ -120,6 +120,7 @@ class H264SpsDataParser {
     uint32_t getChromaArrayType() noexcept;
     int getSubWidthC() noexcept;
     int getSubHeightC() noexcept;
+    int getResolution(int* width, int* height) noexcept;
 
     // helper functions
     bool scaling_list(
