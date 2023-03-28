@@ -331,6 +331,13 @@ H264VuiParametersParser::ParseVuiParameters(
   return vui;
 }
 
+float H264VuiParametersParser::VuiParametersState::getFramerate()
+    const noexcept {
+  // Equation D-2
+  float framerate = (float)time_scale / (2.0 * (float)num_units_in_tick);
+  return framerate;
+}
+
 #ifdef FDUMP_DEFINE
 void H264VuiParametersParser::VuiParametersState::fdump(
     FILE* outfp, int indent_level) const {

@@ -117,6 +117,9 @@ class H264VuiParametersParser {
     uint32_t log2_max_mv_length_vertical = 0;
     uint32_t max_num_reorder_frames = 0;
     uint32_t max_dec_frame_buffering = 0;
+
+    // derived values
+    float getFramerate() const noexcept;
   };
 
   // Unpack RBSP and parse VUI Parameters state from the supplied buffer.
