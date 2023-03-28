@@ -177,33 +177,32 @@ If you have a series of binary blobs with NAL units, use the
 if you have a producer of NAL units (e.g. an encoder), and you want to
 parse them as soon as they are produced.
 
-The following code has been copied from `H264BitstreamParser::ParseBitstream()`
-in `src/h264_bitstream_parser.cc`:
+The following code has been copied from `tools/h264nal.nalu.cc`:
 
 ```
-// keep a bitstream parser state (to keep the PPS/SPS NALUs)
-h264nal::H264BitstreamParserState bitstream_parser_state;
+  // 2. get the indices for the NALUs in the stream. This is needed
+  // because we will read Annex-B files, i.e., a bunch of appended NALUs
+  // with escape sequences used to separate them.
+  auto nalu_indices =
+      h264nal::H264BitstreamParser::FindNaluIndices(data, length);
 
-// create bitstream parser
-std::unique_ptr<h264nal::H264BitstreamParser::BitstreamState> bitstream;
+  // 3. create state for parsing NALUs
+  // bitstream parser state (to keep the SPS/PPS/SubsetSPS NALUs)
+  h264nal::H264BitstreamParserState bitstream_parser_state;
 
-while (1) {
-  const uint8_t* data = ...;  // get pointer to the NAL start
-	size_t length = ...;  // get NAL size
-
-  auto nal_unit = H264NalUnitParser::ParseNalUnit(
-      data, length, bitstream_parser_state);
-
-  // check whether the parser was successful
-	if (nal_unit == nullptr) {
-    // cannot parse the NalUnit
-    continue;
+  // 4. parse the NALUs one-by-one
+  auto bitstream =
+      std::make_unique<h264nal::H264BitstreamParser::BitstreamState>();
+  for (const auto &nalu_index : nalu_indices) {
+    // 4.1. parse 1 NAL unit
+    // note: If the NALU comes from an unescaped bitstreams, i.e.,
+    // one with an explicit NALU length mechanism (like mp4 mdat
+    // boxes), the right function is `ParseNalUnitUnescaped()`.
+    auto nal_unit = h264nal::H264NalUnitParser::ParseNalUnit(
+        &data[nalu_index.payload_start_offset], nalu_index.payload_size,
+        &bitstream_parser_state, true /* add_checksum */);
+    ...
   }
-
-  // check the parser offset
-  auto offset = nalu_index.payload_start_offset;
-  auto length = nalu_index.payload_size;
-}
 ```
 
 The `H264NalUnitParser::ParseNalUnit()` function receives a generic
