@@ -46,10 +46,12 @@ TEST_F(H264BitstreamParserTest, TestSampleBitstream601) {
   // fuzzer::conv: begin
   // init the BitstreamParserState
   H264BitstreamParserState bitstream_parser_state;
+  ParsingOptions parsing_options;
+  parsing_options.add_checksum = true;
 
   auto bitstream = H264BitstreamParser::ParseBitstream(
       buffer, arraysize(buffer), &bitstream_parser_state,
-      /* add_checksum */ true);
+      parsing_options);
   // fuzzer::conv: end
 
   EXPECT_TRUE(bitstream != nullptr);
@@ -112,13 +114,10 @@ TEST_F(H264BitstreamParserTest, TestSampleBitstream601) {
 
 TEST_F(H264BitstreamParserTest, TestSampleBitstream601Alt) {
   // init the BitstreamParserState
-  bool add_offset = true;
-  bool add_length = true;
-  bool add_parsed_length = true;
+  ParsingOptions parsing_options;
   bool add_checksum = true;
   auto bitstream = H264BitstreamParser::ParseBitstream(
-      buffer, arraysize(buffer), add_offset, add_length, add_parsed_length,
-      add_checksum);
+      buffer, arraysize(buffer), parsing_options);
   EXPECT_TRUE(bitstream != nullptr);
 
   // check there are 4 NAL units

@@ -293,6 +293,12 @@ int main(int argc, char **argv) {
   // 3. create state for parsing NALUs
   // bitstream parser state (to keep the SPS/PPS/SubsetSPS NALUs)
   h264nal::H264BitstreamParserState bitstream_parser_state;
+  // parsing options
+  h264nal::ParsingOptions parsing_options;
+  parsing_options.add_offset = options->add_offset;
+  parsing_options.add_length = options->add_length;
+  parsing_options.add_parsed_length = options->add_parsed_length;
+  parsing_options.add_checksum = true; /* options->add_checksum */
 
   // 4. parse the NALUs one-by-one
   auto bitstream =
@@ -304,7 +310,7 @@ int main(int argc, char **argv) {
     // boxes), the right function is `ParseNalUnitUnescaped()`.
     auto nal_unit = h264nal::H264NalUnitParser::ParseNalUnit(
         &data[nalu_index.payload_start_offset], nalu_index.payload_size,
-        &bitstream_parser_state, true /* add_checksum */);
+        &bitstream_parser_state, parsing_options);
     if (nal_unit == nullptr) {
       // cannot parse the NalUnit
 #ifdef FPRINT_ERRORS

@@ -25,9 +25,11 @@ TEST_F(H264NalUnitParserTest, TestSampleNalUnit) {
   const uint8_t buffer[] = {0x67};
   // fuzzer::conv: begin
   H264BitstreamParserState bitstream_parser_state;
+  ParsingOptions parsing_options;
+  parsing_options.add_checksum = true;
   auto nal_unit = H264NalUnitParser::ParseNalUnit(buffer, arraysize(buffer),
                                                   &bitstream_parser_state,
-                                                  /* add checksum */ true);
+                                                  parsing_options);
   // fuzzer::conv: end
 
   EXPECT_TRUE(nal_unit != nullptr);
@@ -55,9 +57,11 @@ TEST_F(H264NalUnitParserTest, TestSampleNalUnit) {
 TEST_F(H264NalUnitParserTest, TestEmptyNalUnit) {
   const uint8_t buffer[] = {};
   H264BitstreamParserState bitstream_parser_state;
+  ParsingOptions parsing_options;
+  parsing_options.add_checksum = false;
   auto nal_unit =
       H264NalUnitParser::ParseNalUnit(buffer, 0, &bitstream_parser_state,
-                                      /* add_checksum */ false);
+                                      parsing_options);
   EXPECT_TRUE(nal_unit == nullptr);
 }
 

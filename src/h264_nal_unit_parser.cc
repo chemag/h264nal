@@ -31,10 +31,10 @@ std::unique_ptr<H264NalUnitParser::NalUnitState>
 H264NalUnitParser::ParseNalUnitUnescaped(
     const uint8_t* data, size_t length,
     struct H264BitstreamParserState* bitstream_parser_state,
-    bool add_checksum) noexcept {
+    ParsingOptions parsing_options) noexcept {
   rtc::BitBuffer bit_buffer(data, length);
 
-  return ParseNalUnit(&bit_buffer, bitstream_parser_state, add_checksum);
+  return ParseNalUnit(&bit_buffer, bitstream_parser_state, parsing_options);
 }
 
 // Unpack RBSP and parse NAL Unit state from the supplied buffer.
@@ -42,25 +42,25 @@ std::unique_ptr<H264NalUnitParser::NalUnitState>
 H264NalUnitParser::ParseNalUnit(
     const uint8_t* data, size_t length,
     struct H264BitstreamParserState* bitstream_parser_state,
-    bool add_checksum) noexcept {
+    ParsingOptions parsing_options) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
   rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
 
-  return ParseNalUnit(&bit_buffer, bitstream_parser_state, add_checksum);
+  return ParseNalUnit(&bit_buffer, bitstream_parser_state, parsing_options);
 }
 
 std::unique_ptr<H264NalUnitParser::NalUnitState>
 H264NalUnitParser::ParseNalUnit(
     rtc::BitBuffer* bit_buffer,
     struct H264BitstreamParserState* bitstream_parser_state,
-    bool add_checksum) noexcept {
+    ParsingOptions parsing_options) noexcept {
   // H264 NAL Unit (nal_unit()) parser.
   // Section 7.3.1 ("NAL unit syntax") of the H.264
   // standard for a complete description.
   auto nal_unit = std::make_unique<NalUnitState>();
 
   // need to calculate the checksum before parsing the bit buffer
-  if (add_checksum) {
+  if (parsing_options.add_checksum) {
     // set the checksum
     nal_unit->checksum = NaluChecksum::GetNaluChecksum(bit_buffer);
   }
@@ -89,33 +89,31 @@ H264NalUnitParser::ParseNalUnit(
 }
 
 #ifdef FDUMP_DEFINE
-void H264NalUnitParser::NalUnitState::fdump(FILE* outfp, int indent_level,
-                                            bool add_offset, bool add_length,
-                                            bool add_parsed_length,
-                                            bool add_checksum) const {
+void H264NalUnitParser::NalUnitState::fdump(
+    FILE* outfp, int indent_level, ParsingOptions parsing_options) const {
   fprintf(outfp, "nal_unit {");
   indent_level = indent_level_incr(indent_level);
 
   // nal unit offset (starting at NAL unit header)
-  if (add_offset) {
+  if (parsing_options.add_offset) {
     fdump_indent_level(outfp, indent_level);
     fprintf(outfp, "offset: 0x%08zx", offset);
   }
 
   // nal unit length (starting at NAL unit header)
-  if (add_length) {
+  if (parsing_options.add_length) {
     fdump_indent_level(outfp, indent_level);
     fprintf(outfp, "length: %zu", length);
   }
 
   // nal unit parsed length (starting at NAL unit header)
-  if (add_parsed_length) {
+  if (parsing_options.add_parsed_length) {
     fdump_indent_level(outfp, indent_level);
     fprintf(outfp, "parsed_length: 0x%08zx", parsed_length);
   }
 
   // nal unit checksum
-  if (add_checksum) {
+  if (parsing_options.add_checksum) {
     fdump_indent_level(outfp, indent_level);
     char checksum_printable[64] = {};
     checksum->fdump(checksum_printable, 64);

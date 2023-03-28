@@ -57,10 +57,12 @@ TEST_F(H264SliceHeaderInScalableExtensionParserTest, TestSampleBitstream01) {
   // fuzzer::conv: begin
   // init the BitstreamParserState
   H264BitstreamParserState bitstream_parser_state;
+  ParsingOptions parsing_options;
+  parsing_options.add_checksum = true;
 
   auto bitstream = H264BitstreamParser::ParseBitstream(
       buffer_global, arraysize(buffer_global), &bitstream_parser_state,
-      /* add_checksum */ true);
+      parsing_options);
   // fuzzer::conv: end
 
   EXPECT_TRUE(bitstream != nullptr);
@@ -251,9 +253,11 @@ TEST_F(H264SliceHeaderInScalableExtensionParserTest, TestSampleNalUnit) {
   };
   // fuzzer::conv: begin
   H264BitstreamParserState bitstream_parser_state;
+  ParsingOptions parsing_options;
+  parsing_options.add_checksum = true;
   auto nal_unit = H264NalUnitParser::ParseNalUnit(buffer, arraysize(buffer),
                                                   &bitstream_parser_state,
-                                                  /* add checksum */ true);
+                                                  parsing_options);
   // fuzzer::conv: end
 
   EXPECT_TRUE(nal_unit != nullptr);

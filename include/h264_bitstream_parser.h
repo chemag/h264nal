@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "h264_bitstream_parser_state.h"
+#include "h264_common.h"
 #include "h264_nal_unit_parser.h"
 #include "rtc_base/bit_buffer.h"
 
@@ -30,13 +31,11 @@ class H264BitstreamParser {
     BitstreamState& operator=(BitstreamState&&) = delete;
 
 #ifdef FDUMP_DEFINE
-    void fdump(FILE* outfp, int indent_level) const;
+    void fdump(FILE* outfp, int indent_level,
+               ParsingOptions parsing_options) const;
 #endif  // FDUMP_DEFINE
 
-    bool add_offset;
-    bool add_length;
-    bool add_parsed_length;
-    bool add_checksum;
+    struct ParsingOptions parsing_options;
     // NAL units
     std::vector<std::unique_ptr<struct H264NalUnitParser::NalUnitState>>
         nal_units;
@@ -46,12 +45,12 @@ class H264BitstreamParser {
   static std::unique_ptr<BitstreamState> ParseBitstream(
       const uint8_t* data, size_t length,
       H264BitstreamParserState* bitstream_parser_state,
-      bool add_checksum) noexcept;
+      ParsingOptions parsing_options) noexcept;
 
   // Unpack RBSP and parse bitstream (internal state)
   static std::unique_ptr<BitstreamState> ParseBitstream(
-      const uint8_t* data, size_t length, bool add_offset, bool add_length,
-      bool add_parsed_length, bool add_checksum) noexcept;
+      const uint8_t* data, size_t length,
+      ParsingOptions parsing_options) noexcept;
 
   struct NaluIndex {
     // Start index of NALU, including start sequence.

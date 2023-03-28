@@ -280,11 +280,14 @@ int main(int argc, char **argv) {
   fread(reinterpret_cast<char *>(buffer.data()), 1, size, infp);
 
   // 2. parse bitstream
+  h264nal::ParsingOptions parsing_options;
+  parsing_options.add_offset = options->add_offset;
+  parsing_options.add_length = options->add_length;
+  parsing_options.add_parsed_length = options->add_parsed_length;
+  parsing_options.add_checksum = options->add_checksum;
   std::unique_ptr<h264nal::H264BitstreamParser::BitstreamState> bitstream =
-      h264nal::H264BitstreamParser::ParseBitstream(
-          buffer.data(), buffer.size(), options->add_offset,
-          options->add_length, options->add_parsed_length,
-          options->add_checksum);
+      h264nal::H264BitstreamParser::ParseBitstream(buffer.data(), buffer.size(),
+                                                   parsing_options);
 
 #ifdef FDUMP_DEFINE
   // get outfile file descriptor
@@ -305,9 +308,7 @@ int main(int argc, char **argv) {
   int indent_level = (options->as_one_line) ? -1 : 0;
   // 3. dump the contents of each NALU
   for (auto &nal_unit : bitstream->nal_units) {
-    nal_unit->fdump(outfp, indent_level, options->add_offset,
-                    options->add_length, options->add_parsed_length,
-                    options->add_checksum);
+    nal_unit->fdump(outfp, indent_level, parsing_options);
     if (options->add_contents) {
       fprintf(outfp, " contents {");
       for (size_t i = 0; i < nal_unit->length; i++) {
