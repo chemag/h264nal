@@ -117,10 +117,10 @@ class H264SpsDataParser {
         vui_parameters;
 
     // derived values
-    uint32_t getChromaArrayType() noexcept;
-    int getSubWidthC() noexcept;
-    int getSubHeightC() noexcept;
-    int getResolution(int* width, int* height) noexcept;
+    uint32_t getChromaArrayType() const noexcept;
+    int getSubWidthC() const noexcept;
+    int getSubHeightC() const noexcept;
+    int getResolution(int* width, int* height) const noexcept;
 
     // helper functions
     bool scaling_list(

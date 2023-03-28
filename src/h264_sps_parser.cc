@@ -469,7 +469,7 @@ H264SpsDataParser::ParseSpsData(rtc::BitBuffer* bit_buffer) noexcept {
   return sps_data;
 }
 
-uint32_t H264SpsDataParser::SpsDataState::getChromaArrayType() noexcept {
+uint32_t H264SpsDataParser::SpsDataState::getChromaArrayType() const noexcept {
   // Rec. ITU-T H.264 (2012) Page 74, Section 7.4.2.1.1
   // the value of the variable ChromaArrayType is assigned as follows:
   // - If separate_colour_plane_flag is equal to 0, ChromaArrayType is set
@@ -485,7 +485,7 @@ uint32_t H264SpsDataParser::SpsDataState::getChromaArrayType() noexcept {
   return ChromaArrayType;
 }
 
-int H264SpsDataParser::SpsDataState::getSubWidthC() noexcept {
+int H264SpsDataParser::SpsDataState::getSubWidthC() const noexcept {
   // Table 6-1
   if (chroma_format_idc == 0 && separate_colour_plane_flag == 0) {
     // monochrome
@@ -506,7 +506,7 @@ int H264SpsDataParser::SpsDataState::getSubWidthC() noexcept {
   return -1;
 }
 
-int H264SpsDataParser::SpsDataState::getSubHeightC() noexcept {
+int H264SpsDataParser::SpsDataState::getSubHeightC() const noexcept {
   // Table 6-1
   if (chroma_format_idc == 0 && separate_colour_plane_flag == 0) {
     // monochrome
@@ -528,7 +528,7 @@ int H264SpsDataParser::SpsDataState::getSubHeightC() noexcept {
 }
 
 int H264SpsDataParser::SpsDataState::getResolution(int* width,
-                                                   int* height) noexcept {
+                                                   int* height) const noexcept {
   if (width == nullptr || height == nullptr) {
     return -1;
   }
