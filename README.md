@@ -154,10 +154,10 @@ The following code has been copied from `tools/h264nal.cc`:
 std::vector<uint8_t> buffer(size);
 
 // create bitstream parser from the file
+h264nal::ParsingOptions parsing_options;
 std::unique_ptr<h264nal::H264BitstreamParser::BitstreamState> bitstream =
           h264nal::H264BitstreamParser::ParseBitstream(
-          buffer.data(), buffer.size(), options->add_offset,
-          options->add_length, options->add_parsed_length);
+          buffer.data(), buffer.size(), parsing_options);
 ```
 
 The `H264BitstreamParser::ParseBitstream()` function receives a generic
@@ -189,6 +189,7 @@ The following code has been copied from `tools/h264nal.nalu.cc`:
   // 3. create state for parsing NALUs
   // bitstream parser state (to keep the SPS/PPS/SubsetSPS NALUs)
   h264nal::H264BitstreamParserState bitstream_parser_state;
+  h265nal::ParsingOptions parsing_options;
 
   // 4. parse the NALUs one-by-one
   auto bitstream =
@@ -200,7 +201,7 @@ The following code has been copied from `tools/h264nal.nalu.cc`:
     // boxes), the right function is `ParseNalUnitUnescaped()`.
     auto nal_unit = h264nal::H264NalUnitParser::ParseNalUnit(
         &data[nalu_index.payload_start_offset], nalu_index.payload_size,
-        &bitstream_parser_state, true /* add_checksum */);
+        &bitstream_parser_state, parsing_options);
     ...
   }
 ```

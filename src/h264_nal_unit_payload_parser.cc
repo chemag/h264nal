@@ -200,7 +200,8 @@ H264NalUnitPayloadParser::ParseNalUnitPayload(
 
 #ifdef FDUMP_DEFINE
 void H264NalUnitPayloadParser::NalUnitPayloadState::fdump(
-    FILE* outfp, int indent_level, uint32_t nal_unit_type) const {
+    FILE* outfp, int indent_level, uint32_t nal_unit_type,
+    ParsingOptions parsing_options) const {
   fprintf(outfp, "nal_unit_payload {");
   indent_level = indent_level_incr(indent_level);
 
@@ -226,7 +227,7 @@ void H264NalUnitPayloadParser::NalUnitPayloadState::fdump(
       break;
     case SPS_NUT:
       if (sps) {
-        sps->fdump(outfp, indent_level);
+        sps->fdump(outfp, indent_level, parsing_options);
       }
       break;
     case PPS_NUT:
@@ -248,7 +249,7 @@ void H264NalUnitPayloadParser::NalUnitPayloadState::fdump(
       break;
     case SUBSET_SPS_NUT:
       if (subset_sps) {
-        subset_sps->fdump(outfp, indent_level);
+        subset_sps->fdump(outfp, indent_level, parsing_options);
       }
       break;
     case RSV16_NUT:

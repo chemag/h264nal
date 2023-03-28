@@ -75,7 +75,8 @@ std::unique_ptr<H264RtpFuAParser::RtpFuAState> H264RtpFuAParser::ParseRtpFuA(
 }
 
 #ifdef FDUMP_DEFINE
-void H264RtpFuAParser::RtpFuAState::fdump(FILE* outfp, int indent_level) const {
+void H264RtpFuAParser::RtpFuAState::fdump(
+    FILE* outfp, int indent_level, ParsingOptions parsing_options) const {
   fprintf(outfp, "rtp_fua {");
   indent_level = indent_level_incr(indent_level);
 
@@ -97,7 +98,7 @@ void H264RtpFuAParser::RtpFuAState::fdump(FILE* outfp, int indent_level) const {
   if (s_bit == 1) {
     // start of a fragmented NAL: dump payload
     fdump_indent_level(outfp, indent_level);
-    nal_unit_payload->fdump(outfp, fu_type, indent_level);
+    nal_unit_payload->fdump(outfp, fu_type, indent_level, parsing_options);
   }
 
   indent_level = indent_level_decr(indent_level);

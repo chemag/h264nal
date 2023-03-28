@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+#include "h264_common.h"
 #include "h264_nal_unit_parser.h"
 #include "rtc_base/bit_buffer.h"
 
@@ -28,7 +29,8 @@ class H264RtpStapAParser {
     RtpStapAState& operator=(RtpStapAState&&) = delete;
 
 #ifdef FDUMP_DEFINE
-    void fdump(FILE* outfp, int indent_level) const;
+    void fdump(FILE* outfp, int indent_level,
+               ParsingOptions parsing_options) const;
 #endif  // FDUMP_DEFINE
 
     // common header

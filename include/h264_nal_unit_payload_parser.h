@@ -36,7 +36,8 @@ class H264NalUnitPayloadParser {
     NalUnitPayloadState& operator=(NalUnitPayloadState&&) = delete;
 
 #ifdef FDUMP_DEFINE
-    void fdump(FILE* outfp, int indent_level, uint32_t nal_unit_type) const;
+    void fdump(FILE* outfp, int indent_level, uint32_t nal_unit_type,
+               ParsingOptions parsing_options) const;
 #endif  // FDUMP_DEFINE
 
     std::shared_ptr<struct H264SpsParser::SpsState> sps;

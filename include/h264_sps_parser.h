@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+#include "h264_common.h"
 #include "h264_vui_parameters_parser.h"
 #include "rtc_base/bit_buffer.h"
 
@@ -66,7 +67,8 @@ class H264SpsDataParser {
     SpsDataState& operator=(SpsDataState&&) = delete;
 
 #ifdef FDUMP_DEFINE
-    void fdump(FILE* outfp, int indent_level) const;
+    void fdump(FILE* outfp, int indent_level,
+               ParsingOptions parsing_options) const;
 #endif  // FDUMP_DEFINE
 
     uint32_t profile_idc = 0;
@@ -151,7 +153,8 @@ class H264SpsParser {
     SpsState& operator=(SpsState&&) = delete;
 
 #ifdef FDUMP_DEFINE
-    void fdump(FILE* outfp, int indent_level) const;
+    void fdump(FILE* outfp, int indent_level,
+               ParsingOptions parsing_options) const;
 #endif  // FDUMP_DEFINE
 
     std::unique_ptr<struct H264SpsDataParser::SpsDataState> sps_data;

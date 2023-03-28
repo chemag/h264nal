@@ -131,13 +131,13 @@ H264SubsetSpsParser::ParseSubsetSps(rtc::BitBuffer* bit_buffer) noexcept {
 }
 
 #ifdef FDUMP_DEFINE
-void H264SubsetSpsParser::SubsetSpsState::fdump(FILE* outfp,
-                                                int indent_level) const {
+void H264SubsetSpsParser::SubsetSpsState::fdump(
+    FILE* outfp, int indent_level, ParsingOptions parsing_options) const {
   fprintf(outfp, "subset_sps {");
   indent_level = indent_level_incr(indent_level);
 
   fdump_indent_level(outfp, indent_level);
-  seq_parameter_set_data->fdump(outfp, indent_level);
+  seq_parameter_set_data->fdump(outfp, indent_level, parsing_options);
 
   if (seq_parameter_set_data->profile_idc == 83 ||
       seq_parameter_set_data->profile_idc == 86) {

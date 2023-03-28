@@ -78,8 +78,8 @@ H264RtpStapAParser::ParseRtpStapA(
 }
 
 #ifdef FDUMP_DEFINE
-void H264RtpStapAParser::RtpStapAState::fdump(FILE* outfp,
-                                              int indent_level) const {
+void H264RtpStapAParser::RtpStapAState::fdump(
+    FILE* outfp, int indent_level, ParsingOptions parsing_options) const {
   fprintf(outfp, "rtp_stapa {");
   indent_level = indent_level_incr(indent_level);
 
@@ -95,7 +95,7 @@ void H264RtpStapAParser::RtpStapAState::fdump(FILE* outfp,
 
     fdump_indent_level(outfp, indent_level);
     nal_unit_payloads[i]->fdump(outfp, nal_unit_headers[i]->nal_unit_type,
-                                indent_level);
+                                indent_level, parsing_options);
   }
 
   indent_level = indent_level_decr(indent_level);

@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "h264_common.h"
 #include "h264_rtp_fua_parser.h"
 #include "h264_rtp_single_parser.h"
 #include "h264_rtp_stapa_parser.h"
@@ -29,7 +30,8 @@ class H264RtpParser {
     RtpState& operator=(RtpState&&) = delete;
 
 #ifdef FDUMP_DEFINE
-    void fdump(FILE* outfp, int indent_level) const;
+    void fdump(FILE* outfp, int indent_level,
+               ParsingOptions parsing_options) const;
 #endif  // FDUMP_DEFINE
 
     std::unique_ptr<struct H264NalUnitHeaderParser::NalUnitHeaderState>

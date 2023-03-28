@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+#include "h264_common.h"
 #include "h264_sps_parser.h"
 #include "h264_sps_svc_extension_parser.h"
 #include "rtc_base/bit_buffer.h"
@@ -31,7 +32,8 @@ class H264SubsetSpsParser {
     SubsetSpsState& operator=(SubsetSpsState&&) = delete;
 
 #ifdef FDUMP_DEFINE
-    void fdump(FILE* outfp, int indent_level) const;
+    void fdump(FILE* outfp, int indent_level,
+               ParsingOptions parsing_options) const;
 #endif  // FDUMP_DEFINE
 
     std::unique_ptr<struct H264SpsDataParser::SpsDataState>

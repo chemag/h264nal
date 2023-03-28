@@ -617,8 +617,8 @@ uint32_t H264SpsParser::SpsState::getChromaArrayType() noexcept {
 }
 
 #ifdef FDUMP_DEFINE
-void H264SpsDataParser::SpsDataState::fdump(FILE* outfp,
-                                            int indent_level) const {
+void H264SpsDataParser::SpsDataState::fdump(
+    FILE* outfp, int indent_level, ParsingOptions parsing_options) const {
   fprintf(outfp, "sps_data {");
   indent_level = indent_level_incr(indent_level);
 
@@ -806,17 +806,29 @@ void H264SpsDataParser::SpsDataState::fdump(FILE* outfp,
     vui_parameters->fdump(outfp, indent_level);
   }
 
+  if (parsing_options.add_resolution) {
+    // add video resolution
+    int width = -1;
+    int height = -1;
+    getResolution(&width, &height);
+    fdump_indent_level(outfp, indent_level);
+    fprintf(outfp, "width: %i", width);
+    fdump_indent_level(outfp, indent_level);
+    fprintf(outfp, "height: %i", height);
+  }
+
   indent_level = indent_level_decr(indent_level);
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "}");
 }
 
-void H264SpsParser::SpsState::fdump(FILE* outfp, int indent_level) const {
+void H264SpsParser::SpsState::fdump(FILE* outfp, int indent_level,
+                                    ParsingOptions parsing_options) const {
   fprintf(outfp, "sps {");
   indent_level = indent_level_incr(indent_level);
 
   fdump_indent_level(outfp, indent_level);
-  sps_data->fdump(outfp, indent_level);
+  sps_data->fdump(outfp, indent_level, parsing_options);
 
   indent_level = indent_level_decr(indent_level);
   fdump_indent_level(outfp, indent_level);

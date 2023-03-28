@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "h264_common.h"
 #include "h264_nal_unit_parser.h"
 #include "rtc_base/bit_buffer.h"
 
@@ -27,7 +28,8 @@ class H264RtpFuAParser {
     RtpFuAState& operator=(RtpFuAState&&) = delete;
 
 #ifdef FDUMP_DEFINE
-    void fdump(FILE* outfp, int indent_level) const;
+    void fdump(FILE* outfp, int indent_level,
+               ParsingOptions parsing_options) const;
 #endif  // FDUMP_DEFINE
 
     // input values
