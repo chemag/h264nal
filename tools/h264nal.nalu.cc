@@ -56,6 +56,8 @@ void usage(char *name) {
   fprintf(stderr, "\t-d:\t\tIncrease debug verbosity [default: %i]\n",
           DEFAULT_OPTIONS.debug);
   fprintf(stderr, "\t-q:\t\tZero debug verbosity\n");
+  fprintf(stderr, "\t-i <infile>:\t\tH265 file to parse [default: stdin]\n");
+  fprintf(stderr, "\t-o <output>:\t\tH265 parsing output [default: stdout]\n");
   fprintf(stderr, "\t--as-one-line:\tSet as_one_line flag%s\n",
           DEFAULT_OPTIONS.as_one_line ? " [default]" : "");
   fprintf(stderr, "\t--noas-one-line:\tReset as_one_line flag%s\n",
@@ -138,7 +140,7 @@ arg_options *parse_args(int argc, char **argv) {
       {NULL, 0, NULL, 0}};
 
   // parse arguments
-  while ((c = getopt_long(argc, argv, "dh", longopts, &optindex)) != -1) {
+  while ((c = getopt_long(argc, argv, "di:o:h", longopts, &optindex)) != -1) {
     switch (c) {
       case 0:
         // long options that define flag
@@ -158,6 +160,14 @@ arg_options *parse_args(int argc, char **argv) {
 
       case QUIET_OPTION:
         options.debug = 0;
+        break;
+
+      case 'i':
+        options.infile = optarg;
+        break;
+
+      case 'o':
+        options.outfile = optarg;
         break;
 
       case AS_ONE_LINE_FLAG_OPTION:
@@ -223,17 +233,6 @@ arg_options *parse_args(int argc, char **argv) {
     }
   }
 
-  // require 2 extra parameters
-  if ((argc - optind != 1) && (argc - optind != 2)) {
-    fprintf(stderr, "need infile (outfile is optional)\n");
-    usage(argv[0]);
-    return nullptr;
-  }
-
-  options.infile = argv[optind];
-  if (argc - optind == 2) {
-    options.outfile = argv[optind + 1];
-  }
   return &options;
 }
 
@@ -272,7 +271,13 @@ int main(int argc, char **argv) {
 
   // 1. read infile into buffer
   // TODO(chemag): read the infile incrementally
-  FILE *infp = fopen(options->infile, "rb");
+  FILE *infp = nullptr;
+  if ((options->infile == nullptr) ||
+      (strlen(options->infile) == 1 && options->infile[0] == '-')) {
+    infp = stdin;
+  } else {
+    infp = fopen(options->infile, "rb");
+  }
   if (infp == nullptr) {
     // did not work
     fprintf(stderr, "Could not open input file: \"%s\"\n", options->infile);
