@@ -312,6 +312,7 @@ int main(int argc, char **argv) {
   parsing_options.add_parsed_length = options->add_parsed_length;
   parsing_options.add_checksum = options->add_checksum;
   parsing_options.add_resolution = options->add_resolution;
+
   std::unique_ptr<h264nal::H264BitstreamParser::BitstreamState> bitstream =
       h264nal::H264BitstreamParser::ParseBitstream(buffer.data(), buffer.size(),
                                                    parsing_options);
