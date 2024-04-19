@@ -38,7 +38,7 @@ typedef struct arg_options {
 } arg_options;
 
 // default option values
-arg_options DEFAULTS{
+arg_options DEFAULT_OPTIONS{
     .debug = 0,
     .as_one_line = true,
     .add_offset = false,
@@ -54,32 +54,32 @@ void usage(char *name) {
   fprintf(stderr, "usage: %s [options]\n", name);
   fprintf(stderr, "where options are:\n");
   fprintf(stderr, "\t-d:\t\tIncrease debug verbosity [default: %i]\n",
-          DEFAULTS.debug);
+          DEFAULT_OPTIONS.debug);
   fprintf(stderr, "\t-q:\t\tZero debug verbosity\n");
   fprintf(stderr, "\t--as-one-line:\tSet as_one_line flag%s\n",
-          DEFAULTS.as_one_line ? " [default]" : "");
+          DEFAULT_OPTIONS.as_one_line ? " [default]" : "");
   fprintf(stderr, "\t--noas-one-line:\tReset as_one_line flag%s\n",
-          !DEFAULTS.as_one_line ? " [default]" : "");
+          !DEFAULT_OPTIONS.as_one_line ? " [default]" : "");
   fprintf(stderr, "\t--add-offset:\tSet add_offset flag%s\n",
-          DEFAULTS.add_offset ? " [default]" : "");
+          DEFAULT_OPTIONS.add_offset ? " [default]" : "");
   fprintf(stderr, "\t--noadd-offset:\tReset add_offset flag%s\n",
-          !DEFAULTS.add_offset ? " [default]" : "");
+          !DEFAULT_OPTIONS.add_offset ? " [default]" : "");
   fprintf(stderr, "\t--add-length:\tSet add_length flag%s\n",
-          DEFAULTS.add_length ? " [default]" : "");
+          DEFAULT_OPTIONS.add_length ? " [default]" : "");
   fprintf(stderr, "\t--noadd-length:\tReset add_length flag%s\n",
-          !DEFAULTS.add_length ? " [default]" : "");
+          !DEFAULT_OPTIONS.add_length ? " [default]" : "");
   fprintf(stderr, "\t--add-parsed-length:\tSet add_parsed_length flag%s\n",
-          DEFAULTS.add_parsed_length ? " [default]" : "");
+          DEFAULT_OPTIONS.add_parsed_length ? " [default]" : "");
   fprintf(stderr, "\t--noadd-parsed-length:\tReset add_parsed_length flag%s\n",
-          !DEFAULTS.add_parsed_length ? " [default]" : "");
+          !DEFAULT_OPTIONS.add_parsed_length ? " [default]" : "");
   fprintf(stderr, "\t--add-checksum:\tSet add_checksum flag%s\n",
-          DEFAULTS.add_checksum ? " [default]" : "");
+          DEFAULT_OPTIONS.add_checksum ? " [default]" : "");
   fprintf(stderr, "\t--noadd-checksum:\tReset add_checksum flag%s\n",
-          !DEFAULTS.add_checksum ? " [default]" : "");
+          !DEFAULT_OPTIONS.add_checksum ? " [default]" : "");
   fprintf(stderr, "\t--add-contents:\tSet add_contents flag%s\n",
-          DEFAULTS.add_contents ? " [default]" : "");
+          DEFAULT_OPTIONS.add_contents ? " [default]" : "");
   fprintf(stderr, "\t--noadd-contents:\tReset add_contents flag%s\n",
-          !DEFAULTS.add_contents ? " [default]" : "");
+          !DEFAULT_OPTIONS.add_contents ? " [default]" : "");
   fprintf(stderr, "\t--version:\t\tDump version number\n");
   fprintf(stderr, "\t-h:\t\tHelp\n");
   exit(-1);
@@ -109,7 +109,7 @@ arg_options *parse_args(int argc, char **argv) {
   static arg_options options;
 
   // set default options
-  options = DEFAULTS;
+  options = DEFAULT_OPTIONS;
 
   // getopt_long stores the option index here
   int optindex = 0;
