@@ -62,23 +62,23 @@ void usage(char *name) {
           !DEFAULT_OPTIONS.as_one_line ? " [default]" : "");
   fprintf(stderr, "\t--add-offset:\tSet add_offset flag%s\n",
           DEFAULT_OPTIONS.add_offset ? " [default]" : "");
-  fprintf(stderr, "\t--noadd-offset:\tReset add_offset flag%s\n",
+  fprintf(stderr, "\t--no-add-offset:\tReset add_offset flag%s\n",
           !DEFAULT_OPTIONS.add_offset ? " [default]" : "");
   fprintf(stderr, "\t--add-length:\tSet add_length flag%s\n",
           DEFAULT_OPTIONS.add_length ? " [default]" : "");
-  fprintf(stderr, "\t--noadd-length:\tReset add_length flag%s\n",
+  fprintf(stderr, "\t--no-add-length:\tReset add_length flag%s\n",
           !DEFAULT_OPTIONS.add_length ? " [default]" : "");
   fprintf(stderr, "\t--add-parsed-length:\tSet add_parsed_length flag%s\n",
           DEFAULT_OPTIONS.add_parsed_length ? " [default]" : "");
-  fprintf(stderr, "\t--noadd-parsed-length:\tReset add_parsed_length flag%s\n",
+  fprintf(stderr, "\t--no-add-parsed-length:\tReset add_parsed_length flag%s\n",
           !DEFAULT_OPTIONS.add_parsed_length ? " [default]" : "");
   fprintf(stderr, "\t--add-checksum:\tSet add_checksum flag%s\n",
           DEFAULT_OPTIONS.add_checksum ? " [default]" : "");
-  fprintf(stderr, "\t--noadd-checksum:\tReset add_checksum flag%s\n",
+  fprintf(stderr, "\t--no-add-checksum:\tReset add_checksum flag%s\n",
           !DEFAULT_OPTIONS.add_checksum ? " [default]" : "");
   fprintf(stderr, "\t--add-contents:\tSet add_contents flag%s\n",
           DEFAULT_OPTIONS.add_contents ? " [default]" : "");
-  fprintf(stderr, "\t--noadd-contents:\tReset add_contents flag%s\n",
+  fprintf(stderr, "\t--no-add-contents:\tReset add_contents flag%s\n",
           !DEFAULT_OPTIONS.add_contents ? " [default]" : "");
   fprintf(stderr, "\t--version:\t\tDump version number\n");
   fprintf(stderr, "\t-h:\t\tHelp\n");
@@ -121,18 +121,18 @@ arg_options *parse_args(int argc, char **argv) {
       // options without a short option
       {"quiet", no_argument, NULL, QUIET_OPTION},
       {"as-one-line", no_argument, NULL, AS_ONE_LINE_FLAG_OPTION},
-      {"noas-one-line", no_argument, NULL, NO_AS_ONE_LINE_FLAG_OPTION},
+      {"no-as-one-line", no_argument, NULL, NO_AS_ONE_LINE_FLAG_OPTION},
       {"add-offset", no_argument, NULL, ADD_OFFSET_FLAG_OPTION},
-      {"noadd-offset", no_argument, NULL, NO_ADD_OFFSET_FLAG_OPTION},
+      {"no-add-offset", no_argument, NULL, NO_ADD_OFFSET_FLAG_OPTION},
       {"add-length", no_argument, NULL, ADD_LENGTH_FLAG_OPTION},
-      {"noadd-length", no_argument, NULL, NO_ADD_LENGTH_FLAG_OPTION},
+      {"no-add-length", no_argument, NULL, NO_ADD_LENGTH_FLAG_OPTION},
       {"add-parsed-length", no_argument, NULL, ADD_PARSED_LENGTH_FLAG_OPTION},
-      {"noadd-parsed-length", no_argument, NULL,
+      {"no-add-parsed-length", no_argument, NULL,
        NO_ADD_PARSED_LENGTH_FLAG_OPTION},
       {"add-checksum", no_argument, NULL, ADD_CHECKSUM_FLAG_OPTION},
-      {"noadd-checksum", no_argument, NULL, NO_ADD_CHECKSUM_FLAG_OPTION},
+      {"no-add-checksum", no_argument, NULL, NO_ADD_CHECKSUM_FLAG_OPTION},
       {"add-contents", no_argument, NULL, ADD_CONTENTS_FLAG_OPTION},
-      {"noadd-contents", no_argument, NULL, NO_ADD_CONTENTS_FLAG_OPTION},
+      {"no-add-contents", no_argument, NULL, NO_ADD_CONTENTS_FLAG_OPTION},
       {"version", no_argument, NULL, VERSION_OPTION},
       {"help", no_argument, NULL, HELP_OPTION},
       {NULL, 0, NULL, 0}};
