@@ -58,11 +58,11 @@ void usage(char *name) {
   fprintf(stderr, "\t-d:\t\tIncrease debug verbosity [default: %i]\n",
           DEFAULT_OPTIONS.debug);
   fprintf(stderr, "\t-q:\t\tZero debug verbosity\n");
-  fprintf(stderr, "\t-i <infile>:\t\tH265 file to parse [default: stdin]\n");
-  fprintf(stderr, "\t-o <output>:\t\tH265 parsing output [default: stdout]\n");
+  fprintf(stderr, "\t-i <infile>:\t\tH264 file to parse [default: stdin]\n");
+  fprintf(stderr, "\t-o <output>:\t\tH264 parsing output [default: stdout]\n");
   fprintf(stderr, "\t--as-one-line:\tSet as_one_line flag%s\n",
           DEFAULT_OPTIONS.as_one_line ? " [default]" : "");
-  fprintf(stderr, "\t--noas-one-line:\tReset as_one_line flag%s\n",
+  fprintf(stderr, "\t--no-as-one-line:\tReset as_one_line flag%s\n",
           !DEFAULT_OPTIONS.as_one_line ? " [default]" : "");
   fprintf(stderr, "\t--add-offset:\tSet add_offset flag%s\n",
           DEFAULT_OPTIONS.add_offset ? " [default]" : "");
@@ -128,6 +128,8 @@ arg_options *parse_args(int argc, char **argv) {
   static struct option longopts[] = {
       // matching options to short options
       {"debug", no_argument, NULL, 'd'},
+      {"infile", required_argument, NULL, 'i'},
+      {"outfile", required_argument, NULL, 'o'},
       // options without a short option
       {"quiet", no_argument, NULL, QUIET_OPTION},
       {"as-one-line", no_argument, NULL, AS_ONE_LINE_FLAG_OPTION},
@@ -310,57 +312,61 @@ int main(int argc, char **argv) {
   uint8_t *data = buffer.data();
   size_t length = buffer.size();
 
-  // 2. get the indices for the NALUs in the stream. This is needed
-  // because we will read Annex-B files, i.e., a bunch of appended NALUs
-  // with escape sequences used to separate them.
-  auto nalu_indices =
-      h264nal::H264BitstreamParser::FindNaluIndices(data, length);
-
-  // 3. create state for parsing NALUs
-  // bitstream parser state (to keep the SPS/PPS/SubsetSPS NALUs)
-  h264nal::H264BitstreamParserState bitstream_parser_state;
-  // parsing options
+  // 2. prepare NALU parsing
   h264nal::ParsingOptions parsing_options;
   parsing_options.add_offset = options->add_offset;
   parsing_options.add_length = options->add_length;
   parsing_options.add_parsed_length = options->add_parsed_length;
-  parsing_options.add_checksum = true; /* options->add_checksum */
+  parsing_options.add_checksum = options->add_checksum;
   parsing_options.add_resolution = options->add_resolution;
 
-  // 4. parse the NALUs one-by-one
-  auto bitstream =
-      std::make_unique<h264nal::H264BitstreamParser::BitstreamState>();
-  for (const auto &nalu_index : nalu_indices) {
-    // 4.1. parse 1 NAL unit
-    // note: If the NALU comes from an unescaped bitstreams, i.e.,
-    // one with an explicit NALU length mechanism (like mp4 mdat
-    // boxes), the right function is `ParseNalUnitUnescaped()`.
-    auto nal_unit = h264nal::H264NalUnitParser::ParseNalUnit(
-        &data[nalu_index.payload_start_offset], nalu_index.payload_size,
-        &bitstream_parser_state, parsing_options);
-    if (nal_unit == nullptr) {
-      // cannot parse the NalUnit
-#ifdef FPRINT_ERRORS
-      fprintf(stderr, "error: cannot parse buffer into NalUnit\n");
-#endif  // FPRINT_ERRORS
-      continue;
-    }
-    nal_unit->offset = nalu_index.payload_start_offset;
-    nal_unit->length = nalu_index.payload_size;
-    // 4.2. print a given value
-    printf(
-        "nal_unit { offset: %lu length: %lu parsed_length: %lu checksum: 0x%s "
-        "} nal_unit_header { forbidden_zero_bit: %i nal_ref_idc: %i "
-        "nal_unit_type: %i }\n",
-        nal_unit->offset, nal_unit->length, nal_unit->parsed_length,
-        nal_unit->checksum->GetPrintableChecksum(),
-        nal_unit->nal_unit_header->forbidden_zero_bit,
-        nal_unit->nal_unit_header->nal_ref_idc,
-        nal_unit->nal_unit_header->nal_unit_type);
+  // use bitstream parser state to keep the SPS/PPS/SubsetSPS NALUs
+  h264nal::H264BitstreamParserState bitstream_parser_state;
 
-    // 4.3. store the parsed NAL unit
-    bitstream->nal_units.push_back(std::move(nal_unit));
+  // 3. parse the NAL unit
+  // note: If the NALU comes from an unescaped bitstreams, i.e.,
+  // one with an explicit NALU length mechanism (like mp4 mdat
+  // boxes), the right function is `ParseNalUnitUnescaped()`.
+  auto nal_unit = h264nal::H264NalUnitParser::ParseNalUnit(
+      data, length, &bitstream_parser_state, parsing_options);
+  if (nal_unit == nullptr) {
+    // cannot parse the NalUnit
+#ifdef FPRINT_ERRORS
+    fprintf(stderr, "error: cannot parse buffer into NalUnit\n");
+#endif  // FPRINT_ERRORS
+    return -1;
   }
+#ifdef FDUMP_DEFINE
+  // get outfile file descriptor
+  FILE *outfp;
+  if (options->outfile == nullptr ||
+      (strlen(options->outfile) == 1 && options->outfile[0] == '-')) {
+    // use stdout
+    outfp = stdout;
+  } else {
+    outfp = fopen(options->outfile, "wb");
+    if (outfp == nullptr) {
+      // did not work
+      fprintf(stderr, "Could not open output file: \"%s\"\n", options->outfile);
+      return -1;
+    }
+  }
+
+  int indent_level = (options->as_one_line) ? -1 : 0;
+  // 4. dump the contents of the NALU
+  nal_unit->fdump(outfp, indent_level, parsing_options);
+  if (options->add_contents) {
+    fprintf(outfp, " contents {");
+    for (size_t i = 0; i < nal_unit->length; i++) {
+      fprintf(outfp, " %02x", buffer[nal_unit->offset + i]);
+      if ((i + 1) % 16 == 0) {
+        fprintf(outfp, " ");
+      }
+    }
+    fprintf(outfp, " }");
+    fprintf(outfp, "\n");
+  }
+#endif  // FDUMP_DEFINE
 
   // 5. clean up
   // auto bitstream = std::make_unique<BitstreamState>();
