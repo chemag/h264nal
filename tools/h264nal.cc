@@ -59,7 +59,7 @@ void usage(char *name) {
   fprintf(stderr, "\t-o <output>:\t\tH265 parsing output [default: stdout]\n");
   fprintf(stderr, "\t--as-one-line:\tSet as_one_line flag%s\n",
           DEFAULT_OPTIONS.as_one_line ? " [default]" : "");
-  fprintf(stderr, "\t--noas-one-line:\tReset as_one_line flag%s\n",
+  fprintf(stderr, "\t--no-as-one-line:\tReset as_one_line flag%s\n",
           !DEFAULT_OPTIONS.as_one_line ? " [default]" : "");
   fprintf(stderr, "\t--add-offset:\tSet add_offset flag%s\n",
           DEFAULT_OPTIONS.add_offset ? " [default]" : "");
@@ -125,6 +125,8 @@ arg_options *parse_args(int argc, char **argv) {
   static struct option longopts[] = {
       // matching options to short options
       {"debug", no_argument, NULL, 'd'},
+      {"infile", required_argument, NULL, 'i'},
+      {"outfile", required_argument, NULL, 'o'},
       // options without a short option
       {"quiet", no_argument, NULL, QUIET_OPTION},
       {"as-one-line", no_argument, NULL, AS_ONE_LINE_FLAG_OPTION},
@@ -305,7 +307,7 @@ int main(int argc, char **argv) {
   std::vector<uint8_t> buffer(size);
   fread(reinterpret_cast<char *>(buffer.data()), 1, size, infp);
 
-  // 2. parse bitstream
+  // 2. prepare bitstream parsing
   h264nal::ParsingOptions parsing_options;
   parsing_options.add_offset = options->add_offset;
   parsing_options.add_length = options->add_length;
@@ -313,6 +315,7 @@ int main(int argc, char **argv) {
   parsing_options.add_checksum = options->add_checksum;
   parsing_options.add_resolution = options->add_resolution;
 
+  // 3. parse bitstream
   std::unique_ptr<h264nal::H264BitstreamParser::BitstreamState> bitstream =
       h264nal::H264BitstreamParser::ParseBitstream(buffer.data(), buffer.size(),
                                                    parsing_options);
@@ -334,7 +337,7 @@ int main(int argc, char **argv) {
   }
 
   int indent_level = (options->as_one_line) ? -1 : 0;
-  // 3. dump the contents of each NALU
+  // 4. dump the contents of each NALU
   for (auto &nal_unit : bitstream->nal_units) {
     nal_unit->fdump(outfp, indent_level, parsing_options);
     if (options->add_contents) {
