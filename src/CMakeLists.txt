@@ -77,6 +77,9 @@ endif()
 target_include_directories(h264nal PUBLIC ../include/)
 target_include_directories(h264nal PUBLIC ../webrtc)
 target_link_libraries(h264nal PUBLIC webrtc)
+if (WIN32)
+  target_link_libraries(h264nal PUBLIC wsock32 ws2_32)
+endif()
 
 # https://cmake.org/cmake/help/latest/guide/tutorial/index.html#adding-a-version-number-and-configured-header-file
 configure_file(config.h.in config.h)

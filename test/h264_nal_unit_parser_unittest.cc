@@ -44,7 +44,7 @@ TEST_F(H264NalUnitParserTest, TestSampleNalUnit) {
               ::testing::ElementsAreArray({0x98, 0xff, 0xff, 0xff}));
 
   // test the checksum's ascii dumper
-  char checksum_printable[64] = {};
+  char checksum_printable[64] = {0};
   nal_unit->checksum->fdump(checksum_printable, 64);
   EXPECT_STREQ(checksum_printable, "98ffffff");
 
@@ -55,7 +55,7 @@ TEST_F(H264NalUnitParserTest, TestSampleNalUnit) {
 }
 
 TEST_F(H264NalUnitParserTest, TestEmptyNalUnit) {
-  const uint8_t buffer[] = {};
+  const uint8_t buffer[] = {0};
   H264BitstreamParserState bitstream_parser_state;
   ParsingOptions parsing_options;
   parsing_options.add_checksum = false;
