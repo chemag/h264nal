@@ -510,7 +510,7 @@ uint32_t H264SliceHeaderParser::SliceHeaderState::getSliceGroupChangeCycleLen(
   uint32_t SliceGroupChangeRate =
       getSliceGroupChangeRate(slice_group_change_rate_minus1);
   return std::ceil(
-      std::log2(1.0 * (PicSizeInMapUnits / SliceGroupChangeRate) + 1));
+      std::log2(((1.0 * PicSizeInMapUnits) / SliceGroupChangeRate) + 1));
 }
 
 uint32_t H264SliceHeaderParser::SliceHeaderState::getPicWidthInMbs(
