@@ -25,7 +25,7 @@ std::unique_ptr<
 H264NalUnitHeaderSvcExtensionParser::ParseNalUnitHeaderSvcExtension(
     const uint8_t* data, size_t length) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
-  rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
+  BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
 
   return ParseNalUnitHeaderSvcExtension(&bit_buffer);
 }
@@ -33,7 +33,7 @@ H264NalUnitHeaderSvcExtensionParser::ParseNalUnitHeaderSvcExtension(
 std::unique_ptr<
     H264NalUnitHeaderSvcExtensionParser::NalUnitHeaderSvcExtensionState>
 H264NalUnitHeaderSvcExtensionParser::ParseNalUnitHeaderSvcExtension(
-    rtc::BitBuffer* bit_buffer) noexcept {
+    BitBuffer* bit_buffer) noexcept {
   // H264 NAL Unit Header SVC Extension (nal_unit_header_svc_extension())
   // parser.
   // Section G.7.3.1.1 ("NAL unit header SVC Extension syntax") of the H.264

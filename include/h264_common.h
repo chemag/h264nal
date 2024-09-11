@@ -10,7 +10,7 @@
 #include <memory>
 #include <vector>
 
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 
@@ -98,10 +98,10 @@ enum SvcSliceType : uint8_t {
 std::vector<uint8_t> UnescapeRbsp(const uint8_t *data, size_t length);
 
 // Syntax functions and descriptors) (Section 7.2)
-bool byte_aligned(rtc::BitBuffer *bit_buffer);
-int get_current_offset(rtc::BitBuffer *bit_buffer);
-bool more_rbsp_data(rtc::BitBuffer *bit_buffer);
-bool rbsp_trailing_bits(rtc::BitBuffer *bit_buffer);
+bool byte_aligned(BitBuffer *bit_buffer);
+int get_current_offset(BitBuffer *bit_buffer);
+bool more_rbsp_data(BitBuffer *bit_buffer);
+bool rbsp_trailing_bits(BitBuffer *bit_buffer);
 
 #if defined(FDUMP_DEFINE)
 // fdump() indentation help
@@ -130,7 +130,7 @@ class NaluChecksum {
   // maximum length (in bytes)
   const static int kMaxLength = 32;
   static std::shared_ptr<NaluChecksum> GetNaluChecksum(
-      rtc::BitBuffer *bit_buffer) noexcept;
+      BitBuffer *bit_buffer) noexcept;
   void fdump(char *output, int output_len) const;
   const char *GetChecksum() { return checksum; };
   int GetLength() { return length; };

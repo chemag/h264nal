@@ -25,12 +25,12 @@ namespace h264nal {
 std::shared_ptr<H264PpsParser::PpsState> H264PpsParser::ParsePps(
     const uint8_t* data, size_t length, uint32_t chroma_format_idc) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
-  rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
+  BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
   return ParsePps(&bit_buffer, chroma_format_idc);
 }
 
 std::shared_ptr<H264PpsParser::PpsState> H264PpsParser::ParsePps(
-    rtc::BitBuffer* bit_buffer, uint32_t chroma_format_idc) noexcept {
+    BitBuffer* bit_buffer, uint32_t chroma_format_idc) noexcept {
   uint32_t bits_tmp;
   uint32_t golomb_tmp;
 
@@ -318,7 +318,7 @@ uint32_t H264PpsParser::PpsState::getSliceGroupIdLen() noexcept {
 
 // Section 7.3.2.1.1.1
 bool H264PpsParser::PpsState::scaling_list(
-    rtc::BitBuffer* bit_buffer, uint32_t i, std::vector<uint32_t>& scalingList,
+    BitBuffer* bit_buffer, uint32_t i, std::vector<uint32_t>& scalingList,
     uint32_t sizeOfScalingList,
     std::vector<uint32_t>& useDefaultScalingMatrixFlag) noexcept {
   uint32_t lastScale = 8;

@@ -9,7 +9,7 @@
 #include <memory>
 #include <vector>
 
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 
@@ -51,7 +51,7 @@ class H264RefPicListModificationParser {
   ParseRefPicListModification(const uint8_t* data, size_t length,
                               uint32_t slice_type) noexcept;
   static std::unique_ptr<RefPicListModificationState>
-  ParseRefPicListModification(rtc::BitBuffer* bit_buffer,
+  ParseRefPicListModification(BitBuffer* bit_buffer,
                               uint32_t slice_type) noexcept;
 };
 

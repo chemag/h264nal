@@ -9,7 +9,7 @@
 #include <memory>
 #include <vector>
 
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 
@@ -50,7 +50,7 @@ class H264DecRefPicMarkingParser {
   static std::unique_ptr<DecRefPicMarkingState> ParseDecRefPicMarking(
       const uint8_t* data, size_t length, uint32_t nal_unit_type) noexcept;
   static std::unique_ptr<DecRefPicMarkingState> ParseDecRefPicMarking(
-      rtc::BitBuffer* bit_buffer, uint32_t nal_unit_type) noexcept;
+      BitBuffer* bit_buffer, uint32_t nal_unit_type) noexcept;
 };
 
 }  // namespace h264nal

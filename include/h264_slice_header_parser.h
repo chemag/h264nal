@@ -13,7 +13,7 @@
 #include "h264_dec_ref_pic_marking_parser.h"
 #include "h264_pred_weight_table_parser.h"
 #include "h264_ref_pic_list_modification_parser.h"
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 
@@ -145,7 +145,7 @@ class H264SliceHeaderParser {
       uint32_t nal_unit_type,
       struct H264BitstreamParserState* bitstream_parser_state) noexcept;
   static std::unique_ptr<SliceHeaderState> ParseSliceHeader(
-      rtc::BitBuffer* bit_buffer, uint32_t nal_ref_idc, uint32_t nal_unit_type,
+      BitBuffer* bit_buffer, uint32_t nal_ref_idc, uint32_t nal_unit_type,
       struct H264BitstreamParserState* bitstream_parser_state) noexcept;
 };
 

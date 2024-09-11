@@ -9,8 +9,7 @@
 
 #include <vector>
 
-#include "rtc_base/arraysize.h"
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 
@@ -116,7 +115,7 @@ const auto& kH264CommonMoreRbspDataParameterTestcases = *new std::vector<
 
 TEST_P(H264CommonMoreRbspDataTest, Run) {
   const auto& testcase = GetParam();
-  rtc::BitBuffer bit_buffer(testcase.buffer.data(), testcase.buffer.size());
+  BitBuffer bit_buffer(testcase.buffer.data(), testcase.buffer.size());
   bit_buffer.Seek(testcase.cur_byte_offset, testcase.cur_bit_offset);
   // 1: store the bit buffer status before the more_rbsp_data call
   size_t pre_out_byte_offset;

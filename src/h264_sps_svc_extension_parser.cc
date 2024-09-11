@@ -23,13 +23,13 @@ std::unique_ptr<H264SpsSvcExtensionParser::SpsSvcExtensionState>
 H264SpsSvcExtensionParser::ParseSpsSvcExtension(
     const uint8_t* data, size_t length, uint32_t ChromaArrayType) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
-  rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
+  BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
   return ParseSpsSvcExtension(&bit_buffer, ChromaArrayType);
 }
 
 std::unique_ptr<H264SpsSvcExtensionParser::SpsSvcExtensionState>
 H264SpsSvcExtensionParser::ParseSpsSvcExtension(
-    rtc::BitBuffer* bit_buffer, uint32_t ChromaArrayType) noexcept {
+    BitBuffer* bit_buffer, uint32_t ChromaArrayType) noexcept {
   // H264 seq_parameter_set_svc_extension() parser.
   // Section G.7.3.2.1.4 ("Sequence parameter set SVC extension syntax") of
   // the H.264 standard for a complete description.

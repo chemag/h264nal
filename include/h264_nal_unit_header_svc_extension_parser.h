@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 
@@ -48,7 +48,7 @@ class H264NalUnitHeaderSvcExtensionParser {
   static std::unique_ptr<NalUnitHeaderSvcExtensionState>
   ParseNalUnitHeaderSvcExtension(const uint8_t* data, size_t length) noexcept;
   static std::unique_ptr<NalUnitHeaderSvcExtensionState>
-  ParseNalUnitHeaderSvcExtension(rtc::BitBuffer* bit_buffer) noexcept;
+  ParseNalUnitHeaderSvcExtension(BitBuffer* bit_buffer) noexcept;
 };
 
 }  // namespace h264nal

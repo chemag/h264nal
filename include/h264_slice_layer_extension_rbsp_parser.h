@@ -13,7 +13,7 @@
 #include "h264_nal_unit_header_parser.h"
 #include "h264_slice_header_in_scalable_extension_parser.h"
 #include "h264_slice_header_parser.h"
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 
@@ -67,7 +67,7 @@ class H264SliceLayerExtensionRbspParser {
       struct H264BitstreamParserState* bitstream_parser_state) noexcept;
   static std::unique_ptr<SliceLayerExtensionRbspState>
   ParseSliceLayerExtensionRbsp(
-      rtc::BitBuffer* bit_buffer,
+      BitBuffer* bit_buffer,
       H264NalUnitHeaderParser::NalUnitHeaderState& nal_unit_header,
       struct H264BitstreamParserState* bitstream_parser_state) noexcept;
 };

@@ -12,7 +12,7 @@
 #include "h264_common.h"
 #include "h264_sps_parser.h"
 #include "h264_sps_svc_extension_parser.h"
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 
@@ -57,7 +57,7 @@ class H264SubsetSpsParser {
   static std::shared_ptr<SubsetSpsState> ParseSubsetSps(const uint8_t* data,
                                                         size_t length) noexcept;
   static std::shared_ptr<SubsetSpsState> ParseSubsetSps(
-      rtc::BitBuffer* bit_buffer) noexcept;
+      BitBuffer* bit_buffer) noexcept;
 };
 
 }  // namespace h264nal

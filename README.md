@@ -189,7 +189,7 @@ The following code has been copied from `tools/h264nal.nalu.cc`:
   // 3. create state for parsing NALUs
   // bitstream parser state (to keep the SPS/PPS/SubsetSPS NALUs)
   h264nal::H264BitstreamParserState bitstream_parser_state;
-  h265nal::ParsingOptions parsing_options;
+  h264nal::ParsingOptions parsing_options;
 
   // 4. parse the NALUs one-by-one
   auto bitstream =
@@ -268,12 +268,13 @@ if (rtp->nal_unit_header->nal_unit_type <= 23) {
 # 5. Requirements
 Requires gtests, gmock.
 
-The [`webrtc`](webrtc) directory contains an RBSP parser copied from webrtc.
-
 
 # 6. Other
 The [media](media/README.md) directory contains information on testing the
 parser using media files.
+
+The `rtc_common.h|cc` code contains an RBSP parser copied from an old
+version of webrtc.
 
 The [fuzz](fuzz/README.md) directory contains information on fuzzing the
 parser.

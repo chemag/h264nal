@@ -32,12 +32,12 @@ std::shared_ptr<H264SubsetSpsParser::SubsetSpsState>
 H264SubsetSpsParser::ParseSubsetSps(const uint8_t* data,
                                     size_t length) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
-  rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
+  BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
   return ParseSubsetSps(&bit_buffer);
 }
 
 std::shared_ptr<H264SubsetSpsParser::SubsetSpsState>
-H264SubsetSpsParser::ParseSubsetSps(rtc::BitBuffer* bit_buffer) noexcept {
+H264SubsetSpsParser::ParseSubsetSps(BitBuffer* bit_buffer) noexcept {
   // H264 SPS Nal Unit (subset_seq_parameter_set_rbsp()) parser.
   // Section 7.3.2.1.3 ("Subset sequence parameter set data syntax") of the
   // H.264 standard for a complete description.

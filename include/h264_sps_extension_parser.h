@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "h264_sps_parser.h"
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 
@@ -55,7 +55,7 @@ class H264SpsExtensionParser {
   static std::shared_ptr<SpsExtensionState> ParseSpsExtension(
       const uint8_t* data, size_t length) noexcept;
   static std::shared_ptr<SpsExtensionState> ParseSpsExtension(
-      rtc::BitBuffer* bit_buffer) noexcept;
+      BitBuffer* bit_buffer) noexcept;
 };
 
 }  // namespace h264nal

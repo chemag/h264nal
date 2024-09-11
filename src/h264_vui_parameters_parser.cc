@@ -25,13 +25,12 @@ std::unique_ptr<H264VuiParametersParser::VuiParametersState>
 H264VuiParametersParser::ParseVuiParameters(const uint8_t* data,
                                             size_t length) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
-  rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
+  BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
   return ParseVuiParameters(&bit_buffer);
 }
 
 std::unique_ptr<H264VuiParametersParser::VuiParametersState>
-H264VuiParametersParser::ParseVuiParameters(
-    rtc::BitBuffer* bit_buffer) noexcept {
+H264VuiParametersParser::ParseVuiParameters(BitBuffer* bit_buffer) noexcept {
   // H264 vui_parameters() parser.
   // Section E.1 ("VUI parameters syntax") of the H.264 standard for
   // a complete description.

@@ -23,7 +23,7 @@
 #include "h264_sps_parser.h"
 #include "h264_sps_svc_extension_parser.h"
 #include "h264_subset_sps_parser.h"
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 
@@ -39,7 +39,7 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
     H264NalUnitHeaderParser::NalUnitHeaderState& nal_unit_header,
     struct H264BitstreamParserState* bitstream_parser_state) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
-  rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
+  BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
   return ParseSliceHeaderInScalableExtension(&bit_buffer, nal_unit_header,
                                              bitstream_parser_state);
 }
@@ -47,7 +47,7 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
 std::unique_ptr<H264SliceHeaderInScalableExtensionParser::
                     SliceHeaderInScalableExtensionState>
 H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
-    rtc::BitBuffer* bit_buffer,
+    BitBuffer* bit_buffer,
     H264NalUnitHeaderParser::NalUnitHeaderState& nal_unit_header,
     struct H264BitstreamParserState* bitstream_parser_state) noexcept {
   int32_t sgolomb_tmp;

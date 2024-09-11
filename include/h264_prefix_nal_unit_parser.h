@@ -9,7 +9,7 @@
 #include <memory>
 #include <vector>
 
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 
@@ -51,7 +51,7 @@ class H264PrefixNalUnitSvcParser {
       const uint8_t* data, size_t length, uint32_t nal_ref_idc,
       uint32_t use_ref_base_pic_flag, uint32_t idr_flag) noexcept;
   static std::unique_ptr<PrefixNalUnitSvcState> ParsePrefixNalUnitSvc(
-      rtc::BitBuffer* bit_buffer, uint32_t nal_ref_idc,
+      BitBuffer* bit_buffer, uint32_t nal_ref_idc,
       uint32_t use_ref_base_pic_flag, uint32_t idr_flag) noexcept;
 };
 
@@ -91,9 +91,8 @@ class H264PrefixNalUnitRbspParser {
       uint32_t nal_ref_idc, uint32_t use_ref_base_pic_flag,
       uint32_t idr_flag) noexcept;
   static std::unique_ptr<PrefixNalUnitRbspState> ParsePrefixNalUnitRbsp(
-      rtc::BitBuffer* bit_buffer, uint32_t svc_extension_flag,
-      uint32_t nal_ref_idc, uint32_t use_ref_base_pic_flag,
-      uint32_t idr_flag) noexcept;
+      BitBuffer* bit_buffer, uint32_t svc_extension_flag, uint32_t nal_ref_idc,
+      uint32_t use_ref_base_pic_flag, uint32_t idr_flag) noexcept;
 };
 
 }  // namespace h264nal

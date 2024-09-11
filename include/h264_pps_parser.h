@@ -9,7 +9,7 @@
 #include <memory>
 #include <vector>
 
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 
@@ -104,8 +104,8 @@ class H264PpsParser {
 
     // helper functions
     bool scaling_list(
-        rtc::BitBuffer* bit_buffer, uint32_t i,
-        std::vector<uint32_t>& scalingList, uint32_t sizeOfScalingList,
+        BitBuffer* bit_buffer, uint32_t i, std::vector<uint32_t>& scalingList,
+        uint32_t sizeOfScalingList,
         std::vector<uint32_t>& useDefaultScalingMatrixFlag) noexcept;
   };
 
@@ -113,7 +113,7 @@ class H264PpsParser {
   static std::shared_ptr<PpsState> ParsePps(
       const uint8_t* data, size_t length, uint32_t chroma_format_idc) noexcept;
   static std::shared_ptr<PpsState> ParsePps(
-      rtc::BitBuffer* bit_buffer, uint32_t chroma_format_idc) noexcept;
+      BitBuffer* bit_buffer, uint32_t chroma_format_idc) noexcept;
 };
 
 }  // namespace h264nal

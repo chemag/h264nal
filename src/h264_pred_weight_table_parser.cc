@@ -27,7 +27,7 @@ H264PredWeightTableParser::ParsePredWeightTable(
     uint32_t slice_type, uint32_t num_ref_idx_l0_active_minus1,
     uint32_t num_ref_idx_l1_active_minus1) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
-  rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
+  BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
   return ParsePredWeightTable(&bit_buffer, chroma_array_type, slice_type,
                               num_ref_idx_l0_active_minus1,
                               num_ref_idx_l1_active_minus1);
@@ -35,7 +35,7 @@ H264PredWeightTableParser::ParsePredWeightTable(
 
 std::unique_ptr<H264PredWeightTableParser::PredWeightTableState>
 H264PredWeightTableParser::ParsePredWeightTable(
-    rtc::BitBuffer* bit_buffer, uint32_t chroma_array_type, uint32_t slice_type,
+    BitBuffer* bit_buffer, uint32_t chroma_array_type, uint32_t slice_type,
     uint32_t num_ref_idx_l0_active_minus1,
     uint32_t num_ref_idx_l1_active_minus1) noexcept {
   uint32_t bits_tmp;

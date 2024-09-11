@@ -26,12 +26,12 @@ namespace h264nal {
 std::unique_ptr<H264SpsDataParser::SpsDataState>
 H264SpsDataParser::ParseSpsData(const uint8_t* data, size_t length) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
-  rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
+  BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
   return ParseSpsData(&bit_buffer);
 }
 
 std::unique_ptr<H264SpsDataParser::SpsDataState>
-H264SpsDataParser::ParseSpsData(rtc::BitBuffer* bit_buffer) noexcept {
+H264SpsDataParser::ParseSpsData(BitBuffer* bit_buffer) noexcept {
   uint32_t bits_tmp;
   int32_t golomb_tmp;
 
@@ -558,7 +558,7 @@ int H264SpsDataParser::SpsDataState::getResolution(int* width,
 
 // Section 7.3.2.1.1.1
 bool H264SpsDataParser::SpsDataState::scaling_list(
-    rtc::BitBuffer* bit_buffer, uint32_t i, std::vector<uint32_t>& scalingList,
+    BitBuffer* bit_buffer, uint32_t i, std::vector<uint32_t>& scalingList,
     uint32_t sizeOfScalingList,
     std::vector<uint32_t>& useDefaultScalingMatrixFlag) noexcept {
   uint32_t lastScale = 8;
@@ -590,12 +590,12 @@ bool H264SpsDataParser::SpsDataState::scaling_list(
 std::shared_ptr<H264SpsParser::SpsState> H264SpsParser::ParseSps(
     const uint8_t* data, size_t length) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
-  rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
+  BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
   return ParseSps(&bit_buffer);
 }
 
 std::shared_ptr<H264SpsParser::SpsState> H264SpsParser::ParseSps(
-    rtc::BitBuffer* bit_buffer) noexcept {
+    BitBuffer* bit_buffer) noexcept {
   // H264 SPS Nal Unit (seq_parameter_set_rbsp(()) parser.
   // Section 7.3.2.1 ("Sequence parameter set RBSP syntax") of the H.264
   // standard for a complete description.

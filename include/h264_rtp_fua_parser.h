@@ -10,7 +10,7 @@
 
 #include "h264_common.h"
 #include "h264_nal_unit_parser.h"
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 
@@ -54,7 +54,7 @@ class H264RtpFuAParser {
       const uint8_t* data, size_t length, uint32_t nal_ref_idc,
       struct H264BitstreamParserState* bitstream_parser_state) noexcept;
   static std::unique_ptr<RtpFuAState> ParseRtpFuA(
-      rtc::BitBuffer* bit_buffer, uint32_t nal_ref_idc,
+      BitBuffer* bit_buffer, uint32_t nal_ref_idc,
       struct H264BitstreamParserState* bitstream_parser_state) noexcept;
 };
 

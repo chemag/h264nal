@@ -32,7 +32,7 @@ H264NalUnitParser::ParseNalUnitUnescaped(
     const uint8_t* data, size_t length,
     struct H264BitstreamParserState* bitstream_parser_state,
     ParsingOptions parsing_options) noexcept {
-  rtc::BitBuffer bit_buffer(data, length);
+  BitBuffer bit_buffer(data, length);
 
   return ParseNalUnit(&bit_buffer, bitstream_parser_state, parsing_options);
 }
@@ -44,14 +44,14 @@ H264NalUnitParser::ParseNalUnit(
     struct H264BitstreamParserState* bitstream_parser_state,
     ParsingOptions parsing_options) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
-  rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
+  BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
 
   return ParseNalUnit(&bit_buffer, bitstream_parser_state, parsing_options);
 }
 
 std::unique_ptr<H264NalUnitParser::NalUnitState>
 H264NalUnitParser::ParseNalUnit(
-    rtc::BitBuffer* bit_buffer,
+    BitBuffer* bit_buffer,
     struct H264BitstreamParserState* bitstream_parser_state,
     ParsingOptions parsing_options) noexcept {
   // H264 NAL Unit (nal_unit()) parser.

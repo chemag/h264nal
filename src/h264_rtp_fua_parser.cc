@@ -25,12 +25,12 @@ std::unique_ptr<H264RtpFuAParser::RtpFuAState> H264RtpFuAParser::ParseRtpFuA(
     const uint8_t* data, size_t length, uint32_t nal_ref_idc,
     struct H264BitstreamParserState* bitstream_parser_state) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
-  rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
+  BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
   return ParseRtpFuA(&bit_buffer, nal_ref_idc, bitstream_parser_state);
 }
 
 std::unique_ptr<H264RtpFuAParser::RtpFuAState> H264RtpFuAParser::ParseRtpFuA(
-    rtc::BitBuffer* bit_buffer, uint32_t nal_ref_idc,
+    BitBuffer* bit_buffer, uint32_t nal_ref_idc,
     struct H264BitstreamParserState* bitstream_parser_state) noexcept {
   // H264 RTP FU-A pseudo-NAL Unit.
   auto rtp_fua = std::make_unique<RtpFuAState>();

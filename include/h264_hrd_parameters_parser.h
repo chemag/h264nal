@@ -9,7 +9,7 @@
 #include <memory>
 #include <vector>
 
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 
@@ -54,7 +54,7 @@ class H264HrdParametersParser {
   static std::unique_ptr<HrdParametersState> ParseHrdParameters(
       const uint8_t* data, size_t length) noexcept;
   static std::unique_ptr<HrdParametersState> ParseHrdParameters(
-      rtc::BitBuffer* bit_buffer) noexcept;
+      BitBuffer* bit_buffer) noexcept;
 };
 
 }  // namespace h264nal

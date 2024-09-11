@@ -32,12 +32,12 @@ std::shared_ptr<H264SpsExtensionParser::SpsExtensionState>
 H264SpsExtensionParser::ParseSpsExtension(const uint8_t* data,
                                           size_t length) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
-  rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
+  BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
   return ParseSpsExtension(&bit_buffer);
 }
 
 std::shared_ptr<H264SpsExtensionParser::SpsExtensionState>
-H264SpsExtensionParser::ParseSpsExtension(rtc::BitBuffer* bit_buffer) noexcept {
+H264SpsExtensionParser::ParseSpsExtension(BitBuffer* bit_buffer) noexcept {
   // H264 SPS Nal Unit (seq_parameter_set_extension_rbsp()) parser.
   // Section 7.3.2.1.2 ("Sequence parameter set extension syntax") of the
   // H.264 standard for a complete description.

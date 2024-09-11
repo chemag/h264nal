@@ -11,7 +11,7 @@
 
 #include "h264_common.h"
 #include "h264_vui_parameters_parser.h"
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 
@@ -126,8 +126,8 @@ class H264SpsDataParser {
 
     // helper functions
     bool scaling_list(
-        rtc::BitBuffer* bit_buffer, uint32_t i,
-        std::vector<uint32_t>& scalingList, uint32_t sizeOfScalingList,
+        BitBuffer* bit_buffer, uint32_t i, std::vector<uint32_t>& scalingList,
+        uint32_t sizeOfScalingList,
         std::vector<uint32_t>& useDefaultScalingMatrixFlag) noexcept;
   };
 
@@ -135,7 +135,7 @@ class H264SpsDataParser {
   static std::unique_ptr<SpsDataState> ParseSpsData(const uint8_t* data,
                                                     size_t length) noexcept;
   static std::unique_ptr<SpsDataState> ParseSpsData(
-      rtc::BitBuffer* bit_buffer) noexcept;
+      BitBuffer* bit_buffer) noexcept;
 };
 
 // seq_parameter_set_rbsp()
@@ -166,8 +166,7 @@ class H264SpsParser {
   // Unpack RBSP and parse SPS state from the supplied buffer.
   static std::shared_ptr<SpsState> ParseSps(const uint8_t* data,
                                             size_t length) noexcept;
-  static std::shared_ptr<SpsState> ParseSps(
-      rtc::BitBuffer* bit_buffer) noexcept;
+  static std::shared_ptr<SpsState> ParseSps(BitBuffer* bit_buffer) noexcept;
 };
 
 }  // namespace h264nal

@@ -26,13 +26,13 @@ std::unique_ptr<H264RefPicListModificationParser::RefPicListModificationState>
 H264RefPicListModificationParser::ParseRefPicListModification(
     const uint8_t* data, size_t length, uint32_t slice_type) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
-  rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
+  BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
   return ParseRefPicListModification(&bit_buffer, slice_type);
 }
 
 std::unique_ptr<H264RefPicListModificationParser::RefPicListModificationState>
 H264RefPicListModificationParser::ParseRefPicListModification(
-    rtc::BitBuffer* bit_buffer, uint32_t slice_type) noexcept {
+    BitBuffer* bit_buffer, uint32_t slice_type) noexcept {
   uint32_t golomb_tmp;
 
   // H264 ref_pic_list_modification() NAL Unit.

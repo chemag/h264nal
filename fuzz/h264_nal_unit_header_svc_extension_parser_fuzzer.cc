@@ -7,8 +7,7 @@
 // Do not edit directly.
 
 #include "h264_nal_unit_header_svc_extension_parser.h"
-#include "rtc_base/arraysize.h"
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 
 // libfuzzer infra to test the fuzz target

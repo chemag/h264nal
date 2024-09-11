@@ -1,15 +1,9 @@
 # add executable
 #add_executable(main main.cc)
 
-# link executable to webrtc library
-# Since the webrtc library has public include directories
-# we will use those link directories when building `main`
-#target_link_libraries(main LINK_PUBLIC webrtc)
-
 find_package(GTest REQUIRED)
 
 include_directories(PUBLIC ../src)
-include_directories(PUBLIC ../webrtc)
 
 # MacOS requirements
 include_directories(PUBLIC /usr/local/include)

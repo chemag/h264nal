@@ -11,7 +11,7 @@
 
 #include "h264_bitstream_parser_state.h"
 #include "h264_slice_header_parser.h"
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 
@@ -58,7 +58,7 @@ class H264SliceLayerWithoutPartitioningRbspParser {
       struct H264BitstreamParserState* bitstream_parser_state) noexcept;
   static std::unique_ptr<SliceLayerWithoutPartitioningRbspState>
   ParseSliceLayerWithoutPartitioningRbsp(
-      rtc::BitBuffer* bit_buffer, uint32_t nal_ref_idc, uint32_t nal_unit_type,
+      BitBuffer* bit_buffer, uint32_t nal_ref_idc, uint32_t nal_unit_type,
       struct H264BitstreamParserState* bitstream_parser_state) noexcept;
 };
 

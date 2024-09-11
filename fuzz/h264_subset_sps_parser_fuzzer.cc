@@ -9,8 +9,7 @@
 #include "h264_subset_sps_parser.h"
 #include "h264_common.h"
 #include "h264_sps_parser.h"
-#include "rtc_base/arraysize.h"
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 
 // libfuzzer infra to test the fuzz target

@@ -10,8 +10,7 @@
 #include <vector>
 
 #include "h264_common.h"
-#include "rtc_base/arraysize.h"
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 

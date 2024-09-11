@@ -10,7 +10,7 @@
 
 #include "h264_common.h"
 #include "h264_nal_unit_header_svc_extension_parser.h"
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 
@@ -47,7 +47,7 @@ class H264NalUnitHeaderParser {
   static std::unique_ptr<NalUnitHeaderState> ParseNalUnitHeader(
       const uint8_t* data, size_t length) noexcept;
   static std::unique_ptr<NalUnitHeaderState> ParseNalUnitHeader(
-      rtc::BitBuffer* bit_buffer) noexcept;
+      BitBuffer* bit_buffer) noexcept;
   // Parses nalu type from the given buffer
   static bool GetNalUnitType(const uint8_t* data, const size_t length,
                              NalUnitType& naluType) noexcept;

@@ -25,13 +25,12 @@ std::unique_ptr<H264HrdParametersParser::HrdParametersState>
 H264HrdParametersParser::ParseHrdParameters(const uint8_t* data,
                                             size_t length) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
-  rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
+  BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
   return ParseHrdParameters(&bit_buffer);
 }
 
 std::unique_ptr<H264HrdParametersParser::HrdParametersState>
-H264HrdParametersParser::ParseHrdParameters(
-    rtc::BitBuffer* bit_buffer) noexcept {
+H264HrdParametersParser::ParseHrdParameters(BitBuffer* bit_buffer) noexcept {
   uint32_t bits_tmp;
   uint32_t golomb_tmp;
 

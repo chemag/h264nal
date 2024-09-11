@@ -28,15 +28,15 @@ H264PrefixNalUnitSvcParser::ParsePrefixNalUnitSvc(
     const uint8_t* data, size_t length, uint32_t nal_ref_idc,
     uint32_t use_ref_base_pic_flag, uint32_t idr_flag) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
-  rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
+  BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
   return ParsePrefixNalUnitSvc(&bit_buffer, nal_ref_idc, use_ref_base_pic_flag,
                                idr_flag);
 }
 
 std::unique_ptr<H264PrefixNalUnitSvcParser::PrefixNalUnitSvcState>
 H264PrefixNalUnitSvcParser::ParsePrefixNalUnitSvc(
-    rtc::BitBuffer* bit_buffer, uint32_t nal_ref_idc,
-    uint32_t use_ref_base_pic_flag, uint32_t idr_flag) noexcept {
+    BitBuffer* bit_buffer, uint32_t nal_ref_idc, uint32_t use_ref_base_pic_flag,
+    uint32_t idr_flag) noexcept {
   // H264 Prefix NAL unit SVC (prefix_nal_unit_svc()) parser.
   // Section G.7.3.2.12.1 ("Prefix NAL unit SVC syntax") of the H.264
   // standard for a complete description.
@@ -105,16 +105,15 @@ H264PrefixNalUnitRbspParser::ParsePrefixNalUnitRbsp(
     uint32_t nal_ref_idc, uint32_t use_ref_base_pic_flag,
     uint32_t idr_flag) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
-  rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
+  BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
   return ParsePrefixNalUnitRbsp(&bit_buffer, svc_extension_flag, nal_ref_idc,
                                 use_ref_base_pic_flag, idr_flag);
 }
 
 std::unique_ptr<H264PrefixNalUnitRbspParser::PrefixNalUnitRbspState>
 H264PrefixNalUnitRbspParser::ParsePrefixNalUnitRbsp(
-    rtc::BitBuffer* bit_buffer, uint32_t svc_extension_flag,
-    uint32_t nal_ref_idc, uint32_t use_ref_base_pic_flag,
-    uint32_t idr_flag) noexcept {
+    BitBuffer* bit_buffer, uint32_t svc_extension_flag, uint32_t nal_ref_idc,
+    uint32_t use_ref_base_pic_flag, uint32_t idr_flag) noexcept {
   // H264 Prefix NAL unit RBSP syntax (prefix_nal_unit_rbsp()) parser.
   // Section 7.3.2.12 ("Prefix NAL unit RBSP syntax") of the H.264
   // standard for a complete description.

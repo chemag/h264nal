@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "h264_hrd_parameters_parser.h"
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 
@@ -55,7 +55,7 @@ class H264SpsSvcExtensionParser {
   static std::unique_ptr<SpsSvcExtensionState> ParseSpsSvcExtension(
       const uint8_t* data, size_t length, uint32_t ChromaArrayType) noexcept;
   static std::unique_ptr<SpsSvcExtensionState> ParseSpsSvcExtension(
-      rtc::BitBuffer* bit_buffer, uint32_t ChromaArrayType) noexcept;
+      BitBuffer* bit_buffer, uint32_t ChromaArrayType) noexcept;
 };
 
 }  // namespace h264nal

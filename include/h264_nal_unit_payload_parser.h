@@ -17,7 +17,7 @@
 #include "h264_slice_layer_without_partitioning_rbsp_parser.h"
 #include "h264_sps_parser.h"
 #include "h264_subset_sps_parser.h"
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 namespace h264nal {
 
@@ -59,12 +59,12 @@ class H264NalUnitPayloadParser {
       H264NalUnitHeaderParser::NalUnitHeaderState& nal_unit_header,
       struct H264BitstreamParserState* bitstream_parser_state) noexcept;
   static std::unique_ptr<NalUnitPayloadState> ParseNalUnitPayload(
-      rtc::BitBuffer* bit_buffer,
+      BitBuffer* bit_buffer,
       H264NalUnitHeaderParser::NalUnitHeaderState& nal_unit_header,
       struct H264BitstreamParserState* bitstream_parser_state) noexcept;
   // used by RTP fu-a, which has a pseudo-NALU header
   static std::unique_ptr<NalUnitPayloadState> ParseNalUnitPayload(
-      rtc::BitBuffer* bit_buffer, uint32_t nal_ref_idc, uint32_t nal_unit_type,
+      BitBuffer* bit_buffer, uint32_t nal_ref_idc, uint32_t nal_unit_type,
       struct H264BitstreamParserState* bitstream_parser_state) noexcept;
 };
 

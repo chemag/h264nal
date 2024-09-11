@@ -25,13 +25,13 @@ std::unique_ptr<H264DecRefPicMarkingParser::DecRefPicMarkingState>
 H264DecRefPicMarkingParser::ParseDecRefPicMarking(
     const uint8_t* data, size_t length, uint32_t nal_unit_type) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
-  rtc::BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
+  BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
   return ParseDecRefPicMarking(&bit_buffer, nal_unit_type);
 }
 
 std::unique_ptr<H264DecRefPicMarkingParser::DecRefPicMarkingState>
 H264DecRefPicMarkingParser::ParseDecRefPicMarking(
-    rtc::BitBuffer* bit_buffer, uint32_t nal_unit_type) noexcept {
+    BitBuffer* bit_buffer, uint32_t nal_unit_type) noexcept {
   uint32_t golomb_tmp;
 
   // H264 dec_ref_pic_marking() NAL Unit.

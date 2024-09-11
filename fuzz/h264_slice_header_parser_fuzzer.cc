@@ -14,8 +14,7 @@
 #include "h264_pred_weight_table_parser.h"
 #include "h264_ref_pic_list_modification_parser.h"
 #include "h264_sps_parser.h"
-#include "rtc_base/arraysize.h"
-#include "rtc_base/bit_buffer.h"
+#include "rtc_common.h"
 
 
 // libfuzzer infra to test the fuzz target
