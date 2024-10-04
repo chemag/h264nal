@@ -19,15 +19,8 @@ target_link_libraries(h264nal-bin PUBLIC h264nal)
 # rename executable using target properties
 set_target_properties(h264nal-bin PROPERTIES OUTPUT_NAME h264nal)
 
-add_executable(h264nal.nalu h264nal.nalu.cc)
-target_include_directories(h264nal.nalu PUBLIC ../src)
-target_link_libraries(h264nal.nalu PUBLIC h264nal)
-
 # getopt port needed on windows
 if(WIN32)
   target_include_directories(h264nal-bin PRIVATE ../ya_getopt)
   target_sources(h264nal-bin PRIVATE ../ya_getopt/ya_getopt.c)
-
-  target_include_directories(h264nal.nalu PRIVATE ../ya_getopt)
-  target_sources(h264nal.nalu PRIVATE ../ya_getopt/ya_getopt.c)
 endif()
