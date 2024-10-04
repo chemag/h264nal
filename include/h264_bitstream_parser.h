@@ -41,6 +41,7 @@ class H264BitstreamParser {
         nal_units;
   };
 
+  // (1) Explicit NAL unit separator version.
   // Unpack RBSP and parse bitstream state from the supplied buffer.
   static std::unique_ptr<BitstreamState> ParseBitstream(
       const uint8_t* data, size_t length,
@@ -50,6 +51,16 @@ class H264BitstreamParser {
   // Unpack RBSP and parse bitstream (internal state)
   static std::unique_ptr<BitstreamState> ParseBitstream(
       const uint8_t* data, size_t length,
+      ParsingOptions parsing_options) noexcept;
+
+  // (2) Explicit NAL unit length field version.
+  // NALU length
+  static std::unique_ptr<BitstreamState> ParseBitstreamNALULength(
+      const uint8_t* data, size_t length, size_t nalu_length_bytes,
+      H264BitstreamParserState* bitstream_parser_state,
+      ParsingOptions parsing_options) noexcept;
+  static std::unique_ptr<BitstreamState> ParseBitstreamNALULength(
+      const uint8_t* data, size_t length, size_t nalu_length_bytes,
       ParsingOptions parsing_options) noexcept;
 
   struct NaluIndex {
