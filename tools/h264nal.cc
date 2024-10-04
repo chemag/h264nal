@@ -22,6 +22,7 @@
 #include "config.h"
 #include "h264_bitstream_parser.h"
 #include "h264_common.h"
+#include "h264_utils.h"
 #include "rtc_common.h"
 
 extern int optind;
@@ -59,8 +60,8 @@ void usage(char *name) {
   fprintf(stderr, "\t-d:\t\tIncrease debug verbosity [default: %i]\n",
           DEFAULT_OPTIONS.debug);
   fprintf(stderr, "\t-q:\t\tZero debug verbosity\n");
-  fprintf(stderr, "\t-i <infile>:\t\tH265 file to parse [default: stdin]\n");
-  fprintf(stderr, "\t-o <output>:\t\tH265 parsing output [default: stdout]\n");
+  fprintf(stderr, "\t-i <infile>:\t\tH264 file to parse [default: stdin]\n");
+  fprintf(stderr, "\t-o <output>:\t\tH264 parsing output [default: stdout]\n");
   fprintf(stderr, "\t--as-one-line:\tSet as_one_line flag%s\n",
           DEFAULT_OPTIONS.as_one_line ? " [default]" : "");
   fprintf(stderr, "\t--no-as-one-line:\tReset as_one_line flag%s\n",
@@ -292,25 +293,10 @@ int main(int argc, char **argv) {
   }
 
   // 1. read infile into buffer
-  // TODO(chemag): read the infile incrementally
-  FILE *infp = nullptr;
-  if ((options->infile == nullptr) ||
-      (strlen(options->infile) == 1 && options->infile[0] == '-')) {
-    infp = stdin;
-  } else {
-    infp = fopen(options->infile, "rb");
-  }
-  if (infp == nullptr) {
-    // did not work
-    fprintf(stderr, "Could not open input file: \"%s\"\n", options->infile);
+  std::vector<uint8_t> buffer;
+  if (h264nal::H264Utils::ReadFile(options->infile, buffer) < 0) {
     return -1;
   }
-  fseek(infp, 0, SEEK_END);
-  int64_t size = ftell(infp);
-  fseek(infp, 0, SEEK_SET);
-  // read file into buffer
-  std::vector<uint8_t> buffer(size);
-  fread(reinterpret_cast<char *>(buffer.data()), 1, size, infp);
 
   // 2. prepare bitstream parsing
   h264nal::ParsingOptions parsing_options;

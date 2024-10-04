@@ -17,6 +17,7 @@ if(H264NAL_SMALL_FOOTPRINT)
   add_library(h264nal
       rtc_common.cc
       h264_common.cc
+      h264_utils.cc
       h264_sps_parser.cc
       h264_hrd_parameters_parser.cc
       h264_vui_parameters_parser.cc
@@ -43,6 +44,7 @@ else()
   add_library(h264nal
       rtc_common.cc
       h264_common.cc
+      h264_utils.cc
       h264_sps_parser.cc
       h264_hrd_parameters_parser.cc
       h264_vui_parameters_parser.cc
