@@ -114,7 +114,6 @@ TEST_F(H264BitstreamParserTest, TestSampleBitstream601) {
 TEST_F(H264BitstreamParserTest, TestSampleBitstream601Alt) {
   // init the BitstreamParserState
   ParsingOptions parsing_options;
-  bool add_checksum = true;
   auto bitstream = H264BitstreamParser::ParseBitstream(
       buffer, arraysize(buffer), parsing_options);
   EXPECT_TRUE(bitstream != nullptr);
