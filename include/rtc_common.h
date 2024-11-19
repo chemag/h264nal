@@ -8,8 +8,8 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#ifndef RTC_COMMON_H_
-#define RTC_COMMON_H_
+#ifndef H264_RTC_COMMON_H_
+#define H264_RTC_COMMON_H_
 
 #include <stddef.h>  // For size_t.
 #include <stdint.h>  // For integer types.
@@ -189,4 +189,4 @@ class BitBufferWriter : public BitBuffer {
 
 }  // namespace h264nal
 
-#endif  // RTC_COMMON_H_
+#endif  // H264_RTC_COMMON_H_
