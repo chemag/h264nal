@@ -35,7 +35,7 @@ class H264BitstreamParser {
                ParsingOptions parsing_options) const;
 #endif  // FDUMP_DEFINE
 
-    struct ParsingOptions parsing_options;
+    struct ParsingOptions parsing_options_;
     // NAL units
     std::vector<std::unique_ptr<struct H264NalUnitParser::NalUnitState>>
         nal_units;

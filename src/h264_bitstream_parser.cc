@@ -165,7 +165,7 @@ H264BitstreamParser::ParseBitstream(const uint8_t* data, size_t length,
 #endif  // FPRINT_ERRORS
     return nullptr;
   }
-  bitstream->parsing_options = parsing_options;
+  bitstream->parsing_options_ = parsing_options;
   return bitstream;
 }
 
@@ -245,7 +245,7 @@ H264BitstreamParser::ParseBitstreamNALULength(
 #endif  // FPRINT_ERRORS
     return nullptr;
   }
-  bitstream->parsing_options = parsing_options;
+  bitstream->parsing_options_ = parsing_options;
   return bitstream;
 }
 
@@ -253,7 +253,7 @@ H264BitstreamParser::ParseBitstreamNALULength(
 void H264BitstreamParser::BitstreamState::fdump(
     FILE* outfp, int indent_level, ParsingOptions parsing_options) const {
   for (auto& nal_unit : nal_units) {
-    nal_unit->fdump(outfp, indent_level, parsing_options);
+    nal_unit->fdump(outfp, indent_level, parsing_options_);
     fprintf(outfp, "\n");
   }
 }
