@@ -65,8 +65,7 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
   if (!bit_buffer->ReadExponentialGolomb(shise->first_mb_in_slice)) {
     return nullptr;
   }
-  if (shise->first_mb_in_slice < 0 ||
-      shise->first_mb_in_slice > (kMaxMbPicSize - 1)) {
+  if (shise->first_mb_in_slice > (kMaxMbPicSize - 1)) {
 #ifdef FPRINT_ERRORS
     fprintf(stderr,
             "invalid first_mb_in_slice: %" PRIu32

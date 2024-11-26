@@ -311,8 +311,7 @@ H264SpsDataParser::ParseSpsData(BitBuffer* bit_buffer) noexcept {
   if (!bit_buffer->ReadExponentialGolomb(sps_data->max_num_ref_frames)) {
     return nullptr;
   }
-  if (sps_data->max_num_ref_frames < 0 ||
-      sps_data->max_num_ref_frames > H264VuiParametersParser::kMaxDpbFrames) {
+  if (sps_data->max_num_ref_frames > H264VuiParametersParser::kMaxDpbFrames) {
 #ifdef FPRINT_ERRORS
     fprintf(stderr,
             "invalid max_num_ref_frames: %" PRIu32
@@ -334,8 +333,7 @@ H264SpsDataParser::ParseSpsData(BitBuffer* bit_buffer) noexcept {
   if (!bit_buffer->ReadExponentialGolomb(sps_data->pic_width_in_mbs_minus1)) {
     return nullptr;
   }
-  if (sps_data->pic_width_in_mbs_minus1 < 0 ||
-      sps_data->pic_width_in_mbs_minus1 > kMaxMbWidth) {
+  if (sps_data->pic_width_in_mbs_minus1 > kMaxMbWidth) {
 #ifdef FPRINT_ERRORS
     fprintf(stderr,
             "invalid pic_width_in_mbs_minus1: %" PRIu32
@@ -351,8 +349,7 @@ H264SpsDataParser::ParseSpsData(BitBuffer* bit_buffer) noexcept {
           sps_data->pic_height_in_map_units_minus1)) {
     return nullptr;
   }
-  if (sps_data->pic_height_in_map_units_minus1 < 0 ||
-      sps_data->pic_height_in_map_units_minus1 > kMaxMbHeight) {
+  if (sps_data->pic_height_in_map_units_minus1 > kMaxMbHeight) {
 #ifdef FPRINT_ERRORS
     fprintf(stderr,
             "invalid pic_height_in_map_units_minus1: %" PRIu32
@@ -390,8 +387,7 @@ H264SpsDataParser::ParseSpsData(BitBuffer* bit_buffer) noexcept {
     if (!bit_buffer->ReadExponentialGolomb(sps_data->frame_crop_left_offset)) {
       return nullptr;
     }
-    if (sps_data->frame_crop_left_offset < 0 ||
-        sps_data->frame_crop_left_offset > kMaxWidth) {
+    if (sps_data->frame_crop_left_offset > kMaxWidth) {
 #ifdef FPRINT_ERRORS
       fprintf(stderr,
               "invalid frame_crop_left_offset: %" PRIu32
@@ -406,8 +402,7 @@ H264SpsDataParser::ParseSpsData(BitBuffer* bit_buffer) noexcept {
     if (!bit_buffer->ReadExponentialGolomb(sps_data->frame_crop_right_offset)) {
       return nullptr;
     }
-    if (sps_data->frame_crop_right_offset < 0 ||
-        sps_data->frame_crop_right_offset > kMaxWidth) {
+    if (sps_data->frame_crop_right_offset > kMaxWidth) {
 #ifdef FPRINT_ERRORS
       fprintf(stderr,
               "invalid frame_crop_right_offset: %" PRIu32
@@ -422,8 +417,7 @@ H264SpsDataParser::ParseSpsData(BitBuffer* bit_buffer) noexcept {
     if (!bit_buffer->ReadExponentialGolomb(sps_data->frame_crop_top_offset)) {
       return nullptr;
     }
-    if (sps_data->frame_crop_top_offset < 0 ||
-        sps_data->frame_crop_top_offset > kMaxHeight) {
+    if (sps_data->frame_crop_top_offset > kMaxHeight) {
 #ifdef FPRINT_ERRORS
       fprintf(stderr,
               "invalid frame_crop_top_offset: %" PRIu32
@@ -439,8 +433,7 @@ H264SpsDataParser::ParseSpsData(BitBuffer* bit_buffer) noexcept {
             sps_data->frame_crop_bottom_offset)) {
       return nullptr;
     }
-    if (sps_data->frame_crop_bottom_offset < 0 ||
-        sps_data->frame_crop_bottom_offset > kMaxHeight) {
+    if (sps_data->frame_crop_bottom_offset > kMaxHeight) {
 #ifdef FPRINT_ERRORS
       fprintf(stderr,
               "invalid frame_crop_bottom_offset: %" PRIu32

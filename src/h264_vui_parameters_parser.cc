@@ -296,8 +296,7 @@ H264VuiParametersParser::ParseVuiParameters(BitBuffer* bit_buffer) noexcept {
     if (!bit_buffer->ReadExponentialGolomb(vui->max_num_reorder_frames)) {
       return nullptr;
     }
-    if (vui->max_num_reorder_frames < 0 ||
-        vui->max_num_reorder_frames > kMaxDpbFrames) {
+    if (vui->max_num_reorder_frames > kMaxDpbFrames) {
 #ifdef FPRINT_ERRORS
       fprintf(stderr,
               "invalid max_num_reorder_frames: %" PRIu32
