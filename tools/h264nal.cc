@@ -396,11 +396,13 @@ int main(int argc, char **argv) {
 
   // 4.1. get outfile file descriptor
   FILE *outfp;
+  bool must_close_fp = false;
   if (options->outfile == nullptr ||
       (strlen(options->outfile) == 1 && options->outfile[0] == '-')) {
     // use stdout
     outfp = stdout;
   } else {
+    must_close_fp = true;
     outfp = fopen(options->outfile, "wb");
     if (outfp == nullptr) {
       // did not work
@@ -436,6 +438,11 @@ int main(int argc, char **argv) {
     }
   }
 #endif  // FDUMP_DEFINE
+
+  // clean-up FD
+  if (must_close_fp) {
+    fclose(outfp);
+  }
 
   return 0;
 }
