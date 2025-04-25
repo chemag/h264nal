@@ -272,7 +272,8 @@ if (rtp->nal_unit_header->nal_unit_type <= 23) {
 
 
 # 5. Requirements
-Requires gtests, gmock.
+Requires gtest-devel, gmock-devel
+Requires llvm-tooset (or llvm-toolset-compiler-rt) for libfuzzer support
 
 
 # 6. Other
