@@ -119,6 +119,8 @@ class H264SpsDataParser {
         vui_parameters;
 
     // derived values
+    ProfileType profile_type;
+    ProfileType GetProfileType() const noexcept;
     uint32_t getChromaArrayType() const noexcept;
     int getSubWidthC() const noexcept;
     int getSubHeightC() const noexcept;

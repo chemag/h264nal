@@ -51,6 +51,62 @@ bool IsNalUnitTypeUnspecified(uint32_t nal_unit_type) {
   return false;
 }
 
+void profileTypeToString(enum ProfileType profile, std::string &str) {
+  switch (profile) {
+    case UNSPECIFIED:
+      str = "Unspecified";
+      break;
+    case BASELINE:
+      str = "Baseline";
+      break;
+    case CONSTRAINED_BASELINE:
+      str = "Constrained Baseline";
+      break;
+    case MAIN:
+      str = "Main";
+      break;
+    case EXTENDED:
+      str = "Extended";
+      break;
+    case HIGH:
+      str = "High";
+      break;
+    case PROGRESSIVE_HIGH:
+      str = "Progressive High";
+      break;
+    case CONSTRAINED_HIGH:
+      str = "Constrained High";
+      break;
+    case HIGH_10:
+      str = "High 10";
+      break;
+    case PROGRESSIVE_HIGH_10:
+      str = "Progressive High 10";
+      break;
+    case HIGH_10_INTRA:
+      str = "High 10 Intra";
+      break;
+    case HIGH_422:
+      str = "High 4:2:2";
+      break;
+    case HIGH_422_INTRA:
+      str = "High 4:2:2 Intra";
+      break;
+    case HIGH_444:
+      str = "High 4:4:4";
+      break;
+    case HIGH_444_INTRA:
+      str = "High 4:4:4 Intra";
+      break;
+    case CAVLC_444_INTRA:
+      str = "CAVLC 4:4:4 Intra";
+      break;
+    default:
+      str = "Unknown";
+      break;
+  }
+}
+
 // NALU packing uses a mechanism to identify the start of a new NALU
 // based on a 3-byte start code sequence. The idea is that every NALU
 // starts with the binary string "\x00\x00\x01" ("start code prefix").

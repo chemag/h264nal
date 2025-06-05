@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "rtc_common.h"
@@ -76,6 +77,29 @@ enum SliceType : uint8_t {
   SP_ALL = 8,
   SI_ALL = 9,
 };
+
+// Section A.2 Profiles
+enum ProfileType : uint8_t {
+  UNSPECIFIED = 0,
+  BASELINE = 1,
+  CONSTRAINED_BASELINE = 2,
+  MAIN = 3,
+  EXTENDED = 4,
+  HIGH = 5,
+  PROGRESSIVE_HIGH = 6,
+  CONSTRAINED_HIGH = 7,
+  HIGH_10 = 8,
+  PROGRESSIVE_HIGH_10 = 9,
+  HIGH_10_INTRA = 10,
+  HIGH_422 = 11,
+  HIGH_422_INTRA = 12,
+  HIGH_444 = 13,
+  HIGH_444_INTRA = 14,
+  CAVLC_444_INTRA = 15,
+};
+
+enum ProfileType getProfileType();
+void profileTypeToString(enum ProfileType profile, std::string &str);
 
 // Table G-1
 enum SvcSliceType : uint8_t {

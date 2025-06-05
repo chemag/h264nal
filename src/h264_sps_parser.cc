@@ -80,6 +80,9 @@ H264SpsDataParser::ParseSpsData(BitBuffer* bit_buffer) noexcept {
     return nullptr;
   }
 
+  // derive the profile
+  sps_data->profile_type = sps_data->GetProfileType();
+
   // level_idc  u(8)
   if (!bit_buffer->ReadBits(8, sps_data->level_idc)) {
     return nullptr;
@@ -462,6 +465,58 @@ H264SpsDataParser::ParseSpsData(BitBuffer* bit_buffer) noexcept {
   return sps_data;
 }
 
+ProfileType H264SpsDataParser::SpsDataState::GetProfileType() const noexcept {
+  switch (profile_idc) {
+    case 66:  // Baseline profiles
+      if (constraint_set1_flag == 1) {
+        return ProfileType::CONSTRAINED_BASELINE;
+      }
+      return ProfileType::BASELINE;
+
+    case 77:
+      return ProfileType::MAIN;
+
+    case 88:
+      return ProfileType::EXTENDED;
+
+    case 100:  // High profiles
+      if (constraint_set4_flag == 1) {
+        return ProfileType::PROGRESSIVE_HIGH;
+      }
+      if (constraint_set5_flag == 1) {
+        return ProfileType::CONSTRAINED_HIGH;
+      }
+      return ProfileType::HIGH;
+
+    case 110:
+      if (constraint_set3_flag == 1) {
+        return ProfileType::HIGH_10_INTRA;
+      }
+      if (constraint_set4_flag == 1) {
+        return ProfileType::PROGRESSIVE_HIGH_10;
+      }
+      return ProfileType::HIGH_10;
+
+    case 122:
+      if (constraint_set3_flag == 1) {
+        return ProfileType::HIGH_422_INTRA;
+      }
+      return ProfileType::HIGH_422;
+
+    case 144:
+      if (constraint_set3_flag == 1) {
+        return ProfileType::HIGH_444_INTRA;
+      }
+      return ProfileType::HIGH_444;
+
+    case 44:
+      return ProfileType::CAVLC_444_INTRA;
+
+    default:
+      return ProfileType::UNSPECIFIED;
+  }
+}
+
 uint32_t H264SpsDataParser::SpsDataState::getChromaArrayType() const noexcept {
   // Rec. ITU-T H.264 (2012) Page 74, Section 7.4.2.1.1
   // the value of the variable ChromaArrayType is assigned as follows:
@@ -638,6 +693,11 @@ void H264SpsDataParser::SpsDataState::fdump(
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "reserved_zero_2bits: %i", reserved_zero_2bits);
+
+  fdump_indent_level(outfp, indent_level);
+  std::string profile_type_str;
+  profileTypeToString(profile_type, profile_type_str);
+  fprintf(outfp, "profile: %s", profile_type_str.c_str());
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "level_idc: %i", level_idc);
