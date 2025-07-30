@@ -4,7 +4,6 @@
 
 #include "h264_ref_pic_list_modification_parser.h"
 
-#define __STDC_FORMAT_MACROS
 #include <inttypes.h>
 #include <stdio.h>
 

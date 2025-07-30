@@ -13,6 +13,8 @@
 
 #include "rtc_common.h"
 
+#undef P_ALL
+
 namespace h264nal {
 
 // Table 7-1 of the 2012 standard.

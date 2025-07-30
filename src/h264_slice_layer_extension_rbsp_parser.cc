@@ -4,7 +4,6 @@
 
 #include "h264_slice_layer_extension_rbsp_parser.h"
 
-#define __STDC_FORMAT_MACROS
 #include <inttypes.h>
 #include <stdio.h>
 
