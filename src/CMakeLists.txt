@@ -3,8 +3,6 @@
 
 option(H264NAL_SMALL_FOOTPRINT, "xmall footprint build")
 
-add_definitions(-D__STDC_FORMAT_MACROS)
-
 if(H264NAL_SMALL_FOOTPRINT)
   message(STATUS "src: small footprint selected")
   add_compile_definitions(SMALL_FOOTPRINT)
@@ -74,6 +72,26 @@ else()
       h264_nal_unit_parser.cc
 )
 endif()
+
+# Add __STDC_FORMAT_MACROS to files that require it
+set_source_files_properties(
+  h264_dec_ref_pic_marking_parser.cc
+  h264_hrd_parameters_parser.cc
+  h264_pps_parser.cc
+  h264_pred_weight_table_parser.cc
+  h264_prefix_nal_unit_parser.cc
+  h264_ref_pic_list_modification_parser.cc
+  h264_slice_header_in_scalable_extension_parser.cc
+  h264_slice_header_parser.cc
+  h264_slice_layer_extension_rbsp_parser.cc
+  h264_slice_layer_without_partitioning_rbsp_parser.cc
+  h264_sps_extension_parser.cc
+  h264_sps_parser.cc
+  h264_subset_sps_parser.cc
+  h264_vui_parameters_parser.cc
+  PROPERTIES
+  COMPILE_DEFINITIONS __STDC_FORMAT_MACROS
+)
 
 target_include_directories(h264nal PUBLIC ../include/)
 if (WIN32)
