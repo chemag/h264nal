@@ -60,6 +60,11 @@ enum NalUnitType : uint8_t {
 bool IsNalUnitTypeReserved(uint32_t nal_unit_type);
 bool IsNalUnitTypeUnspecified(uint32_t nal_unit_type);
 
+// P_ALL is defined in <sys/wait.h> in POSIX systems
+#ifdef P_ALL
+#undef P_ALL
+#endif
+
 // Table 7-3
 enum SliceType : uint8_t {
   P = 0,
