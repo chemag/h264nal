@@ -4,8 +4,8 @@
 
 #include "h264_slice_layer_without_partitioning_rbsp_parser.h"
 
-#define __STDC_FORMAT_MACROS
-#include <inttypes.h>
+
+#include <cinttypes>
 #include <stdio.h>
 
 #include <cmath>

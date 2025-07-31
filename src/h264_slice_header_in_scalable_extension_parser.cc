@@ -4,8 +4,8 @@
 
 #include "h264_slice_header_in_scalable_extension_parser.h"
 
-#define __STDC_FORMAT_MACROS
-#include <inttypes.h>
+
+#include <cinttypes>
 #include <stdio.h>
 
 #include <cmath>
