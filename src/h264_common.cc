@@ -13,9 +13,85 @@
 
 #include <cstdint>
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace h264nal {
+
+std::string NalUnitTypeToString(uint32_t nal_unit_type) {
+  switch (nal_unit_type) {
+    case UNSPECIFIED_NUT:
+      return "unspecified";
+    case CODED_SLICE_OF_NON_IDR_PICTURE_NUT:
+      return "coded_slice_of_non_idr_picture";
+    case CODED_SLICE_DATA_PARTITION_A_NUT:
+      return "coded_slice_data_partition_a";
+    case CODED_SLICE_DATA_PARTITION_B_NUT:
+      return "coded_slice_data_partition_b";
+    case CODED_SLICE_DATA_PARTITION_C_NUT:
+      return "coded_slice_data_partition_c";
+    case CODED_SLICE_OF_IDR_PICTURE_NUT:
+      return "coded_slice_of_idr_picture";
+    case SEI_NUT:
+      return "sei";
+    case SPS_NUT:
+      return "sps";
+    case PPS_NUT:
+      return "pps";
+    case AUD_NUT:
+      return "aud";
+    case EOSEQ_NUT:
+      return "eoseq";
+    case EOSTREAM_NUT:
+      return "eostream";
+    case FILLER_DATA_NUT:
+      return "filler_data";
+    case SPS_EXTENSION_NUT:
+      return "sps_extension";
+    case PREFIX_NUT:
+      return "prefix";
+    case SUBSET_SPS_NUT:
+      return "subset_sps";
+    case RSV16_NUT:
+      return "rsv16";
+    case RSV17_NUT:
+      return "rsv17";
+    case RSV18_NUT:
+      return "rsv18";
+    case CODED_SLICE_OF_AUXILIARY_CODED_PICTURE_NUT:
+      return "coded_slice_of_auxiliary_coded_picture";
+    case CODED_SLICE_EXTENSION:
+      return "coded_slice_extension";
+    case RSV21_NUT:
+      return "rsv21";
+    case RSV22_NUT:
+      return "rsv22";
+    case RSV23_NUT:
+      return "rsv23";
+    // case RTP_STAPA_NUT:
+    //   return "rtp_stapa";
+    // case RTP_FUA_NUT:
+    //   return "rtp_fua";
+    case UNSPEC24_NUT:
+      return "unspec24";
+    case UNSPEC25_NUT:
+      return "unspec25";
+    case UNSPEC26_NUT:
+      return "unspec26";
+    case UNSPEC27_NUT:
+      return "unspec27";
+    case UNSPEC28_NUT:
+      return "unspec28";
+    case UNSPEC29_NUT:
+      return "unspec29";
+    case UNSPEC30_NUT:
+      return "unspec30";
+    case UNSPEC31_NUT:
+      return "unspec31";
+    default:
+      return "unknown";
+  }
+}
 
 bool IsNalUnitTypeReserved(uint32_t nal_unit_type) {
   // payload (Table 7-1, Section 7.4.1)

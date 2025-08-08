@@ -57,6 +57,7 @@ enum NalUnitType : uint8_t {
   UNSPEC31_NUT = 31,
 };
 
+std::string NalUnitTypeToString(uint32_t nal_unit_type);
 bool IsNalUnitTypeReserved(uint32_t nal_unit_type);
 bool IsNalUnitTypeUnspecified(uint32_t nal_unit_type);
 
