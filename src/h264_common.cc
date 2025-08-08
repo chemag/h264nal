@@ -93,6 +93,21 @@ std::string NalUnitTypeToString(uint32_t nal_unit_type) {
   }
 }
 
+bool IsSliceSegment(uint32_t nal_unit_type) {
+  switch (nal_unit_type) {
+    case CODED_SLICE_OF_NON_IDR_PICTURE_NUT:
+    case CODED_SLICE_DATA_PARTITION_A_NUT:
+    case CODED_SLICE_DATA_PARTITION_B_NUT:
+    case CODED_SLICE_DATA_PARTITION_C_NUT:
+    case CODED_SLICE_OF_IDR_PICTURE_NUT:
+    case CODED_SLICE_OF_AUXILIARY_CODED_PICTURE_NUT:
+    case CODED_SLICE_EXTENSION:
+      return true;
+    default:
+      return false;
+  }
+}
+
 bool IsNalUnitTypeReserved(uint32_t nal_unit_type) {
   // payload (Table 7-1, Section 7.4.1)
   switch (nal_unit_type) {

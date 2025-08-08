@@ -58,6 +58,7 @@ enum NalUnitType : uint8_t {
 };
 
 std::string NalUnitTypeToString(uint32_t nal_unit_type);
+bool IsSliceSegment(uint32_t nal_unit_type);
 bool IsNalUnitTypeReserved(uint32_t nal_unit_type);
 bool IsNalUnitTypeUnspecified(uint32_t nal_unit_type);
 
