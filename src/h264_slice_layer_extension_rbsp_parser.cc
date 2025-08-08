@@ -4,10 +4,9 @@
 
 #include "h264_slice_layer_extension_rbsp_parser.h"
 
-
-#include <cinttypes>
 #include <stdio.h>
 
+#include <cinttypes>
 #include <cmath>
 #include <cstdint>
 #include <memory>

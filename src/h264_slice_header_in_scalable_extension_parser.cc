@@ -4,10 +4,9 @@
 
 #include "h264_slice_header_in_scalable_extension_parser.h"
 
-
-#include <cinttypes>
 #include <stdio.h>
 
+#include <cinttypes>
 #include <cmath>
 #include <cstdint>
 #include <memory>

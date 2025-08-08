@@ -4,10 +4,9 @@
 
 #include "h264_hrd_parameters_parser.h"
 
-
-#include <cinttypes>
 #include <stdio.h>
 
+#include <cinttypes>
 #include <cstdint>
 #include <memory>
 #include <vector>

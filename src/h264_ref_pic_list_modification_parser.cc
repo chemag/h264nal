@@ -4,10 +4,9 @@
 
 #include "h264_ref_pic_list_modification_parser.h"
 
-
-#include <cinttypes>
 #include <stdio.h>
 
+#include <cinttypes>
 #include <cstdint>
 #include <memory>
 #include <vector>
