@@ -419,7 +419,7 @@ int main(int argc, char **argv) {
     if (h264nal::H264Utils::ReadFile(options->infile, buffer) < 0) {
       return -1;
     }
-    // 3.2. read infile into buffer
+    // 3.2. parse buffer
     if (options->nalu_length_bytes < 0) {
       bitstream = h264nal::H264BitstreamParser::ParseBitstream(
           buffer.data(), buffer.size(), &bitstream_parser_state,
