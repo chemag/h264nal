@@ -315,7 +315,7 @@ H264SliceHeaderParser::ParseSliceHeader(
     }
   }
 
-  if (slice_header->nal_unit_type == 20) {
+  if (slice_header->nal_unit_type == 20 || slice_header->nal_unit_type == 21) {
     // ref_pic_list_mvc_modification()
 #ifdef FPRINT_ERRORS
     // TODO(chemag): add support for ref_pic_list_mvc_modification()

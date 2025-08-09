@@ -43,10 +43,7 @@ H264RefPicListModificationParser::ParseRefPicListModification(
   // store input values
   ref_pic_list_modification->slice_type = slice_type;
 
-  if ((slice_type != SliceType::I) && (slice_type != SliceType::I_ALL) &&
-      (slice_type != SliceType::SI) &&
-      (slice_type !=
-       SliceType::SI_ALL)) {  // slice_type != I && slice_type != SI
+  if (((slice_type % 5) != 2) && ((slice_type % 5) != 4)) {
     // ref_pic_list_modification_flag_l0  u(1)
     if (!bit_buffer->ReadBits(
             1,
@@ -87,8 +84,7 @@ H264RefPicListModificationParser::ParseRefPicListModification(
     }
   }
 
-  if ((slice_type == SliceType::B) ||
-      (slice_type == SliceType::B_ALL)) {  // slice_type == B
+  if ((slice_type % 5) == 1) {
     // ref_pic_list_modification_flag_l1  u(1)
     if (!bit_buffer->ReadBits(
             1,
