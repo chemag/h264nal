@@ -102,7 +102,9 @@ enum ProfileType : uint8_t {
   HIGH_422_INTRA = 12,
   HIGH_444 = 13,
   HIGH_444_INTRA = 14,
-  CAVLC_444_INTRA = 15,
+  HIGH_444_PRED = 15,
+  HIGH_444_PRED_INTRA = 16,
+  CAVLC_444_INTRA = 17,
 };
 
 enum ProfileType getProfileType();

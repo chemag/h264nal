@@ -189,6 +189,12 @@ void profileTypeToString(enum ProfileType profile, std::string &str) {
     case HIGH_444_INTRA:
       str = "High 4:4:4 Intra";
       break;
+    case HIGH_444_PRED:
+      str = "High 4:4:4 Predictive";
+      break;
+    case HIGH_444_PRED_INTRA:
+      str = "High 4:4:4 Predictive Intra";
+      break;
     case CAVLC_444_INTRA:
       str = "CAVLC 4:4:4 Intra";
       break;

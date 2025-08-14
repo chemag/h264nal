@@ -508,6 +508,12 @@ ProfileType H264SpsDataParser::SpsDataState::GetProfileType() const noexcept {
       }
       return ProfileType::HIGH_444;
 
+    case 244:
+      if (constraint_set3_flag == 1) {
+        return ProfileType::HIGH_444_PRED_INTRA;
+      }
+      return ProfileType::HIGH_444_PRED;
+
     case 44:
       return ProfileType::CAVLC_444_INTRA;
 
