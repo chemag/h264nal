@@ -252,6 +252,7 @@ H264BitstreamParser::ParseBitstreamNALULength(
 #ifdef FDUMP_DEFINE
 void H264BitstreamParser::BitstreamState::fdump(
     FILE* outfp, int indent_level, ParsingOptions parsing_options) const {
+  (void)parsing_options;
   for (auto& nal_unit : nal_units) {
     nal_unit->fdump(outfp, indent_level, parsing_options_);
     fprintf(outfp, "\n");
