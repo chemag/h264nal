@@ -137,63 +137,63 @@ void H264SpsSvcExtensionParser::SpsSvcExtensionState::fdump(
   indent_level = indent_level_incr(indent_level);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "inter_layer_deblocking_filter_control_present_flag: %i",
+  fprintf(outfp, "inter_layer_deblocking_filter_control_present_flag: %u",
           inter_layer_deblocking_filter_control_present_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "extended_spatial_scalability_idc: %i",
+  fprintf(outfp, "extended_spatial_scalability_idc: %u",
           extended_spatial_scalability_idc);
 
   if (ChromaArrayType == 1 || ChromaArrayType == 2) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "chroma_phase_x_plus1_flag: %i", chroma_phase_x_plus1_flag);
+    fprintf(outfp, "chroma_phase_x_plus1_flag: %u", chroma_phase_x_plus1_flag);
   }
 
   if (ChromaArrayType == 1) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "chroma_phase_y_plus1: %i", chroma_phase_y_plus1);
+    fprintf(outfp, "chroma_phase_y_plus1: %u", chroma_phase_y_plus1);
   }
 
   if (extended_spatial_scalability_idc == 1) {
     if (ChromaArrayType > 0) {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "seq_ref_layer_chroma_phase_x_plus1_flag: %i",
+      fprintf(outfp, "seq_ref_layer_chroma_phase_x_plus1_flag: %u",
               seq_ref_layer_chroma_phase_x_plus1_flag);
 
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "seq_ref_layer_chroma_phase_y_plus1: %i",
+      fprintf(outfp, "seq_ref_layer_chroma_phase_y_plus1: %u",
               seq_ref_layer_chroma_phase_y_plus1);
     }
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "seq_scaled_ref_layer_left_offset: %i",
+    fprintf(outfp, "seq_scaled_ref_layer_left_offset: %u",
             seq_scaled_ref_layer_left_offset);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "seq_scaled_ref_layer_top_offset: %i",
+    fprintf(outfp, "seq_scaled_ref_layer_top_offset: %u",
             seq_scaled_ref_layer_top_offset);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "seq_scaled_ref_layer_right_offset: %i",
+    fprintf(outfp, "seq_scaled_ref_layer_right_offset: %u",
             seq_scaled_ref_layer_right_offset);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "seq_scaled_ref_layer_bottom_offset: %i",
+    fprintf(outfp, "seq_scaled_ref_layer_bottom_offset: %u",
             seq_scaled_ref_layer_bottom_offset);
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "seq_tcoeff_level_prediction_flag: %i",
+  fprintf(outfp, "seq_tcoeff_level_prediction_flag: %u",
           seq_tcoeff_level_prediction_flag);
 
   if (seq_tcoeff_level_prediction_flag == 1) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "adaptive_tcoeff_level_prediction_flag: %i",
+    fprintf(outfp, "adaptive_tcoeff_level_prediction_flag: %u",
             adaptive_tcoeff_level_prediction_flag);
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "slice_header_restriction_flag: %i",
+  fprintf(outfp, "slice_header_restriction_flag: %u",
           slice_header_restriction_flag);
 
   indent_level = indent_level_decr(indent_level);

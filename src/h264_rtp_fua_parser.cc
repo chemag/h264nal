@@ -84,16 +84,16 @@ void H264RtpFuAParser::RtpFuAState::fdump(
   header->fdump(outfp, indent_level);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "s_bit: %i", s_bit);
+  fprintf(outfp, "s_bit: %u", s_bit);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "e_bit: %i", e_bit);
+  fprintf(outfp, "e_bit: %u", e_bit);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "r_bit: %i", r_bit);
+  fprintf(outfp, "r_bit: %u", r_bit);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "fu_type: %i", fu_type);
+  fprintf(outfp, "fu_type: %u", fu_type);
 
   if (s_bit == 1) {
     // start of a fragmented NAL: dump payload

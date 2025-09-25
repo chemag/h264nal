@@ -363,30 +363,30 @@ void H264PpsParser::PpsState::fdump(FILE* outfp, int indent_level) const {
   indent_level = indent_level_incr(indent_level);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "pic_parameter_set_id: %i", pic_parameter_set_id);
+  fprintf(outfp, "pic_parameter_set_id: %u", pic_parameter_set_id);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "seq_parameter_set_id: %i", seq_parameter_set_id);
+  fprintf(outfp, "seq_parameter_set_id: %u", seq_parameter_set_id);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "entropy_coding_mode_flag: %i", entropy_coding_mode_flag);
+  fprintf(outfp, "entropy_coding_mode_flag: %u", entropy_coding_mode_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "bottom_field_pic_order_in_frame_present_flag: %i",
+  fprintf(outfp, "bottom_field_pic_order_in_frame_present_flag: %u",
           bottom_field_pic_order_in_frame_present_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "num_slice_groups_minus1: %i", num_slice_groups_minus1);
+  fprintf(outfp, "num_slice_groups_minus1: %u", num_slice_groups_minus1);
 
   if (num_slice_groups_minus1 > 0) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "slice_group_map_type: %i", slice_group_map_type);
+    fprintf(outfp, "slice_group_map_type: %u", slice_group_map_type);
 
     if (slice_group_map_type == 0) {
       fdump_indent_level(outfp, indent_level);
       fprintf(outfp, "run_length_minus1 {");
       for (const uint32_t& v : run_length_minus1) {
-        fprintf(outfp, " %i", v);
+        fprintf(outfp, " %u", v);
       }
       fprintf(outfp, " }");
 
@@ -394,115 +394,115 @@ void H264PpsParser::PpsState::fdump(FILE* outfp, int indent_level) const {
       fdump_indent_level(outfp, indent_level);
       fprintf(outfp, "top_left {");
       for (const uint32_t& v : top_left) {
-        fprintf(outfp, " %i", v);
+        fprintf(outfp, " %u", v);
       }
       fprintf(outfp, " }");
 
       fdump_indent_level(outfp, indent_level);
       fprintf(outfp, "bottom_right {");
       for (const uint32_t& v : bottom_right) {
-        fprintf(outfp, " %i", v);
+        fprintf(outfp, " %u", v);
       }
       fprintf(outfp, " }");
 
     } else if ((slice_group_map_type == 3) || (slice_group_map_type == 4) ||
                (slice_group_map_type == 5)) {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "slice_group_change_direction_flag: %i",
+      fprintf(outfp, "slice_group_change_direction_flag: %u",
               slice_group_change_direction_flag);
 
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "slice_group_change_rate_minus1: %i",
+      fprintf(outfp, "slice_group_change_rate_minus1: %u",
               slice_group_change_rate_minus1);
 
     } else if (slice_group_map_type == 6) {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "pic_size_in_map_units_minus1: %i",
+      fprintf(outfp, "pic_size_in_map_units_minus1: %u",
               pic_size_in_map_units_minus1);
 
       fdump_indent_level(outfp, indent_level);
       fprintf(outfp, "slice_group_id {");
       for (const uint32_t& v : slice_group_id) {
-        fprintf(outfp, " %i", v);
+        fprintf(outfp, " %u", v);
       }
       fprintf(outfp, " }");
     }
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "num_ref_idx_l0_default_active_minus1: %i",
+  fprintf(outfp, "num_ref_idx_l0_default_active_minus1: %u",
           num_ref_idx_l0_default_active_minus1);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "num_ref_idx_l1_default_active_minus1: %i",
+  fprintf(outfp, "num_ref_idx_l1_default_active_minus1: %u",
           num_ref_idx_l1_default_active_minus1);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "weighted_pred_flag: %i", weighted_pred_flag);
+  fprintf(outfp, "weighted_pred_flag: %u", weighted_pred_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "weighted_bipred_idc: %i", weighted_bipred_idc);
+  fprintf(outfp, "weighted_bipred_idc: %u", weighted_bipred_idc);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "pic_init_qp_minus26: %i", pic_init_qp_minus26);
+  fprintf(outfp, "pic_init_qp_minus26: %u", pic_init_qp_minus26);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "pic_init_qs_minus26: %i", pic_init_qs_minus26);
+  fprintf(outfp, "pic_init_qs_minus26: %u", pic_init_qs_minus26);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "chroma_qp_index_offset: %i", chroma_qp_index_offset);
+  fprintf(outfp, "chroma_qp_index_offset: %u", chroma_qp_index_offset);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "deblocking_filter_control_present_flag: %i",
+  fprintf(outfp, "deblocking_filter_control_present_flag: %u",
           deblocking_filter_control_present_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "constrained_intra_pred_flag: %i",
+  fprintf(outfp, "constrained_intra_pred_flag: %u",
           constrained_intra_pred_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "redundant_pic_cnt_present_flag: %i",
+  fprintf(outfp, "redundant_pic_cnt_present_flag: %u",
           redundant_pic_cnt_present_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "transform_8x8_mode_flag: %i", transform_8x8_mode_flag);
+  fprintf(outfp, "transform_8x8_mode_flag: %u", transform_8x8_mode_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "pic_scaling_matrix_present_flag: %i",
+  fprintf(outfp, "pic_scaling_matrix_present_flag: %u",
           pic_scaling_matrix_present_flag);
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "pic_scaling_list_present_flag {");
   for (const uint32_t& v : pic_scaling_list_present_flag) {
-    fprintf(outfp, " %i", v);
+    fprintf(outfp, " %u", v);
   }
   fprintf(outfp, " }");
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "ScalingList4x4 {");
   for (const uint32_t& v : ScalingList4x4) {
-    fprintf(outfp, " %i", v);
+    fprintf(outfp, " %u", v);
   }
   fprintf(outfp, " }");
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "UseDefaultScalingMatrix4x4Flag {");
   for (const uint32_t& v : UseDefaultScalingMatrix4x4Flag) {
-    fprintf(outfp, " %i", v);
+    fprintf(outfp, " %u", v);
   }
   fprintf(outfp, " }");
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "ScalingList8x8 {");
   for (const uint32_t& v : ScalingList8x8) {
-    fprintf(outfp, " %i", v);
+    fprintf(outfp, " %u", v);
   }
   fprintf(outfp, " }");
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "UseDefaultScalingMatrix8x8Flag {");
   for (const uint32_t& v : UseDefaultScalingMatrix8x8Flag) {
-    fprintf(outfp, " %i", v);
+    fprintf(outfp, " %u", v);
   }
   fprintf(outfp, " }");
 
@@ -510,7 +510,7 @@ void H264PpsParser::PpsState::fdump(FILE* outfp, int indent_level) const {
   fprintf(outfp, "delta_scale: %i", delta_scale);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "second_chroma_qp_index_offset: %i",
+  fprintf(outfp, "second_chroma_qp_index_offset: %u",
           second_chroma_qp_index_offset);
 
   indent_level = indent_level_decr(indent_level);

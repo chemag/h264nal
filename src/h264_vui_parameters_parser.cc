@@ -342,87 +342,87 @@ void H264VuiParametersParser::VuiParametersState::fdump(
   indent_level = indent_level_incr(indent_level);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "aspect_ratio_info_present_flag: %i",
+  fprintf(outfp, "aspect_ratio_info_present_flag: %u",
           aspect_ratio_info_present_flag);
 
   if (aspect_ratio_info_present_flag) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "aspect_ratio_idc: %i", aspect_ratio_idc);
+    fprintf(outfp, "aspect_ratio_idc: %u", aspect_ratio_idc);
 
     if (aspect_ratio_idc == AR_EXTENDED_SAR) {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "sar_width: %i", sar_width);
+      fprintf(outfp, "sar_width: %u", sar_width);
 
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "sar_height: %i", sar_height);
+      fprintf(outfp, "sar_height: %u", sar_height);
     }
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "overscan_info_present_flag: %i", overscan_info_present_flag);
+  fprintf(outfp, "overscan_info_present_flag: %u", overscan_info_present_flag);
 
   if (overscan_info_present_flag) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "overscan_appropriate_flag: %i", overscan_appropriate_flag);
+    fprintf(outfp, "overscan_appropriate_flag: %u", overscan_appropriate_flag);
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "video_signal_type_present_flag: %i",
+  fprintf(outfp, "video_signal_type_present_flag: %u",
           video_signal_type_present_flag);
 
   if (video_signal_type_present_flag) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "video_format: %i", video_format);
+    fprintf(outfp, "video_format: %u", video_format);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "video_full_range_flag: %i", video_full_range_flag);
+    fprintf(outfp, "video_full_range_flag: %u", video_full_range_flag);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "colour_description_present_flag: %i",
+    fprintf(outfp, "colour_description_present_flag: %u",
             colour_description_present_flag);
 
     if (colour_description_present_flag) {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "colour_primaries: %i", colour_primaries);
+      fprintf(outfp, "colour_primaries: %u", colour_primaries);
 
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "transfer_characteristics: %i", transfer_characteristics);
+      fprintf(outfp, "transfer_characteristics: %u", transfer_characteristics);
 
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "matrix_coefficients: %i", matrix_coefficients);
+      fprintf(outfp, "matrix_coefficients: %u", matrix_coefficients);
     }
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "chroma_loc_info_present_flag: %i",
+  fprintf(outfp, "chroma_loc_info_present_flag: %u",
           chroma_loc_info_present_flag);
 
   if (chroma_loc_info_present_flag) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "chroma_sample_loc_type_top_field: %i",
+    fprintf(outfp, "chroma_sample_loc_type_top_field: %u",
             chroma_sample_loc_type_top_field);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "chroma_sample_loc_type_bottom_field: %i",
+    fprintf(outfp, "chroma_sample_loc_type_bottom_field: %u",
             chroma_sample_loc_type_bottom_field);
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "timing_info_present_flag: %i", timing_info_present_flag);
+  fprintf(outfp, "timing_info_present_flag: %u", timing_info_present_flag);
 
   if (timing_info_present_flag) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "num_units_in_tick: %i", num_units_in_tick);
+    fprintf(outfp, "num_units_in_tick: %u", num_units_in_tick);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "time_scale: %i", time_scale);
+    fprintf(outfp, "time_scale: %u", time_scale);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "fixed_frame_rate_flag: %i", fixed_frame_rate_flag);
+    fprintf(outfp, "fixed_frame_rate_flag: %u", fixed_frame_rate_flag);
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "nal_hrd_parameters_present_flag: %i",
+  fprintf(outfp, "nal_hrd_parameters_present_flag: %u",
           nal_hrd_parameters_present_flag);
 
   if (nal_hrd_parameters_present_flag) {
@@ -431,7 +431,7 @@ void H264VuiParametersParser::VuiParametersState::fdump(
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "vcl_hrd_parameters_present_flag: %i",
+  fprintf(outfp, "vcl_hrd_parameters_present_flag: %u",
           vcl_hrd_parameters_present_flag);
 
   if (vcl_hrd_parameters_present_flag) {
@@ -441,39 +441,39 @@ void H264VuiParametersParser::VuiParametersState::fdump(
 
   if (nal_hrd_parameters_present_flag || vcl_hrd_parameters_present_flag) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "low_delay_hrd_flag: %i", low_delay_hrd_flag);
+    fprintf(outfp, "low_delay_hrd_flag: %u", low_delay_hrd_flag);
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "pic_struct_present_flag: %i", pic_struct_present_flag);
+  fprintf(outfp, "pic_struct_present_flag: %u", pic_struct_present_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "bitstream_restriction_flag: %i", bitstream_restriction_flag);
+  fprintf(outfp, "bitstream_restriction_flag: %u", bitstream_restriction_flag);
 
   if (bitstream_restriction_flag) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "motion_vectors_over_pic_boundaries_flag: %i",
+    fprintf(outfp, "motion_vectors_over_pic_boundaries_flag: %u",
             motion_vectors_over_pic_boundaries_flag);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "max_bytes_per_pic_denom: %i", max_bytes_per_pic_denom);
+    fprintf(outfp, "max_bytes_per_pic_denom: %u", max_bytes_per_pic_denom);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "max_bits_per_mb_denom: %i", max_bits_per_mb_denom);
+    fprintf(outfp, "max_bits_per_mb_denom: %u", max_bits_per_mb_denom);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "log2_max_mv_length_horizontal: %i",
+    fprintf(outfp, "log2_max_mv_length_horizontal: %u",
             log2_max_mv_length_horizontal);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "log2_max_mv_length_vertical: %i",
+    fprintf(outfp, "log2_max_mv_length_vertical: %u",
             log2_max_mv_length_vertical);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "max_num_reorder_frames: %i", max_num_reorder_frames);
+    fprintf(outfp, "max_num_reorder_frames: %u", max_num_reorder_frames);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "max_dec_frame_buffering: %i", max_dec_frame_buffering);
+    fprintf(outfp, "max_dec_frame_buffering: %u", max_dec_frame_buffering);
   }
 
   indent_level = indent_level_decr(indent_level);

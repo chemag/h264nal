@@ -100,34 +100,34 @@ void H264NalUnitHeaderSvcExtensionParser::NalUnitHeaderSvcExtensionState::fdump(
   indent_level = indent_level_incr(indent_level);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "idr_flag: %i", idr_flag);
+  fprintf(outfp, "idr_flag: %u", idr_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "priority_id: %i", priority_id);
+  fprintf(outfp, "priority_id: %u", priority_id);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "no_inter_layer_pred_flag: %i", no_inter_layer_pred_flag);
+  fprintf(outfp, "no_inter_layer_pred_flag: %u", no_inter_layer_pred_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "dependency_id: %i", dependency_id);
+  fprintf(outfp, "dependency_id: %u", dependency_id);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "quality_id: %i", quality_id);
+  fprintf(outfp, "quality_id: %u", quality_id);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "temporal_id: %i", temporal_id);
+  fprintf(outfp, "temporal_id: %u", temporal_id);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "use_ref_base_pic_flag: %i", use_ref_base_pic_flag);
+  fprintf(outfp, "use_ref_base_pic_flag: %u", use_ref_base_pic_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "discardable_flag: %i", discardable_flag);
+  fprintf(outfp, "discardable_flag: %u", discardable_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "output_flag: %i", output_flag);
+  fprintf(outfp, "output_flag: %u", output_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "reserved_three_2bits: %i", reserved_three_2bits);
+  fprintf(outfp, "reserved_three_2bits: %u", reserved_three_2bits);
 
   indent_level = indent_level_decr(indent_level);
   fdump_indent_level(outfp, indent_level);

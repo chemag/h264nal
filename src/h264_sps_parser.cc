@@ -676,28 +676,28 @@ void H264SpsDataParser::SpsDataState::fdump(
   indent_level = indent_level_incr(indent_level);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "profile_idc: %i", profile_idc);
+  fprintf(outfp, "profile_idc: %u", profile_idc);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "constraint_set0_flag: %i", constraint_set0_flag);
+  fprintf(outfp, "constraint_set0_flag: %u", constraint_set0_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "constraint_set1_flag: %i", constraint_set1_flag);
+  fprintf(outfp, "constraint_set1_flag: %u", constraint_set1_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "constraint_set2_flag: %i", constraint_set2_flag);
+  fprintf(outfp, "constraint_set2_flag: %u", constraint_set2_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "constraint_set3_flag: %i", constraint_set3_flag);
+  fprintf(outfp, "constraint_set3_flag: %u", constraint_set3_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "constraint_set4_flag: %i", constraint_set4_flag);
+  fprintf(outfp, "constraint_set4_flag: %u", constraint_set4_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "constraint_set5_flag: %i", constraint_set5_flag);
+  fprintf(outfp, "constraint_set5_flag: %u", constraint_set5_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "reserved_zero_2bits: %i", reserved_zero_2bits);
+  fprintf(outfp, "reserved_zero_2bits: %u", reserved_zero_2bits);
 
   fdump_indent_level(outfp, indent_level);
   std::string profile_type_str;
@@ -705,10 +705,10 @@ void H264SpsDataParser::SpsDataState::fdump(
   fprintf(outfp, "profile: %s", profile_type_str.c_str());
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "level_idc: %i", level_idc);
+  fprintf(outfp, "level_idc: %u", level_idc);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "seq_parameter_set_id: %i", seq_parameter_set_id);
+  fprintf(outfp, "seq_parameter_set_id: %u", seq_parameter_set_id);
 
   if (profile_idc == 100 || profile_idc == 110 || profile_idc == 122 ||
       profile_idc == 244 || profile_idc == 44 || profile_idc == 83 ||
@@ -716,60 +716,60 @@ void H264SpsDataParser::SpsDataState::fdump(
       profile_idc == 138 || profile_idc == 139 || profile_idc == 134 ||
       profile_idc == 135) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "chroma_format_idc: %i", chroma_format_idc);
+    fprintf(outfp, "chroma_format_idc: %u", chroma_format_idc);
 
     if (chroma_format_idc == 3) {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "separate_colour_plane_flag: %i",
+      fprintf(outfp, "separate_colour_plane_flag: %u",
               separate_colour_plane_flag);
     }
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "bit_depth_luma_minus8: %i", bit_depth_luma_minus8);
+    fprintf(outfp, "bit_depth_luma_minus8: %u", bit_depth_luma_minus8);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "bit_depth_chroma_minus8: %i", bit_depth_chroma_minus8);
+    fprintf(outfp, "bit_depth_chroma_minus8: %u", bit_depth_chroma_minus8);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "qpprime_y_zero_transform_bypass_flag: %i",
+    fprintf(outfp, "qpprime_y_zero_transform_bypass_flag: %u",
             qpprime_y_zero_transform_bypass_flag);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "seq_scaling_matrix_present_flag: %i",
+    fprintf(outfp, "seq_scaling_matrix_present_flag: %u",
             seq_scaling_matrix_present_flag);
 
     fdump_indent_level(outfp, indent_level);
     fprintf(outfp, "seq_scaling_list_present_flag {");
     for (const uint32_t& v : seq_scaling_list_present_flag) {
-      fprintf(outfp, " %i", v);
+      fprintf(outfp, " %u", v);
     }
     fprintf(outfp, " }");
 
     fdump_indent_level(outfp, indent_level);
     fprintf(outfp, "ScalingList4x4 {");
     for (const uint32_t& v : ScalingList4x4) {
-      fprintf(outfp, " %i", v);
+      fprintf(outfp, " %u", v);
     }
     fprintf(outfp, " }");
 
     fdump_indent_level(outfp, indent_level);
     fprintf(outfp, "UseDefaultScalingMatrix4x4Flag {");
     for (const uint32_t& v : UseDefaultScalingMatrix4x4Flag) {
-      fprintf(outfp, " %i", v);
+      fprintf(outfp, " %u", v);
     }
     fprintf(outfp, " }");
 
     fdump_indent_level(outfp, indent_level);
     fprintf(outfp, "ScalingList8x8 {");
     for (const uint32_t& v : ScalingList8x8) {
-      fprintf(outfp, " %i", v);
+      fprintf(outfp, " %u", v);
     }
     fprintf(outfp, " }");
 
     fdump_indent_level(outfp, indent_level);
     fprintf(outfp, "UseDefaultScalingMatrix8x8Flag {");
     for (const uint32_t& v : UseDefaultScalingMatrix8x8Flag) {
-      fprintf(outfp, " %i", v);
+      fprintf(outfp, " %u", v);
     }
     fprintf(outfp, " }");
 
@@ -778,19 +778,19 @@ void H264SpsDataParser::SpsDataState::fdump(
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "log2_max_frame_num_minus4: %i", log2_max_frame_num_minus4);
+  fprintf(outfp, "log2_max_frame_num_minus4: %u", log2_max_frame_num_minus4);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "pic_order_cnt_type: %i", pic_order_cnt_type);
+  fprintf(outfp, "pic_order_cnt_type: %u", pic_order_cnt_type);
 
   if (pic_order_cnt_type == 0) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "log2_max_pic_order_cnt_lsb_minus4: %i",
+    fprintf(outfp, "log2_max_pic_order_cnt_lsb_minus4: %u",
             log2_max_pic_order_cnt_lsb_minus4);
 
   } else if (pic_order_cnt_type == 1) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "delta_pic_order_always_zero_flag: %i",
+    fprintf(outfp, "delta_pic_order_always_zero_flag: %u",
             delta_pic_order_always_zero_flag);
 
     fdump_indent_level(outfp, indent_level);
@@ -801,7 +801,7 @@ void H264SpsDataParser::SpsDataState::fdump(
             offset_for_top_to_bottom_field);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "num_ref_frames_in_pic_order_cnt_cycle: %i",
+    fprintf(outfp, "num_ref_frames_in_pic_order_cnt_cycle: %u",
             num_ref_frames_in_pic_order_cnt_cycle);
 
     fdump_indent_level(outfp, indent_level);
@@ -813,50 +813,50 @@ void H264SpsDataParser::SpsDataState::fdump(
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "max_num_ref_frames: %i", max_num_ref_frames);
+  fprintf(outfp, "max_num_ref_frames: %u", max_num_ref_frames);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "gaps_in_frame_num_value_allowed_flag: %i",
+  fprintf(outfp, "gaps_in_frame_num_value_allowed_flag: %u",
           gaps_in_frame_num_value_allowed_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "pic_width_in_mbs_minus1: %i", pic_width_in_mbs_minus1);
+  fprintf(outfp, "pic_width_in_mbs_minus1: %u", pic_width_in_mbs_minus1);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "pic_height_in_map_units_minus1: %i",
+  fprintf(outfp, "pic_height_in_map_units_minus1: %u",
           pic_height_in_map_units_minus1);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "frame_mbs_only_flag: %i", frame_mbs_only_flag);
+  fprintf(outfp, "frame_mbs_only_flag: %u", frame_mbs_only_flag);
 
   if (!frame_mbs_only_flag) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "mb_adaptive_frame_field_flag: %i",
+    fprintf(outfp, "mb_adaptive_frame_field_flag: %u",
             mb_adaptive_frame_field_flag);
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "direct_8x8_inference_flag: %i", direct_8x8_inference_flag);
+  fprintf(outfp, "direct_8x8_inference_flag: %u", direct_8x8_inference_flag);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "frame_cropping_flag: %i", frame_cropping_flag);
+  fprintf(outfp, "frame_cropping_flag: %u", frame_cropping_flag);
 
   if (frame_cropping_flag) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "frame_crop_left_offset: %i", frame_crop_left_offset);
+    fprintf(outfp, "frame_crop_left_offset: %u", frame_crop_left_offset);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "frame_crop_right_offset: %i", frame_crop_right_offset);
+    fprintf(outfp, "frame_crop_right_offset: %u", frame_crop_right_offset);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "frame_crop_top_offset: %i", frame_crop_top_offset);
+    fprintf(outfp, "frame_crop_top_offset: %u", frame_crop_top_offset);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "frame_crop_bottom_offset: %i", frame_crop_bottom_offset);
+    fprintf(outfp, "frame_crop_bottom_offset: %u", frame_crop_bottom_offset);
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "vui_parameters_present_flag: %i",
+  fprintf(outfp, "vui_parameters_present_flag: %u",
           vui_parameters_present_flag);
 
   if (vui_parameters_present_flag) {
@@ -870,9 +870,9 @@ void H264SpsDataParser::SpsDataState::fdump(
     int height = -1;
     getResolution(&width, &height);
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "width: %i", width);
+    fprintf(outfp, "width: %u", width);
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "height: %i", height);
+    fprintf(outfp, "height: %u", height);
   }
 
   indent_level = indent_level_decr(indent_level);

@@ -144,7 +144,7 @@ void H264SubsetSpsParser::SubsetSpsState::fdump(
     seq_parameter_set_svc_extension->fdump(outfp, indent_level);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "svc_vui_parameters_present_flag: %i",
+    fprintf(outfp, "svc_vui_parameters_present_flag: %u",
             svc_vui_parameters_present_flag);
 
     if (svc_vui_parameters_present_flag == 1) {
@@ -155,12 +155,12 @@ void H264SubsetSpsParser::SubsetSpsState::fdump(
              seq_parameter_set_data->profile_idc == 128 ||
              seq_parameter_set_data->profile_idc == 134) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "bit_equal_to_one: %i", bit_equal_to_one);
+    fprintf(outfp, "bit_equal_to_one: %u", bit_equal_to_one);
 
     // seq_parameter_set_mvc_extension() // specified in Annex H
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "mvc_vui_parameters_present_flag: %i",
+    fprintf(outfp, "mvc_vui_parameters_present_flag: %u",
             mvc_vui_parameters_present_flag);
 
     if (mvc_vui_parameters_present_flag == 1) {
@@ -170,13 +170,13 @@ void H264SubsetSpsParser::SubsetSpsState::fdump(
   } else if (seq_parameter_set_data->profile_idc == 138 ||
              seq_parameter_set_data->profile_idc == 135) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "bit_equal_to_one: %i", bit_equal_to_one);
+    fprintf(outfp, "bit_equal_to_one: %u", bit_equal_to_one);
 
     // seq_parameter_set_mvcd_extension(()  // specified in Annex I
 
   } else if (seq_parameter_set_data->profile_idc == 139) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "bit_equal_to_one: %i", bit_equal_to_one);
+    fprintf(outfp, "bit_equal_to_one: %u", bit_equal_to_one);
 
     // seq_parameter_set_mvcd_extension()  // specified in Annex I
 
@@ -184,11 +184,11 @@ void H264SubsetSpsParser::SubsetSpsState::fdump(
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "additional_extension2_flag: %i", additional_extension2_flag);
+  fprintf(outfp, "additional_extension2_flag: %u", additional_extension2_flag);
 
   if (additional_extension2_flag == 1) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "additional_extension2_data_flag: %i",
+    fprintf(outfp, "additional_extension2_data_flag: %u",
             additional_extension2_data_flag);
   }
 

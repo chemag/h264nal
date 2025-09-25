@@ -99,25 +99,25 @@ void H264NalUnitHeaderParser::NalUnitHeaderState::fdump(
   indent_level = indent_level_incr(indent_level);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "forbidden_zero_bit: %i", forbidden_zero_bit);
+  fprintf(outfp, "forbidden_zero_bit: %u", forbidden_zero_bit);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "nal_ref_idc: %i", nal_ref_idc);
+  fprintf(outfp, "nal_ref_idc: %u", nal_ref_idc);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "nal_unit_type: %i", nal_unit_type);
+  fprintf(outfp, "nal_unit_type: %u", nal_unit_type);
 
   if (nal_unit_type == 14 || nal_unit_type == 20 || nal_unit_type == 21) {
     if (nal_unit_type != 21) {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "svc_extension_flag: %i", svc_extension_flag);
+      fprintf(outfp, "svc_extension_flag: %u", svc_extension_flag);
       if (svc_extension_flag && nal_unit_header_svc_extension != nullptr) {
         fdump_indent_level(outfp, indent_level);
         nal_unit_header_svc_extension->fdump(outfp, indent_level);
       }
     } else {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "avc_3d_extension_flag: %i", avc_3d_extension_flag);
+      fprintf(outfp, "avc_3d_extension_flag: %u", avc_3d_extension_flag);
     }
   }
 

@@ -147,14 +147,14 @@ void H264PrefixNalUnitSvcParser::PrefixNalUnitSvcState::fdump(
 
   if (nal_ref_idc != 0) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "store_ref_base_pic_flag: %i", store_ref_base_pic_flag);
+    fprintf(outfp, "store_ref_base_pic_flag: %u", store_ref_base_pic_flag);
 
     if ((use_ref_base_pic_flag || store_ref_base_pic_flag) && !idr_flag) {
       // dec_ref_base_pic_marking()
     }
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "additional_prefix_nal_unit_extension_data_flag: %i",
+    fprintf(outfp, "additional_prefix_nal_unit_extension_data_flag: %u",
             additional_prefix_nal_unit_extension_data_flag);
   }
 

@@ -554,44 +554,44 @@ void H264SliceHeaderParser::SliceHeaderState::fdump(FILE* outfp,
   indent_level = indent_level_incr(indent_level);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "first_mb_in_slice: %i", first_mb_in_slice);
+  fprintf(outfp, "first_mb_in_slice: %u", first_mb_in_slice);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "slice_type: %i", slice_type);
+  fprintf(outfp, "slice_type: %u", slice_type);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "pic_parameter_set_id: %i", pic_parameter_set_id);
+  fprintf(outfp, "pic_parameter_set_id: %u", pic_parameter_set_id);
 
   if (separate_colour_plane_flag) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "colour_plane_id: %i", colour_plane_id);
+    fprintf(outfp, "colour_plane_id: %u", colour_plane_id);
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "frame_num: %i", frame_num);
+  fprintf(outfp, "frame_num: %u", frame_num);
 
   if (!frame_mbs_only_flag) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "field_pic_flag: %i", field_pic_flag);
+    fprintf(outfp, "field_pic_flag: %u", field_pic_flag);
 
     if (field_pic_flag) {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "bottom_field_flag: %i", bottom_field_flag);
+      fprintf(outfp, "bottom_field_flag: %u", bottom_field_flag);
     }
   }
 
   if (nal_unit_type == 5) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "idr_pic_id: %i", idr_pic_id);
+    fprintf(outfp, "idr_pic_id: %u", idr_pic_id);
   }
 
   if (pic_order_cnt_type == 0) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "pic_order_cnt_lsb: %i", pic_order_cnt_lsb);
+    fprintf(outfp, "pic_order_cnt_lsb: %u", pic_order_cnt_lsb);
 
     if (bottom_field_pic_order_in_frame_present_flag && !field_pic_flag) {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "delta_pic_order_cnt_bottom: %i",
+      fprintf(outfp, "delta_pic_order_cnt_bottom: %u",
               delta_pic_order_cnt_bottom);
     }
   }
@@ -607,13 +607,13 @@ void H264SliceHeaderParser::SliceHeaderState::fdump(FILE* outfp,
 
   if (redundant_pic_cnt_present_flag) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "redundant_pic_cnt: %i", redundant_pic_cnt);
+    fprintf(outfp, "redundant_pic_cnt: %u", redundant_pic_cnt);
   }
 
   if ((slice_type == SliceType::B) ||
       (slice_type == SliceType::B_ALL)) {  // slice_type == B
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "direct_spatial_mv_pred_flag: %i",
+    fprintf(outfp, "direct_spatial_mv_pred_flag: %u",
             direct_spatial_mv_pred_flag);
   }
 
@@ -623,17 +623,17 @@ void H264SliceHeaderParser::SliceHeaderState::fdump(FILE* outfp,
       (slice_type == SliceType::B_ALL)) {  // slice_type == P || slice_type ==
                                            // SP || slice_type == B
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "num_ref_idx_active_override_flag: %i",
+    fprintf(outfp, "num_ref_idx_active_override_flag: %u",
             num_ref_idx_active_override_flag);
 
     if (num_ref_idx_active_override_flag) {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "num_ref_idx_l0_active_minus1: %i",
+      fprintf(outfp, "num_ref_idx_l0_active_minus1: %u",
               num_ref_idx_l0_active_minus1);
       if ((slice_type == SliceType::B) ||
           (slice_type == SliceType::B_ALL)) {  // slice_type == B
         fdump_indent_level(outfp, indent_level);
-        fprintf(outfp, "num_ref_idx_l1_active_minus1: %i",
+        fprintf(outfp, "num_ref_idx_l1_active_minus1: %u",
                 num_ref_idx_l1_active_minus1);
       }
     }
@@ -660,42 +660,42 @@ void H264SliceHeaderParser::SliceHeaderState::fdump(FILE* outfp,
       (slice_type != SliceType::I_ALL) && (slice_type != SliceType::SI) &&
       (slice_type != SliceType::SI_ALL)) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "cabac_init_idc: %i", cabac_init_idc);
+    fprintf(outfp, "cabac_init_idc: %u", cabac_init_idc);
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "slice_qp_delta: %i", slice_qp_delta);
+  fprintf(outfp, "slice_qp_delta: %u", slice_qp_delta);
 
   if ((slice_type == SliceType::SP) || (slice_type == SliceType::SP_ALL) ||
       (slice_type == SliceType::SI) || (slice_type == SliceType::SI_ALL)) {
     if ((slice_type == SliceType::SP) || (slice_type == SliceType::SP_ALL)) {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "sp_for_switch_flag: %i", sp_for_switch_flag);
+      fprintf(outfp, "sp_for_switch_flag: %u", sp_for_switch_flag);
     }
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "slice_qs_delta: %i", slice_qs_delta);
+    fprintf(outfp, "slice_qs_delta: %u", slice_qs_delta);
   }
 
   if (deblocking_filter_control_present_flag) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "disable_deblocking_filter_idc: %i",
+    fprintf(outfp, "disable_deblocking_filter_idc: %u",
             disable_deblocking_filter_idc);
 
     if (disable_deblocking_filter_idc != 1) {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "slice_alpha_c0_offset_div2: %i",
+      fprintf(outfp, "slice_alpha_c0_offset_div2: %u",
               slice_alpha_c0_offset_div2);
 
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "slice_beta_offset_div2: %i", slice_beta_offset_div2);
+      fprintf(outfp, "slice_beta_offset_div2: %u", slice_beta_offset_div2);
     }
   }
 
   if ((num_slice_groups_minus1 > 0) && (slice_group_map_type >= 3) &&
       (slice_group_map_type <= 5)) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "slice_group_change_cycle: %i", slice_group_change_cycle);
+    fprintf(outfp, "slice_group_change_cycle: %u", slice_group_change_cycle);
   }
 
   indent_level = indent_level_decr(indent_level);

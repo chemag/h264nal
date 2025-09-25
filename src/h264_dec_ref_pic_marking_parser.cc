@@ -130,50 +130,50 @@ void H264DecRefPicMarkingParser::DecRefPicMarkingState::fdump(
 
   if (nal_unit_type == 5) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "no_output_of_prior_pics_flag: %i",
+    fprintf(outfp, "no_output_of_prior_pics_flag: %u",
             no_output_of_prior_pics_flag);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "long_term_reference_flag: %i", long_term_reference_flag);
+    fprintf(outfp, "long_term_reference_flag: %u", long_term_reference_flag);
 
   } else {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "adaptive_ref_pic_marking_mode_flag: %i",
+    fprintf(outfp, "adaptive_ref_pic_marking_mode_flag: %u",
             adaptive_ref_pic_marking_mode_flag);
 
     if (adaptive_ref_pic_marking_mode_flag) {
       fdump_indent_level(outfp, indent_level);
       fprintf(outfp, "memory_management_control_operation {");
       for (const uint32_t& v : memory_management_control_operation) {
-        fprintf(outfp, " %i", v);
+        fprintf(outfp, " %u", v);
       }
       fprintf(outfp, " }");
 
       fdump_indent_level(outfp, indent_level);
       fprintf(outfp, "difference_of_pic_nums_minus1 {");
       for (const uint32_t& v : difference_of_pic_nums_minus1) {
-        fprintf(outfp, " %i", v);
+        fprintf(outfp, " %u", v);
       }
       fprintf(outfp, " }");
 
       fdump_indent_level(outfp, indent_level);
       fprintf(outfp, "long_term_pic_num {");
       for (const uint32_t& v : long_term_pic_num) {
-        fprintf(outfp, " %i", v);
+        fprintf(outfp, " %u", v);
       }
       fprintf(outfp, " }");
 
       fdump_indent_level(outfp, indent_level);
       fprintf(outfp, "long_term_frame_idx {");
       for (const uint32_t& v : long_term_frame_idx) {
-        fprintf(outfp, " %i", v);
+        fprintf(outfp, " %u", v);
       }
       fprintf(outfp, " }");
 
       fdump_indent_level(outfp, indent_level);
       fprintf(outfp, "max_long_term_frame_idx_plus1 {");
       for (const uint32_t& v : max_long_term_frame_idx_plus1) {
-        fprintf(outfp, " %i", v);
+        fprintf(outfp, " %u", v);
       }
       fprintf(outfp, " }");
     }

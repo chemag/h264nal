@@ -135,18 +135,18 @@ void H264RefPicListModificationParser::RefPicListModificationState::fdump(
   indent_level = indent_level_incr(indent_level);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "ref_pic_list_modification_flag_l0: %i",
+  fprintf(outfp, "ref_pic_list_modification_flag_l0: %u",
           ref_pic_list_modification_flag_l0);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "ref_pic_list_modification_flag_l1: %i",
+  fprintf(outfp, "ref_pic_list_modification_flag_l1: %u",
           ref_pic_list_modification_flag_l1);
 
   if (modification_of_pic_nums_idc.size() > 0) {
     fdump_indent_level(outfp, indent_level);
     fprintf(outfp, "modification_of_pic_nums_idc {");
     for (const uint32_t& v : modification_of_pic_nums_idc) {
-      fprintf(outfp, " %i", v);
+      fprintf(outfp, " %u", v);
     }
     fprintf(outfp, " }");
   }
@@ -155,7 +155,7 @@ void H264RefPicListModificationParser::RefPicListModificationState::fdump(
     fdump_indent_level(outfp, indent_level);
     fprintf(outfp, "abs_diff_pic_num_minus1 {");
     for (const uint32_t& v : abs_diff_pic_num_minus1) {
-      fprintf(outfp, " %i", v);
+      fprintf(outfp, " %u", v);
     }
     fprintf(outfp, " }");
   }
@@ -164,7 +164,7 @@ void H264RefPicListModificationParser::RefPicListModificationState::fdump(
     fdump_indent_level(outfp, indent_level);
     fprintf(outfp, "long_term_pic_num {");
     for (const uint32_t& v : long_term_pic_num) {
-      fprintf(outfp, " %i", v);
+      fprintf(outfp, " %u", v);
     }
     fprintf(outfp, " }");
   }

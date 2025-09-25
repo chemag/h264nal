@@ -118,46 +118,46 @@ void H264HrdParametersParser::HrdParametersState::fdump(
   indent_level = indent_level_incr(indent_level);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "cpb_cnt_minus1: %i", cpb_cnt_minus1);
+  fprintf(outfp, "cpb_cnt_minus1: %u", cpb_cnt_minus1);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "bit_rate_scale: %i", bit_rate_scale);
+  fprintf(outfp, "bit_rate_scale: %u", bit_rate_scale);
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "bit_rate_value_minus1 {");
   for (const uint32_t& v : bit_rate_value_minus1) {
-    fprintf(outfp, " %i", v);
+    fprintf(outfp, " %u", v);
   }
   fprintf(outfp, " }");
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "cpb_size_value_minus1 {");
   for (const uint32_t& v : cpb_size_value_minus1) {
-    fprintf(outfp, " %i", v);
+    fprintf(outfp, " %u", v);
   }
   fprintf(outfp, " }");
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "cbr_flag {");
   for (const uint32_t& v : cbr_flag) {
-    fprintf(outfp, " %i", v);
+    fprintf(outfp, " %u", v);
   }
   fprintf(outfp, " }");
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "initial_cpb_removal_delay_length_minus1: %i",
+  fprintf(outfp, "initial_cpb_removal_delay_length_minus1: %u",
           initial_cpb_removal_delay_length_minus1);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "cpb_removal_delay_length_minus1: %i",
+  fprintf(outfp, "cpb_removal_delay_length_minus1: %u",
           cpb_removal_delay_length_minus1);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "dpb_output_delay_length_minus1: %i",
+  fprintf(outfp, "dpb_output_delay_length_minus1: %u",
           dpb_output_delay_length_minus1);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "time_offset_length: %i", time_offset_length);
+  fprintf(outfp, "time_offset_length: %u", time_offset_length);
 
   indent_level = indent_level_decr(indent_level);
   fdump_indent_level(outfp, indent_level);

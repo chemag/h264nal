@@ -205,31 +205,31 @@ void H264PredWeightTableParser::PredWeightTableState::fdump(
   indent_level = indent_level_incr(indent_level);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "luma_log2_weight_denom: %i", luma_log2_weight_denom);
+  fprintf(outfp, "luma_log2_weight_denom: %u", luma_log2_weight_denom);
 
   if (chroma_array_type != 0) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "chroma_log2_weight_denom: %i", chroma_log2_weight_denom);
+    fprintf(outfp, "chroma_log2_weight_denom: %u", chroma_log2_weight_denom);
   }
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "luma_weight_l0_flag {");
   for (const uint32_t& v : luma_weight_l0_flag) {
-    fprintf(outfp, " %i", v);
+    fprintf(outfp, " %u", v);
   }
   fprintf(outfp, " }");
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "luma_weight_l0 {");
   for (const uint32_t& v : luma_weight_l0) {
-    fprintf(outfp, " %i", v);
+    fprintf(outfp, " %u", v);
   }
   fprintf(outfp, " }");
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "luma_offset_l0 {");
   for (const uint32_t& v : luma_offset_l0) {
-    fprintf(outfp, " %i", v);
+    fprintf(outfp, " %u", v);
   }
   fprintf(outfp, " }");
 
@@ -237,7 +237,7 @@ void H264PredWeightTableParser::PredWeightTableState::fdump(
     fdump_indent_level(outfp, indent_level);
     fprintf(outfp, "chroma_weight_l0_flag {");
     for (const uint32_t& v : chroma_weight_l0_flag) {
-      fprintf(outfp, " %i", v);
+      fprintf(outfp, " %u", v);
     }
     fprintf(outfp, " }");
 
@@ -246,7 +246,7 @@ void H264PredWeightTableParser::PredWeightTableState::fdump(
     for (const std::vector<uint32_t>& vv : chroma_weight_l0) {
       fprintf(outfp, " {");
       for (const uint32_t& v : vv) {
-        fprintf(outfp, " %i", v);
+        fprintf(outfp, " %u", v);
       }
       fprintf(outfp, " }");
     }
@@ -257,7 +257,7 @@ void H264PredWeightTableParser::PredWeightTableState::fdump(
     for (const std::vector<uint32_t>& vv : chroma_offset_l0) {
       fprintf(outfp, " {");
       for (const uint32_t& v : vv) {
-        fprintf(outfp, " %i", v);
+        fprintf(outfp, " %u", v);
       }
       fprintf(outfp, " }");
     }
@@ -269,21 +269,21 @@ void H264PredWeightTableParser::PredWeightTableState::fdump(
     fdump_indent_level(outfp, indent_level);
     fprintf(outfp, "luma_weight_l1_flag {");
     for (const uint32_t& v : luma_weight_l1_flag) {
-      fprintf(outfp, " %i", v);
+      fprintf(outfp, " %u", v);
     }
     fprintf(outfp, " }");
 
     fdump_indent_level(outfp, indent_level);
     fprintf(outfp, "luma_weight_l1 {");
     for (const uint32_t& v : luma_weight_l1) {
-      fprintf(outfp, " %i", v);
+      fprintf(outfp, " %u", v);
     }
     fprintf(outfp, " }");
 
     fdump_indent_level(outfp, indent_level);
     fprintf(outfp, "luma_offset_l1 {");
     for (const uint32_t& v : luma_offset_l1) {
-      fprintf(outfp, " %i", v);
+      fprintf(outfp, " %u", v);
     }
     fprintf(outfp, " }");
 
@@ -291,7 +291,7 @@ void H264PredWeightTableParser::PredWeightTableState::fdump(
       fdump_indent_level(outfp, indent_level);
       fprintf(outfp, "chroma_weight_l1_flag {");
       for (const uint32_t& v : chroma_weight_l1_flag) {
-        fprintf(outfp, " %i", v);
+        fprintf(outfp, " %u", v);
       }
       fprintf(outfp, " }");
 
@@ -300,7 +300,7 @@ void H264PredWeightTableParser::PredWeightTableState::fdump(
       for (const std::vector<uint32_t>& vv : chroma_weight_l1) {
         fprintf(outfp, " {");
         for (const uint32_t& v : vv) {
-          fprintf(outfp, " %i", v);
+          fprintf(outfp, " %u", v);
         }
         fprintf(outfp, " }");
       }
@@ -311,7 +311,7 @@ void H264PredWeightTableParser::PredWeightTableState::fdump(
       for (const std::vector<uint32_t>& vv : chroma_offset_l1) {
         fprintf(outfp, " {");
         for (const uint32_t& v : vv) {
-          fprintf(outfp, " %i", v);
+          fprintf(outfp, " %u", v);
         }
         fprintf(outfp, " }");
       }

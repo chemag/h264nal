@@ -710,44 +710,44 @@ void H264SliceHeaderInScalableExtensionParser::
   indent_level = indent_level_incr(indent_level);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "first_mb_in_slice: %i", first_mb_in_slice);
+  fprintf(outfp, "first_mb_in_slice: %u", first_mb_in_slice);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "slice_type: %i", slice_type);
+  fprintf(outfp, "slice_type: %u", slice_type);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "pic_parameter_set_id: %i", pic_parameter_set_id);
+  fprintf(outfp, "pic_parameter_set_id: %u", pic_parameter_set_id);
 
   if (separate_colour_plane_flag) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "colour_plane_id: %i", colour_plane_id);
+    fprintf(outfp, "colour_plane_id: %u", colour_plane_id);
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "frame_num: %i", frame_num);
+  fprintf(outfp, "frame_num: %u", frame_num);
 
   if (!frame_mbs_only_flag) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "field_pic_flag: %i", field_pic_flag);
+    fprintf(outfp, "field_pic_flag: %u", field_pic_flag);
 
     if (field_pic_flag) {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "bottom_field_flag: %i", bottom_field_flag);
+      fprintf(outfp, "bottom_field_flag: %u", bottom_field_flag);
     }
   }
 
   if (idr_flag == 1) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "idr_pic_id: %i", idr_pic_id);
+    fprintf(outfp, "idr_pic_id: %u", idr_pic_id);
   }
 
   if (pic_order_cnt_type == 0) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "pic_order_cnt_lsb: %i", pic_order_cnt_lsb);
+    fprintf(outfp, "pic_order_cnt_lsb: %u", pic_order_cnt_lsb);
 
     if (bottom_field_pic_order_in_frame_present_flag && !field_pic_flag) {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "delta_pic_order_cnt_bottom: %i",
+      fprintf(outfp, "delta_pic_order_cnt_bottom: %u",
               delta_pic_order_cnt_bottom);
     }
   }
@@ -763,14 +763,14 @@ void H264SliceHeaderInScalableExtensionParser::
 
   if (redundant_pic_cnt_present_flag) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "redundant_pic_cnt: %i", redundant_pic_cnt);
+    fprintf(outfp, "redundant_pic_cnt: %u", redundant_pic_cnt);
   }
 
   if (quality_id == 0) {
     if ((slice_type == SvcSliceType::EBa) ||
         (slice_type == SvcSliceType::EBb)) {  // slice_type == EB
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "direct_spatial_mv_pred_flag: %i",
+      fprintf(outfp, "direct_spatial_mv_pred_flag: %u",
               direct_spatial_mv_pred_flag);
     }
 
@@ -780,17 +780,17 @@ void H264SliceHeaderInScalableExtensionParser::
         (slice_type == SvcSliceType::EBb)) {
       // slice_type == EP || slice_type == EB
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "num_ref_idx_active_override_flag: %i",
+      fprintf(outfp, "num_ref_idx_active_override_flag: %u",
               num_ref_idx_active_override_flag);
 
       if (num_ref_idx_active_override_flag) {
         fdump_indent_level(outfp, indent_level);
-        fprintf(outfp, "num_ref_idx_l0_active_minus1: %i",
+        fprintf(outfp, "num_ref_idx_l0_active_minus1: %u",
                 num_ref_idx_l0_active_minus1);
         if ((slice_type == SvcSliceType::EBa) ||
             (slice_type == SvcSliceType::EBb)) {  // slice_type == EB
           fdump_indent_level(outfp, indent_level);
-          fprintf(outfp, "num_ref_idx_l1_active_minus1: %i",
+          fprintf(outfp, "num_ref_idx_l1_active_minus1: %u",
                   num_ref_idx_l1_active_minus1);
         }
       }
@@ -805,7 +805,7 @@ void H264SliceHeaderInScalableExtensionParser::
                                         (slice_type == SvcSliceType::EBb)))) {
       if (!no_inter_layer_pred_flag) {
         fdump_indent_level(outfp, indent_level);
-        fprintf(outfp, "base_pred_weight_table_flag: %i",
+        fprintf(outfp, "base_pred_weight_table_flag: %u",
                 base_pred_weight_table_flag);
       }
       if (no_inter_layer_pred_flag || !base_pred_weight_table_flag) {
@@ -820,7 +820,7 @@ void H264SliceHeaderInScalableExtensionParser::
 
       if (!slice_header_restriction_flag) {
         fdump_indent_level(outfp, indent_level);
-        fprintf(outfp, "store_ref_base_pic_flag: %i", store_ref_base_pic_flag);
+        fprintf(outfp, "store_ref_base_pic_flag: %u", store_ref_base_pic_flag);
         if ((use_ref_base_pic_flag || store_ref_base_pic_flag) && !idr_flag) {
 #ifdef FPRINT_ERRORS
           fprintf(stderr, "error: dec_ref_base_pic_marking undefined\n");
@@ -833,130 +833,130 @@ void H264SliceHeaderInScalableExtensionParser::
   if (entropy_coding_mode_flag && (slice_type != SvcSliceType::EIa) &&
       (slice_type != SvcSliceType::EIb)) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "cabac_init_idc: %i", cabac_init_idc);
+    fprintf(outfp, "cabac_init_idc: %u", cabac_init_idc);
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "slice_qp_delta: %i", slice_qp_delta);
+  fprintf(outfp, "slice_qp_delta: %u", slice_qp_delta);
 
   if (deblocking_filter_control_present_flag) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "disable_deblocking_filter_idc: %i",
+    fprintf(outfp, "disable_deblocking_filter_idc: %u",
             disable_deblocking_filter_idc);
 
     if (disable_deblocking_filter_idc != 1) {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "slice_alpha_c0_offset_div2: %i",
+      fprintf(outfp, "slice_alpha_c0_offset_div2: %u",
               slice_alpha_c0_offset_div2);
 
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "slice_beta_offset_div2: %i", slice_beta_offset_div2);
+      fprintf(outfp, "slice_beta_offset_div2: %u", slice_beta_offset_div2);
     }
   }
 
   if ((num_slice_groups_minus1 > 0) && (slice_group_map_type >= 3) &&
       (slice_group_map_type <= 5)) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "slice_group_change_cycle: %i", slice_group_change_cycle);
+    fprintf(outfp, "slice_group_change_cycle: %u", slice_group_change_cycle);
   }
 
   if (!no_inter_layer_pred_flag && quality_id == 0) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "ref_layer_dq_id: %i", ref_layer_dq_id);
+    fprintf(outfp, "ref_layer_dq_id: %u", ref_layer_dq_id);
 
     if (inter_layer_deblocking_filter_control_present_flag) {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "disable_inter_layer_deblocking_filter_idc: %i",
+      fprintf(outfp, "disable_inter_layer_deblocking_filter_idc: %u",
               disable_inter_layer_deblocking_filter_idc);
 
       if (disable_inter_layer_deblocking_filter_idc != 1) {
         fdump_indent_level(outfp, indent_level);
-        fprintf(outfp, "inter_layer_slice_alpha_c0_offset_div2: %i",
+        fprintf(outfp, "inter_layer_slice_alpha_c0_offset_div2: %u",
                 inter_layer_slice_alpha_c0_offset_div2);
         fdump_indent_level(outfp, indent_level);
-        fprintf(outfp, "inter_layer_slice_beta_offset_div2: %i",
+        fprintf(outfp, "inter_layer_slice_beta_offset_div2: %u",
                 inter_layer_slice_beta_offset_div2);
       }
     }
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "constrained_intra_resampling_flag: %i",
+    fprintf(outfp, "constrained_intra_resampling_flag: %u",
             constrained_intra_resampling_flag);
 
     if (extended_spatial_scalability_idc == 2) {
       if (ChromaArrayType > 0) {
         fdump_indent_level(outfp, indent_level);
-        fprintf(outfp, "ref_layer_chroma_phase_x_plus1_flag: %i",
+        fprintf(outfp, "ref_layer_chroma_phase_x_plus1_flag: %u",
                 ref_layer_chroma_phase_x_plus1_flag);
         fdump_indent_level(outfp, indent_level);
-        fprintf(outfp, "ref_layer_chroma_phase_y_plus1: %i",
+        fprintf(outfp, "ref_layer_chroma_phase_y_plus1: %u",
                 ref_layer_chroma_phase_y_plus1);
       }
 
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "scaled_ref_layer_left_offset: %i",
+      fprintf(outfp, "scaled_ref_layer_left_offset: %u",
               scaled_ref_layer_left_offset);
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "scaled_ref_layer_top_offset: %i",
+      fprintf(outfp, "scaled_ref_layer_top_offset: %u",
               scaled_ref_layer_top_offset);
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "scaled_ref_layer_right_offset: %i",
+      fprintf(outfp, "scaled_ref_layer_right_offset: %u",
               scaled_ref_layer_right_offset);
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "scaled_ref_layer_bottom_offset: %i",
+      fprintf(outfp, "scaled_ref_layer_bottom_offset: %u",
               scaled_ref_layer_bottom_offset);
     }
   }
 
   if (!no_inter_layer_pred_flag) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "slice_skip_flag: %i", slice_skip_flag);
+    fprintf(outfp, "slice_skip_flag: %u", slice_skip_flag);
 
     if (slice_skip_flag) {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "num_mbs_in_slice_minus1: %i", num_mbs_in_slice_minus1);
+      fprintf(outfp, "num_mbs_in_slice_minus1: %u", num_mbs_in_slice_minus1);
     } else {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "adaptive_base_mode_flag: %i", adaptive_base_mode_flag);
+      fprintf(outfp, "adaptive_base_mode_flag: %u", adaptive_base_mode_flag);
       if (!adaptive_base_mode_flag) {
         fdump_indent_level(outfp, indent_level);
-        fprintf(outfp, "default_base_mode_flag: %i", default_base_mode_flag);
+        fprintf(outfp, "default_base_mode_flag: %u", default_base_mode_flag);
       }
       if (!default_base_mode_flag) {
         fdump_indent_level(outfp, indent_level);
-        fprintf(outfp, "adaptive_motion_prediction_flag: %i",
+        fprintf(outfp, "adaptive_motion_prediction_flag: %u",
                 adaptive_motion_prediction_flag);
 
         if (!adaptive_motion_prediction_flag) {
           fdump_indent_level(outfp, indent_level);
-          fprintf(outfp, "default_motion_prediction_flag: %i",
+          fprintf(outfp, "default_motion_prediction_flag: %u",
                   default_motion_prediction_flag);
         }
       }
 
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "adaptive_residual_prediction_flag: %i",
+      fprintf(outfp, "adaptive_residual_prediction_flag: %u",
               adaptive_residual_prediction_flag);
 
       if (!adaptive_residual_prediction_flag) {
         fdump_indent_level(outfp, indent_level);
-        fprintf(outfp, "default_residual_prediction_flag: %i",
+        fprintf(outfp, "default_residual_prediction_flag: %u",
                 default_residual_prediction_flag);
       }
     }
 
     if (adaptive_tcoeff_level_prediction_flag) {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "tcoeff_level_prediction_flag: %i",
+      fprintf(outfp, "tcoeff_level_prediction_flag: %u",
               tcoeff_level_prediction_flag);
     }
   }
 
   if (!slice_header_restriction_flag && !slice_skip_flag) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "scan_idx_start: %i", scan_idx_start);
+    fprintf(outfp, "scan_idx_start: %u", scan_idx_start);
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "scan_idx_end: %i", scan_idx_end);
+    fprintf(outfp, "scan_idx_end: %u", scan_idx_end);
   }
 
   indent_level = indent_level_decr(indent_level);

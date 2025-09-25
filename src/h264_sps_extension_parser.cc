@@ -120,27 +120,27 @@ void H264SpsExtensionParser::SpsExtensionState::fdump(FILE* outfp,
   indent_level = indent_level_incr(indent_level);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "seq_parameter_set_id: %i", seq_parameter_set_id);
+  fprintf(outfp, "seq_parameter_set_id: %u", seq_parameter_set_id);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "aux_format_idc: %i", aux_format_idc);
+  fprintf(outfp, "aux_format_idc: %u", aux_format_idc);
 
   if (aux_format_idc != 0) {
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "bit_depth_aux_minus8: %i", bit_depth_aux_minus8);
+    fprintf(outfp, "bit_depth_aux_minus8: %u", bit_depth_aux_minus8);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "alpha_incr_flag: %i", alpha_incr_flag);
+    fprintf(outfp, "alpha_incr_flag: %u", alpha_incr_flag);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "alpha_opaque_value: %i", alpha_opaque_value);
+    fprintf(outfp, "alpha_opaque_value: %u", alpha_opaque_value);
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "alpha_transparent_value: %i", alpha_transparent_value);
+    fprintf(outfp, "alpha_transparent_value: %u", alpha_transparent_value);
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "additional_extension_flag: %i", additional_extension_flag);
+  fprintf(outfp, "additional_extension_flag: %u", additional_extension_flag);
 
   indent_level = indent_level_decr(indent_level);
   fdump_indent_level(outfp, indent_level);
