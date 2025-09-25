@@ -98,7 +98,7 @@ void H264RtpFuAParser::RtpFuAState::fdump(
   if (s_bit == 1) {
     // start of a fragmented NAL: dump payload
     fdump_indent_level(outfp, indent_level);
-    nal_unit_payload->fdump(outfp, fu_type, indent_level, parsing_options);
+    nal_unit_payload->fdump(outfp, indent_level, fu_type, parsing_options);
   }
 
   indent_level = indent_level_decr(indent_level);
