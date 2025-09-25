@@ -35,7 +35,6 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   pps->num_slice_groups_minus1 = 0;
   pps->slice_group_map_type = 0;
   pps->slice_group_change_rate_minus1 = 0;
-  ;
   bitstream_parser_state.pps[0] = pps;
   uint32_t nal_ref_idc = 3;
   auto rtp_fua = h264nal::H264RtpFuAParser::ParseRtpFuA(

@@ -54,7 +54,6 @@ TEST_F(H264SliceLayerWithoutPartitioningRbspParserTest, TestSampleSliceIDR601) {
   pps->num_slice_groups_minus1 = 0;
   pps->slice_group_map_type = 0;
   pps->slice_group_change_rate_minus1 = 0;
-  ;
   bitstream_parser_state.pps[0] = pps;
 
   uint32_t nal_ref_idc = 3;
@@ -156,7 +155,6 @@ TEST_F(H264SliceLayerWithoutPartitioningRbspParserTest,
   pps->num_slice_groups_minus1 = 0;
   pps->slice_group_map_type = 0;
   pps->slice_group_change_rate_minus1 = 0;
-  ;
   bitstream_parser_state.pps[0] = pps;
 
   uint32_t nal_ref_idc = 2;
