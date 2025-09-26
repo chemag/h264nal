@@ -426,7 +426,8 @@ int main(int argc, char **argv) {
           parsing_options);
     } else {
       bitstream = h264nal::H264BitstreamParser::ParseBitstreamNALULength(
-          buffer.data(), buffer.size(), options->nalu_length_bytes,
+          buffer.data(), buffer.size(),
+          static_cast<size_t>(options->nalu_length_bytes),
           &bitstream_parser_state, parsing_options);
     }
   }
@@ -487,7 +488,7 @@ int main(int argc, char **argv) {
         }
         fprintf(outfp, "\n");
       } else if (options->dumpmode == dump_length) {
-        int nal_unit_type = nal_unit->nal_unit_header->nal_unit_type;
+        uint32_t nal_unit_type = nal_unit->nal_unit_header->nal_unit_type;
         std::string nal_unit_type_str =
             h264nal::NalUnitTypeToString(nal_unit_type);
         int nal_length_bytes = nal_unit->length;
@@ -497,9 +498,10 @@ int main(int argc, char **argv) {
         if (is_slice_segment) {
           if (nal_unit->nal_unit_payload
                   ->slice_layer_without_partitioning_rbsp != nullptr) {
-            first_mb_in_slice = nal_unit->nal_unit_payload
-                                    ->slice_layer_without_partitioning_rbsp
-                                    ->slice_header->first_mb_in_slice;
+            first_mb_in_slice =
+                static_cast<int>(nal_unit->nal_unit_payload
+                                     ->slice_layer_without_partitioning_rbsp
+                                     ->slice_header->first_mb_in_slice);
           } else {
             fprintf(stderr,
                     "error: NO slice_layer_without_partitioning_rbsp\n");
@@ -513,7 +515,7 @@ int main(int argc, char **argv) {
             frame_num += 1;
             total_bytes = 0;
           }
-          last_slice_nal_unit_type = nal_unit_type;
+          last_slice_nal_unit_type = static_cast<int>(nal_unit_type);
           total_bytes += nal_length_bytes;
         }
         fprintf(outfp, "%i,%i,%i,%s,%i,,%s\n", nal_num, frame_num,

@@ -89,14 +89,16 @@ H264SpsExtensionParser::ParseSpsExtension(BitBuffer* bit_buffer) noexcept {
     }
 
     // alpha_opaque_value  u(v)
-    int alpha_opaque_value_bits = sps_extension->bit_depth_aux_minus8 + 9;
+    size_t alpha_opaque_value_bits =
+        static_cast<size_t>(sps_extension->bit_depth_aux_minus8 + 9);
     if (!bit_buffer->ReadBits(alpha_opaque_value_bits,
                               sps_extension->alpha_opaque_value)) {
       return nullptr;
     }
 
     // alpha_transparent_value  u(v)
-    int alpha_transparent_value_bits = sps_extension->bit_depth_aux_minus8 + 9;
+    size_t alpha_transparent_value_bits =
+        static_cast<size_t>(sps_extension->bit_depth_aux_minus8 + 9);
     if (!bit_buffer->ReadBits(alpha_transparent_value_bits,
                               sps_extension->alpha_transparent_value)) {
       return nullptr;

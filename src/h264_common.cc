@@ -257,7 +257,7 @@ bool byte_aligned(BitBuffer *bit_buffer) {
   return (out_bit_offset == 0);
 }
 
-int get_current_offset(BitBuffer *bit_buffer) {
+size_t get_current_offset(BitBuffer *bit_buffer) {
   size_t out_byte_offset, out_bit_offset;
   bit_buffer->GetCurrentOffset(&out_byte_offset, &out_bit_offset);
 
@@ -389,7 +389,8 @@ std::shared_ptr<NaluChecksum> NaluChecksum::GetNaluChecksum(
   val = 0;
   while (bit_buffer->RemainingBitCount() > 0) {
     (void)bit_buffer->ReadUInt8(val8);
-    val |= (val8 << (8 * (3 - i)));
+    val |= static_cast<uint32_t>(val8)
+           << (8 * static_cast<unsigned int>(3 - i));
     i += 1;
   }
   if (i > 0) {
@@ -423,7 +424,7 @@ void NaluChecksum::fdump(char *output, int output_len) const {
       output[output_len - 1] = '\0';
       break;
     }
-    oi += snprintf(output + oi, output_len - oi, "%02x",
+    oi += snprintf(output + oi, static_cast<size_t>(output_len - oi), "%02x",
                    static_cast<unsigned char>(checksum[i++]));
   }
 }
@@ -434,7 +435,7 @@ const char *NaluChecksum::GetPrintableChecksum() const {
   int i = 0;
   int oi = 0;
   while (i < length) {
-    oi += snprintf(buffer + oi, BUFFER_LEN - oi, "%02x",
+    oi += snprintf(buffer + oi, static_cast<size_t>(BUFFER_LEN - oi), "%02x",
                    static_cast<unsigned char>(checksum[i++]));
   }
   buffer[i] = '\0';

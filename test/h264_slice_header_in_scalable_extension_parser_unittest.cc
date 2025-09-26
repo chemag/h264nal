@@ -70,7 +70,7 @@ TEST_F(H264SliceHeaderInScalableExtensionParserTest, TestSampleBitstream01) {
   EXPECT_EQ(6, bitstream->nal_units.size());
 
   // check the 1st NAL unit
-  int index = 0;
+  size_t index = 0;
   EXPECT_EQ(0,
             bitstream->nal_units[index]->nal_unit_header->forbidden_zero_bit);
   EXPECT_EQ(3, bitstream->nal_units[index]->nal_unit_header->nal_ref_idc);

@@ -585,27 +585,27 @@ int H264SpsDataParser::SpsDataState::getResolution(int* width,
   if (width == nullptr || height == nullptr) {
     return -1;
   }
-  int ChromaArrayType = getChromaArrayType();
+  uint32_t ChromaArrayType = getChromaArrayType();
   int CropUnitX = -1;
   int CropUnitY = -1;
   if (ChromaArrayType == 0) {
     // Equations 7-19, 7-20
     CropUnitX = 1;
-    CropUnitY = 2 - frame_mbs_only_flag;
+    CropUnitY = 2 - static_cast<int>(frame_mbs_only_flag);
   } else {
     // Equations 7-21, 7-22
     int SubWidthC = getSubWidthC();
     int SubHeightC = getSubHeightC();
     CropUnitX = SubWidthC;
-    CropUnitY = SubHeightC * (2 - frame_mbs_only_flag);
+    CropUnitY = SubHeightC * (2 - static_cast<int>(frame_mbs_only_flag));
   }
 
-  *width = 16 * (pic_width_in_mbs_minus1 + 1);
-  *height = 16 * (pic_height_in_map_units_minus1 + 1);
-  *width -= (CropUnitX * frame_crop_left_offset +
-             CropUnitX * frame_crop_right_offset);
-  *height -= (CropUnitY * frame_crop_top_offset +
-              CropUnitY * frame_crop_bottom_offset);
+  *width = static_cast<int>(16 * (pic_width_in_mbs_minus1 + 1));
+  *height = static_cast<int>(16 * (pic_height_in_map_units_minus1 + 1));
+  *width -= (CropUnitX * static_cast<int>(frame_crop_left_offset) +
+             CropUnitX * static_cast<int>(frame_crop_right_offset));
+  *height -= (CropUnitY * static_cast<int>(frame_crop_top_offset) +
+              CropUnitY * static_cast<int>(frame_crop_bottom_offset));
   return 0;
 }
 
@@ -622,7 +622,9 @@ bool H264SpsDataParser::SpsDataState::scaling_list(
       if (!bit_buffer->ReadSignedExponentialGolomb(delta_scale)) {
         return false;
       }
-      nextScale = (lastScale + (delta_scale) + 256) % 256;
+      nextScale = static_cast<uint32_t>(static_cast<int32_t>(lastScale) +
+                                        delta_scale + 256) %
+                  256;
       // make sure vector has ith element
       while (useDefaultScalingMatrixFlag.size() <= i) {
         useDefaultScalingMatrixFlag.push_back(0);

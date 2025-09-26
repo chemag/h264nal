@@ -94,7 +94,8 @@ void H264RtpStapAParser::RtpStapAState::fdump(
     nal_unit_headers[i]->fdump(outfp, indent_level);
 
     fdump_indent_level(outfp, indent_level);
-    nal_unit_payloads[i]->fdump(outfp, indent_level, nal_unit_headers[i]->nal_unit_type,
+    nal_unit_payloads[i]->fdump(outfp, indent_level,
+                                nal_unit_headers[i]->nal_unit_type,
                                 parsing_options);
   }
 

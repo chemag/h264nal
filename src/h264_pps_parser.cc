@@ -340,7 +340,9 @@ bool H264PpsParser::PpsState::scaling_list(
 #endif  // FPRINT_ERRORS
         return false;
       }
-      nextScale = (lastScale + (delta_scale) + 256) % 256;
+      nextScale = static_cast<uint32_t>(static_cast<int32_t>(lastScale) +
+                                        delta_scale + 256) %
+                  256;
       // make sure vector has ith element
       while (useDefaultScalingMatrixFlag.size() <= i) {
         useDefaultScalingMatrixFlag.push_back(0);

@@ -381,12 +381,12 @@ bool BitBufferWriter::WriteSignedExponentialGolomb(int32_t val) {
   if (val == 0) {
     return WriteExponentialGolomb(0);
   } else if (val > 0) {
-    uint32_t signed_val = val;
+    uint32_t signed_val = static_cast<uint32_t>(val);
     return WriteExponentialGolomb((signed_val * 2) - 1);
   } else {
     if (val == std::numeric_limits<int32_t>::min())
       return false;  // Not supported, would cause overflow.
-    uint32_t signed_val = -val;
+    uint32_t signed_val = static_cast<uint32_t>(-val);
     return WriteExponentialGolomb(signed_val * 2);
   }
 }
