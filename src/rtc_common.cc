@@ -259,7 +259,7 @@ bool BitBuffer::ReadSignedExponentialGolomb(int32_t& val) {
   if ((unsigned_val & 1) == 0) {
     val = -static_cast<int32_t>(unsigned_val / 2);
   } else {
-    val = (unsigned_val + 1) / 2;
+    val = (static_cast<int32_t>(unsigned_val) + 1) / 2;
   }
   return true;
 }
