@@ -81,7 +81,7 @@ class H264SpsDataParser {
     uint32_t reserved_zero_2bits = 0;
     uint32_t level_idc = 0;
     uint32_t seq_parameter_set_id = 0;
-    uint32_t chroma_format_idc = 0;
+    uint32_t chroma_format_idc = 1;  // Default per H.264 spec 7.4.2.1.1
     uint32_t separate_colour_plane_flag = 0;
     uint32_t bit_depth_luma_minus8 = 0;
     uint32_t bit_depth_chroma_minus8 = 0;
