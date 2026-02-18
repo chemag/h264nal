@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <cinttypes>
 #include <climits>
 #include <cstdio>
 #include <cstdlib>
@@ -492,7 +493,7 @@ int main(int argc, char** argv) {
         std::string nal_unit_type_str =
             h264nal::NalUnitTypeToString(nal_unit_type);
         int nal_length_bytes = nal_unit->length;
-        int bitrate_bps = -1;
+        int64_t bitrate_bps = -1;
         int first_mb_in_slice = -1;
         bool is_slice_segment = h264nal::IsSliceSegment(nal_unit_type);
         if (is_slice_segment) {
@@ -509,8 +510,8 @@ int main(int argc, char** argv) {
           }
           if (first_mb_in_slice == 0 && total_bytes > 0) {
             // dump last frame info
-            bitrate_bps = total_bytes * 8 * options->frames_per_second;
-            fprintf(outfp, ",%i,%i,frame,,%i,\n", frame_num,
+            bitrate_bps = static_cast<int64_t>(total_bytes) * 8 * options->frames_per_second;
+            fprintf(outfp, ",%i,%i,frame,,%" PRIi64 ",\n", frame_num,
                     last_slice_nal_unit_type, bitrate_bps);
             frame_num += 1;
             total_bytes = 0;
@@ -527,8 +528,8 @@ int main(int argc, char** argv) {
     if (options->dumpmode == dump_length) {
       if (total_bytes > 0) {
         // dump last frame info
-        int bitrate_bps = total_bytes * 8 * options->frames_per_second;
-        fprintf(outfp, ",%i,%i,frame,,%i,\n", frame_num,
+        int64_t bitrate_bps = static_cast<int64_t>(total_bytes) * 8 * options->frames_per_second;
+        fprintf(outfp, ",%i,%i,frame,,%" PRIi64 ",\n", frame_num,
                 last_slice_nal_unit_type, bitrate_bps);
       }
     }
