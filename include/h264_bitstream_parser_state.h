@@ -26,6 +26,10 @@ struct H264BitstreamParserState {
   H264BitstreamParserState& operator=(const H264BitstreamParserState&) = delete;
   H264BitstreamParserState& operator=(H264BitstreamParserState&&) = delete;
 
+  // SPS, PPS, and SubsetSPS use shared_ptr because they are referenced
+  // by multiple NAL units (e.g., each slice header refers back to its
+  // active PPS, which in turn refers to its active SPS).
+
   // SPS state
   std::map<uint32_t, std::shared_ptr<struct H264SpsParser::SpsState>> sps;
   // PPS state
