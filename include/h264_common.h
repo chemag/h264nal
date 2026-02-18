@@ -107,7 +107,6 @@ enum ProfileType : uint8_t {
   CAVLC_444_INTRA = 17,
 };
 
-enum ProfileType getProfileType();
 void profileTypeToString(enum ProfileType profile, std::string& str);
 
 // Table G-1
