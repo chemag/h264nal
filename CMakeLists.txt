@@ -52,3 +52,17 @@ option(BUILD_CLANG_FUZZER "Build clang fuzzer sanitizer targets" ON)
 if(BUILD_CLANG_FUZZER)
   add_subdirectory(fuzz)
 endif()
+
+# install targets
+include(GNUInstallDirs)
+install(TARGETS h264nal
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
+install(TARGETS h264nal-bin
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+install(DIRECTORY include/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/h264nal
+    FILES_MATCHING PATTERN "*.h"
+)
