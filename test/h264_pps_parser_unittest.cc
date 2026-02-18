@@ -82,4 +82,20 @@ TEST_F(H264PpsParserTest, TestSamplePPS2012) {
   EXPECT_EQ(-2, pps->second_chroma_qp_index_offset);
 }
 
+TEST_F(H264PpsParserTest, TestTruncatedPps) {
+  // single byte, too short to parse
+  const uint8_t buffer[] = {0x08};
+  uint32_t chroma_format_idc = 1;
+  auto pps = H264PpsParser::ParsePps(buffer, sizeof(buffer),
+                                     chroma_format_idc);
+  EXPECT_TRUE(pps == nullptr);
+}
+
+TEST_F(H264PpsParserTest, TestZeroLengthPps) {
+  const uint8_t buffer[] = {0};
+  uint32_t chroma_format_idc = 1;
+  auto pps = H264PpsParser::ParsePps(buffer, 0, chroma_format_idc);
+  EXPECT_TRUE(pps == nullptr);
+}
+
 }  // namespace h264nal

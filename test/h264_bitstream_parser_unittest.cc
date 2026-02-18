@@ -179,4 +179,50 @@ TEST_F(H264BitstreamParserTest, TestSampleBitstream601Alt) {
   // counter += length;
 }
 
+TEST_F(H264BitstreamParserTest, TestZeroLengthBitstream) {
+  const uint8_t empty_buffer[] = {0};
+  H264BitstreamParserState bitstream_parser_state;
+  ParsingOptions parsing_options;
+  auto bitstream = H264BitstreamParser::ParseBitstream(
+      empty_buffer, 0, &bitstream_parser_state, parsing_options);
+  EXPECT_TRUE(bitstream != nullptr);
+  EXPECT_EQ(0, bitstream->nal_units.size());
+}
+
+TEST_F(H264BitstreamParserTest, TestTruncatedBitstream) {
+  // too short for a start code
+  const uint8_t short_buffer[] = {0x00, 0x00};
+  H264BitstreamParserState bitstream_parser_state;
+  ParsingOptions parsing_options;
+  auto bitstream = H264BitstreamParser::ParseBitstream(
+      short_buffer, sizeof(short_buffer), &bitstream_parser_state,
+      parsing_options);
+  EXPECT_TRUE(bitstream != nullptr);
+  EXPECT_EQ(0, bitstream->nal_units.size());
+}
+
+TEST_F(H264BitstreamParserTest, TestMaliciousNaluLength) {
+  // 4-byte NALU length field claiming 0xffffffff bytes
+  const uint8_t bad_length_buffer[] = {0xff, 0xff, 0xff, 0xff, 0x67, 0x42};
+  H264BitstreamParserState bitstream_parser_state;
+  ParsingOptions parsing_options;
+  auto bitstream = H264BitstreamParser::ParseBitstreamNALULength(
+      bad_length_buffer, sizeof(bad_length_buffer), 4,
+      &bitstream_parser_state, parsing_options);
+  EXPECT_TRUE(bitstream != nullptr);
+  EXPECT_EQ(0, bitstream->nal_units.size());
+}
+
+TEST_F(H264BitstreamParserTest, TestZeroNaluLength) {
+  // 4-byte NALU length field of zero
+  const uint8_t zero_length_buffer[] = {0x00, 0x00, 0x00, 0x00, 0x67, 0x42};
+  H264BitstreamParserState bitstream_parser_state;
+  ParsingOptions parsing_options;
+  auto bitstream = H264BitstreamParser::ParseBitstreamNALULength(
+      zero_length_buffer, sizeof(zero_length_buffer), 4,
+      &bitstream_parser_state, parsing_options);
+  EXPECT_TRUE(bitstream != nullptr);
+  EXPECT_EQ(0, bitstream->nal_units.size());
+}
+
 }  // namespace h264nal

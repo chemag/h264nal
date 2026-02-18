@@ -64,6 +64,21 @@ TEST_F(H264NalUnitParserTest, TestEmptyNalUnit) {
   EXPECT_TRUE(nal_unit == nullptr);
 }
 
+TEST_F(H264NalUnitParserTest, TestTruncatedNalUnit) {
+  // 1-byte NAL unit: header only, no payload to parse
+  const uint8_t buffer[] = {0x67};
+  H264BitstreamParserState bitstream_parser_state;
+  ParsingOptions parsing_options;
+  parsing_options.add_checksum = false;
+  auto nal_unit =
+      H264NalUnitParser::ParseNalUnit(buffer, sizeof(buffer),
+                                      &bitstream_parser_state,
+                                      parsing_options);
+  // 1-byte NAL unit has a valid header but the payload parse may fail
+  // depending on the NAL unit type; either outcome is acceptable
+  // as long as it does not crash
+}
+
 class H264NalUnitHeaderParserTest : public ::testing::Test {
  public:
   H264NalUnitHeaderParserTest() {}

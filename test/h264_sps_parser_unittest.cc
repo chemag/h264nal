@@ -242,4 +242,17 @@ TEST_F(H264SpsParserTest, TestBaselineProfileWithCropping) {
   EXPECT_EQ(232, height);  // Would be 236 without the fix
 }
 
+TEST_F(H264SpsParserTest, TestTruncatedSps) {
+  // single byte, too short to parse
+  const uint8_t buffer[] = {0x42};
+  auto sps = H264SpsParser::ParseSps(buffer, sizeof(buffer));
+  EXPECT_TRUE(sps == nullptr);
+}
+
+TEST_F(H264SpsParserTest, TestZeroLengthSps) {
+  const uint8_t buffer[] = {0};
+  auto sps = H264SpsParser::ParseSps(buffer, 0);
+  EXPECT_TRUE(sps == nullptr);
+}
+
 }  // namespace h264nal
