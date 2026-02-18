@@ -155,12 +155,11 @@ enum {
   HELP_OPTION
 };
 
-arg_options* parse_args(int argc, char** argv) {
+int parse_args(int argc, char** argv, arg_options *options) {
   int c;
-  static arg_options options;
 
   // set default options
-  options = DEFAULT_OPTIONS;
+  *options = DEFAULT_OPTIONS;
 
   // getopt_long stores the option index here
   int optindex = 0;
@@ -213,97 +212,97 @@ arg_options* parse_args(int argc, char** argv) {
         break;
 
       case 'd':
-        options.debug += 1;
+        options->debug += 1;
         break;
 
       case QUIET_OPTION:
-        options.debug = 0;
+        options->debug = 0;
         break;
 
       case 'i':
-        options.infile = optarg;
+        options->infile = optarg;
         break;
 
       case 'o':
-        options.outfile = optarg;
+        options->outfile = optarg;
         break;
 
       case DUMP_ALL_OPTION:
-        options.dumpmode = dump_all;
+        options->dumpmode = dump_all;
         break;
 
       case DUMP_LENGTH_OPTION:
-        options.dumpmode = dump_length;
+        options->dumpmode = dump_length;
         break;
 
       case AS_ONE_LINE_FLAG_OPTION:
-        options.as_one_line = true;
+        options->as_one_line = true;
         break;
 
       case NO_AS_ONE_LINE_FLAG_OPTION:
-        options.as_one_line = false;
+        options->as_one_line = false;
         break;
 
       case ADD_OFFSET_FLAG_OPTION:
-        options.add_offset = true;
+        options->add_offset = true;
         break;
 
       case NO_ADD_OFFSET_FLAG_OPTION:
-        options.add_offset = false;
+        options->add_offset = false;
         break;
 
       case ADD_LENGTH_FLAG_OPTION:
-        options.add_length = true;
+        options->add_length = true;
         break;
 
       case NO_ADD_LENGTH_FLAG_OPTION:
-        options.add_length = false;
+        options->add_length = false;
         break;
 
       case ADD_PARSED_LENGTH_FLAG_OPTION:
-        options.add_parsed_length = true;
+        options->add_parsed_length = true;
         break;
 
       case NO_ADD_PARSED_LENGTH_FLAG_OPTION:
-        options.add_parsed_length = false;
+        options->add_parsed_length = false;
         break;
 
       case ADD_CHECKSUM_FLAG_OPTION:
-        options.add_checksum = true;
+        options->add_checksum = true;
         break;
 
       case NO_ADD_CHECKSUM_FLAG_OPTION:
-        options.add_checksum = false;
+        options->add_checksum = false;
         break;
 
       case ADD_RESOLUTION_FLAG_OPTION:
-        options.add_resolution = true;
+        options->add_resolution = true;
         break;
 
       case NO_ADD_RESOLUTION_FLAG_OPTION:
-        options.add_resolution = false;
+        options->add_resolution = false;
         break;
 
       case ADD_CONTENTS_FLAG_OPTION:
-        options.add_contents = true;
+        options->add_contents = true;
         break;
 
       case NO_ADD_CONTENTS_FLAG_OPTION:
-        options.add_contents = false;
+        options->add_contents = false;
         break;
 
       case AVCC_FILE_OPTION:
-        options.avcc_file = optarg;
+        options->avcc_file = optarg;
         break;
 
       case NALU_LENGTH_BYTES_OPTION: {
         std::string optarg_str(optarg);
-        options.nalu_length_bytes = std::stoi(optarg_str);
+        options->nalu_length_bytes = std::stoi(optarg_str);
       } break;
 
       case FRAMES_PER_SECOND_OPTION: {
         std::string optarg_str(optarg);
-        options.frames_per_second = std::stoi(optarg_str);
+        options->frames_per_second = std::stoi(optarg_str);
       } break;
 
       case VERSION_OPTION:
@@ -323,12 +322,12 @@ arg_options* parse_args(int argc, char** argv) {
   }
 
   // check there is at least a valid input file to parser
-  if (options.infile == nullptr && options.avcc_file == nullptr) {
+  if (options->infile == nullptr && options->avcc_file == nullptr) {
     fprintf(stderr, "error: need at least one input file to parse\n");
     usage(argv[0]);
   }
 
-  return &options;
+  return 0;
 }
 
 inline std::string opt_value(int value, bool has_value) {
@@ -336,16 +335,15 @@ inline std::string opt_value(int value, bool has_value) {
 }
 
 int main(int argc, char** argv) {
-  arg_options* options;
+  arg_options options;
 
   // parse args
-  options = parse_args(argc, argv);
-  if (options == nullptr) {
+  if (parse_args(argc, argv, &options) != 0) {
     usage(argv[0]);
     exit(-1);
   }
 
-  if (options->debug > 1) {
+  if (options.debug > 1) {
 #ifdef SMALL_FOOTPRINT
     printf("h264nal: small footprint version\n");
 #else
@@ -354,43 +352,43 @@ int main(int argc, char** argv) {
   }
 
   // print args
-  if (options->debug > 1) {
-    printf("options->debug = %i\n", options->debug);
-    printf("options->infile = %s\n",
-           (options->infile == nullptr) ? "null" : options->infile);
-    printf("options->outfile = %s\n",
-           (options->outfile == nullptr) ? "null" : options->outfile);
+  if (options.debug > 1) {
+    printf("options.debug = %i\n", options.debug);
+    printf("options.infile = %s\n",
+           (options.infile == nullptr) ? "null" : options.infile);
+    printf("options.outfile = %s\n",
+           (options.outfile == nullptr) ? "null" : options.outfile);
   }
 
   // add_contents requires add_length and add_offset
-  if (options->add_contents) {
-    options->add_offset = true;
-    options->add_length = true;
+  if (options.add_contents) {
+    options.add_offset = true;
+    options.add_length = true;
   }
 
   // dump_length requires add_length
-  if (options->dumpmode == dump_length) {
-    options->add_length = true;
+  if (options.dumpmode == dump_length) {
+    options.add_length = true;
   }
 
   // 1. prepare bitstream parsing
   h264nal::ParsingOptions parsing_options;
-  parsing_options.add_offset = options->add_offset;
-  parsing_options.add_length = options->add_length;
-  parsing_options.add_parsed_length = options->add_parsed_length;
-  parsing_options.add_checksum = options->add_checksum;
-  parsing_options.add_resolution = options->add_resolution;
+  parsing_options.add_offset = options.add_offset;
+  parsing_options.add_length = options.add_length;
+  parsing_options.add_parsed_length = options.add_parsed_length;
+  parsing_options.add_checksum = options.add_checksum;
+  parsing_options.add_resolution = options.add_resolution;
 
 #if 0
   // 2. parse avcC
   h264nal::H264BitstreamParserState bitstream_parser_state;
   std::shared_ptr<h264nal::H264ConfigurationBoxParser::ConfigurationBoxState>
       configuration_box;
-  if (options->avcc_file != nullptr) {
+  if (options.avcc_file != nullptr) {
     // use bitstream parser state to keep the SPS/PPS/SubsetSPS NALUs
     // 2.1. read avcc_file into buffer
     std::vector<uint8_t> avcc_buffer;
-    if (h264nal::H264Utils::ReadFile(options->avcc_file, avcc_buffer) < 0) {
+    if (h264nal::H264Utils::ReadFile(options.avcc_file, avcc_buffer) < 0) {
       return -1;
     }
     uint8_t *avcc_data = avcc_buffer.data();
@@ -415,20 +413,20 @@ int main(int argc, char** argv) {
   // 3. parse bitstream
   std::vector<uint8_t> buffer;
   std::unique_ptr<h264nal::H264BitstreamParser::BitstreamState> bitstream;
-  if (options->infile != nullptr) {
+  if (options.infile != nullptr) {
     // 3.1. read infile into buffer
-    if (h264nal::H264Utils::ReadFile(options->infile, buffer) < 0) {
+    if (h264nal::H264Utils::ReadFile(options.infile, buffer) < 0) {
       return -1;
     }
     // 3.2. parse buffer
-    if (options->nalu_length_bytes < 0) {
+    if (options.nalu_length_bytes < 0) {
       bitstream = h264nal::H264BitstreamParser::ParseBitstream(
           buffer.data(), buffer.size(), &bitstream_parser_state,
           parsing_options);
     } else {
       bitstream = h264nal::H264BitstreamParser::ParseBitstreamNALULength(
           buffer.data(), buffer.size(),
-          static_cast<size_t>(options->nalu_length_bytes),
+          static_cast<size_t>(options.nalu_length_bytes),
           &bitstream_parser_state, parsing_options);
     }
   }
@@ -439,31 +437,31 @@ int main(int argc, char** argv) {
   // 4.1. get outfile file descriptor
   FILE* outfp;
   bool must_close_fp = false;
-  if (options->outfile == nullptr ||
-      (strlen(options->outfile) == 1 && options->outfile[0] == '-')) {
+  if (options.outfile == nullptr ||
+      (strlen(options.outfile) == 1 && options.outfile[0] == '-')) {
     // use stdout
     outfp = stdout;
   } else {
     must_close_fp = true;
-    outfp = fopen(options->outfile, "wb");
+    outfp = fopen(options.outfile, "wb");
     if (outfp == nullptr) {
       // did not work
-      fprintf(stderr, "Could not open output file: \"%s\"\n", options->outfile);
+      fprintf(stderr, "Could not open output file: \"%s\"\n", options.outfile);
       return -1;
     }
   }
 
-  int indent_level = (options->as_one_line) ? -1 : 0;
+  int indent_level = (options.as_one_line) ? -1 : 0;
 #if 0
-  if (options->avcc_file != nullptr) {
+  if (options.avcc_file != nullptr) {
     // 4.2. dump the contents of the configuration box
     configuration_box->fdump(outfp, indent_level, parsing_options);
     fprintf(outfp, "\n");
   }
 #endif
 
-  if (options->infile != nullptr) {
-    if (options->dumpmode == dump_length) {
+  if (options.infile != nullptr) {
+    if (options.dumpmode == dump_length) {
       // add a CSV header
       fprintf(outfp,
               "nal_num,frame_num,nal_unit_type,nal_unit_type_str,"
@@ -475,9 +473,9 @@ int main(int argc, char** argv) {
     int frame_num = 0;
     int last_slice_nal_unit_type = -1;
     for (auto& nal_unit : bitstream->nal_units) {
-      if (options->dumpmode == dump_all) {
+      if (options.dumpmode == dump_all) {
         nal_unit->fdump(outfp, indent_level, parsing_options);
-        if (options->add_contents) {
+        if (options.add_contents) {
           fprintf(outfp, " contents {");
           for (size_t i = 0; i < nal_unit->length; i++) {
             fprintf(outfp, " %02x", buffer[nal_unit->offset + i]);
@@ -488,7 +486,7 @@ int main(int argc, char** argv) {
           fprintf(outfp, " }");
         }
         fprintf(outfp, "\n");
-      } else if (options->dumpmode == dump_length) {
+      } else if (options.dumpmode == dump_length) {
         uint32_t nal_unit_type = nal_unit->nal_unit_header->nal_unit_type;
         std::string nal_unit_type_str =
             h264nal::NalUnitTypeToString(nal_unit_type);
@@ -510,7 +508,7 @@ int main(int argc, char** argv) {
           }
           if (first_mb_in_slice == 0 && total_bytes > 0) {
             // dump last frame info
-            bitrate_bps = static_cast<int64_t>(total_bytes) * 8 * options->frames_per_second;
+            bitrate_bps = static_cast<int64_t>(total_bytes) * 8 * options.frames_per_second;
             fprintf(outfp, ",%i,%i,frame,,%" PRIi64 ",\n", frame_num,
                     last_slice_nal_unit_type, bitrate_bps);
             frame_num += 1;
@@ -525,10 +523,10 @@ int main(int argc, char** argv) {
         nal_num += 1;
       }
     }
-    if (options->dumpmode == dump_length) {
+    if (options.dumpmode == dump_length) {
       if (total_bytes > 0) {
         // dump last frame info
-        int64_t bitrate_bps = static_cast<int64_t>(total_bytes) * 8 * options->frames_per_second;
+        int64_t bitrate_bps = static_cast<int64_t>(total_bytes) * 8 * options.frames_per_second;
         fprintf(outfp, ",%i,%i,frame,,%" PRIi64 ",\n", frame_num,
                 last_slice_nal_unit_type, bitrate_bps);
       }
