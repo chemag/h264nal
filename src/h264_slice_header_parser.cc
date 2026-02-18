@@ -514,7 +514,7 @@ uint32_t H264SliceHeaderParser::SliceHeaderState::getSliceGroupChangeCycleLen(
   // Rec. ITU-T H.264 (2012) Page 67, Section 7.4.3
   // The value of slice_group_change_cycle is represented in the bitstream
   // by the following number of bits
-  // Ceil(Log2(PicSizeInMapUnits ÷ SliceGroupChangeRate + 1)) (7-21)
+  // Ceil(Log2(PicSizeInMapUnits ï¿½ SliceGroupChangeRate + 1)) (7-21)
   uint32_t PicSizeInMapUnits = getPicSizeInMapUnits(
       pic_width_in_mbs_minus1, pic_height_in_map_units_minus1);
   uint32_t SliceGroupChangeRate =
@@ -591,7 +591,7 @@ void H264SliceHeaderParser::SliceHeaderState::fdump(FILE* outfp,
 
     if (bottom_field_pic_order_in_frame_present_flag && !field_pic_flag) {
       fdump_indent_level(outfp, indent_level);
-      fprintf(outfp, "delta_pic_order_cnt_bottom: %u",
+      fprintf(outfp, "delta_pic_order_cnt_bottom: %i",
               delta_pic_order_cnt_bottom);
     }
   }
@@ -664,7 +664,7 @@ void H264SliceHeaderParser::SliceHeaderState::fdump(FILE* outfp,
   }
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "slice_qp_delta: %u", slice_qp_delta);
+  fprintf(outfp, "slice_qp_delta: %i", slice_qp_delta);
 
   if ((slice_type == SliceType::SP) || (slice_type == SliceType::SP_ALL) ||
       (slice_type == SliceType::SI) || (slice_type == SliceType::SI_ALL)) {
@@ -674,7 +674,7 @@ void H264SliceHeaderParser::SliceHeaderState::fdump(FILE* outfp,
     }
 
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "slice_qs_delta: %u", slice_qs_delta);
+    fprintf(outfp, "slice_qs_delta: %i", slice_qs_delta);
   }
 
   if (deblocking_filter_control_present_flag) {

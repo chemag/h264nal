@@ -446,13 +446,13 @@ void H264PpsParser::PpsState::fdump(FILE* outfp, int indent_level) const {
   fprintf(outfp, "weighted_bipred_idc: %u", weighted_bipred_idc);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "pic_init_qp_minus26: %u", pic_init_qp_minus26);
+  fprintf(outfp, "pic_init_qp_minus26: %i", pic_init_qp_minus26);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "pic_init_qs_minus26: %u", pic_init_qs_minus26);
+  fprintf(outfp, "pic_init_qs_minus26: %i", pic_init_qs_minus26);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "chroma_qp_index_offset: %u", chroma_qp_index_offset);
+  fprintf(outfp, "chroma_qp_index_offset: %i", chroma_qp_index_offset);
 
   fdump_indent_level(outfp, indent_level);
   fprintf(outfp, "deblocking_filter_control_present_flag: %u",
@@ -512,7 +512,7 @@ void H264PpsParser::PpsState::fdump(FILE* outfp, int indent_level) const {
   fprintf(outfp, "delta_scale: %i", delta_scale);
 
   fdump_indent_level(outfp, indent_level);
-  fprintf(outfp, "second_chroma_qp_index_offset: %u",
+  fprintf(outfp, "second_chroma_qp_index_offset: %i",
           second_chroma_qp_index_offset);
 
   indent_level = indent_level_decr(indent_level);
