@@ -8,6 +8,7 @@
 
 #include "h264_prefix_nal_unit_parser.h"
 #include "h264_common.h"
+#include "h264_nal_unit_parser.h"
 #include "rtc_common.h"
 
 
@@ -22,6 +23,22 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
       h264nal::H264PrefixNalUnitRbspParser::ParsePrefixNalUnitRbsp(
           data, size, svc_extension_flag, nal_ref_idc,
           use_ref_base_pic_flag, idr_flag);
+  }
+  {
+  h264nal::H264BitstreamParserState bitstream_parser_state;
+  h264nal::ParsingOptions parsing_options;
+  parsing_options.add_checksum = true;
+  auto nal_unit = h264nal::H264NalUnitParser::ParseNalUnit(data, size,
+                                                  &bitstream_parser_state,
+                                                  parsing_options);
+  }
+  {
+  h264nal::H264BitstreamParserState bitstream_parser_state;
+  h264nal::ParsingOptions parsing_options;
+  parsing_options.add_checksum = true;
+  auto nal_unit = h264nal::H264NalUnitParser::ParseNalUnit(data, size,
+                                                  &bitstream_parser_state,
+                                                  parsing_options);
   }
   return 0;
 }
