@@ -53,6 +53,10 @@ H264RtpStapAParser::ParseRtpStapA(
     if (!bit_buffer->ReadBits(16, nalu_size)) {
       return nullptr;
     }
+    // Validate nalu_size fits in remaining buffer
+    if (nalu_size * 8 > bit_buffer->RemainingBitCount()) {
+      return nullptr;
+    }
     rtp_stapa->nal_unit_sizes.push_back(nalu_size);
 
     // NALU header

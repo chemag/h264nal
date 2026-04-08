@@ -186,6 +186,7 @@ bool BitBuffer::ReadBits(size_t bit_count, uint64_t& val) {
 }
 
 bool BitBuffer::ConsumeBytes(size_t byte_count) {
+  if (byte_count > SIZE_MAX / 8) return false;
   return ConsumeBits(byte_count * 8);
 }
 

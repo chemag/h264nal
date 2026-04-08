@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <cerrno>
 #include <cinttypes>
 #include <climits>
 #include <cstdio>
@@ -155,7 +156,7 @@ enum {
   HELP_OPTION
 };
 
-int parse_args(int argc, char** argv, arg_options *options) {
+int parse_args(int argc, char** argv, arg_options* options) {
   int c;
 
   // set default options
@@ -296,13 +297,25 @@ int parse_args(int argc, char** argv, arg_options *options) {
         break;
 
       case NALU_LENGTH_BYTES_OPTION: {
-        std::string optarg_str(optarg);
-        options->nalu_length_bytes = std::stoi(optarg_str);
+        char* end;
+        errno = 0;
+        long val = strtol(optarg, &end, 10);
+        if (errno != 0 || *end != '\0' || val < 0 || val > INT_MAX) {
+          fprintf(stderr, "error: invalid nalu_length_bytes: %s\n", optarg);
+          return -1;
+        }
+        options->nalu_length_bytes = static_cast<int>(val);
       } break;
 
       case FRAMES_PER_SECOND_OPTION: {
-        std::string optarg_str(optarg);
-        options->frames_per_second = std::stoi(optarg_str);
+        char* end;
+        errno = 0;
+        long val = strtol(optarg, &end, 10);
+        if (errno != 0 || *end != '\0' || val < 0 || val > INT_MAX) {
+          fprintf(stderr, "error: invalid frames_per_second: %s\n", optarg);
+          return -1;
+        }
+        options->frames_per_second = static_cast<int>(val);
       } break;
 
       case VERSION_OPTION:
@@ -477,7 +490,9 @@ int main(int argc, char** argv) {
         nal_unit->fdump(outfp, indent_level, parsing_options);
         if (options.add_contents) {
           fprintf(outfp, " contents {");
-          for (size_t i = 0; i < nal_unit->length; i++) {
+          for (size_t i = 0;
+               i < nal_unit->length && nal_unit->offset + i < buffer.size();
+               i++) {
             fprintf(outfp, " %02x", buffer[nal_unit->offset + i]);
             if ((i + 1) % 16 == 0) {
               fprintf(outfp, " ");
@@ -508,7 +523,8 @@ int main(int argc, char** argv) {
           }
           if (first_mb_in_slice == 0 && total_bytes > 0) {
             // dump last frame info
-            bitrate_bps = static_cast<int64_t>(total_bytes) * 8 * options.frames_per_second;
+            bitrate_bps = static_cast<int64_t>(total_bytes) * 8 *
+                          options.frames_per_second;
             fprintf(outfp, ",%i,%i,frame,,%" PRIi64 ",\n", frame_num,
                     last_slice_nal_unit_type, bitrate_bps);
             frame_num += 1;
@@ -526,7 +542,8 @@ int main(int argc, char** argv) {
     if (options.dumpmode == dump_length) {
       if (total_bytes > 0) {
         // dump last frame info
-        int64_t bitrate_bps = static_cast<int64_t>(total_bytes) * 8 * options.frames_per_second;
+        int64_t bitrate_bps =
+            static_cast<int64_t>(total_bytes) * 8 * options.frames_per_second;
         fprintf(outfp, ",%i,%i,frame,,%" PRIi64 ",\n", frame_num,
                 last_slice_nal_unit_type, bitrate_bps);
       }
