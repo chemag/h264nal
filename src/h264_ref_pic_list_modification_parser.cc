@@ -57,6 +57,10 @@ H264RefPicListModificationParser::ParseRefPicListModification(
         if (!bit_buffer->ReadExponentialGolomb(golomb_tmp)) {
           return nullptr;
         }
+        // must be in range 0-3 per spec
+        if (golomb_tmp > 3) {
+          return nullptr;
+        }
         ref_pic_list_modification->modification_of_pic_nums_idc.push_back(
             golomb_tmp);
 
@@ -96,6 +100,10 @@ H264RefPicListModificationParser::ParseRefPicListModification(
       do {
         // modification_of_pic_nums_idc[i]  ue(v)
         if (!bit_buffer->ReadExponentialGolomb(golomb_tmp)) {
+          return nullptr;
+        }
+        // must be in range 0-3 per spec
+        if (golomb_tmp > 3) {
           return nullptr;
         }
         ref_pic_list_modification->modification_of_pic_nums_idc.push_back(

@@ -70,6 +70,10 @@ H264DecRefPicMarkingParser::ParseDecRefPicMarking(
         if (!bit_buffer->ReadExponentialGolomb(golomb_tmp)) {
           return nullptr;
         }
+        // must be in range 0-6 per spec
+        if (golomb_tmp > 6) {
+          return nullptr;
+        }
         dec_ref_pic_marking->memory_management_control_operation.push_back(
             golomb_tmp);
 

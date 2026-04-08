@@ -160,6 +160,11 @@ std::shared_ptr<H264PpsParser::PpsState> H264PpsParser::ParsePps(
               pps->slice_group_change_rate_minus1)) {
         return nullptr;
       }
+      // guard against overflow: UINT32_MAX + 1 wraps to 0, causing
+      // division by zero in slice header parsing
+      if (pps->slice_group_change_rate_minus1 == UINT32_MAX) {
+        return nullptr;
+      }
 
     } else if (pps->slice_group_map_type == 6) {
       // pic_size_in_map_units_minus1  ue(v)
