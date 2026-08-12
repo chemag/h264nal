@@ -600,8 +600,16 @@ int H264SpsDataParser::SpsDataState::getResolution(int* width,
     CropUnitY = SubHeightC * (2 - static_cast<int>(frame_mbs_only_flag));
   }
 
+  // Equation 7-13: PicWidthInMbs = pic_width_in_mbs_minus1 + 1
+  // Equation 7-17: PicHeightInMapUnits = pic_height_in_map_units_minus1 + 1
+  // Equation 7-18: FrameHeightInMbs = (2 - frame_mbs_only_flag) *
+  //                                   PicHeightInMapUnits
+  // For interlaced content (frame_mbs_only_flag == 0), a map unit is a
+  // field macroblock pair, so the frame is twice as tall in macroblocks.
+  int FrameHeightInMbs = (2 - static_cast<int>(frame_mbs_only_flag)) *
+                         static_cast<int>(pic_height_in_map_units_minus1 + 1);
   *width = static_cast<int>(16 * (pic_width_in_mbs_minus1 + 1));
-  *height = static_cast<int>(16 * (pic_height_in_map_units_minus1 + 1));
+  *height = 16 * FrameHeightInMbs;
   *width -= (CropUnitX * static_cast<int>(frame_crop_left_offset) +
              CropUnitX * static_cast<int>(frame_crop_right_offset));
   *height -= (CropUnitY * static_cast<int>(frame_crop_top_offset) +

@@ -242,6 +242,110 @@ TEST_F(H264SpsParserTest, TestBaselineProfileWithCropping) {
   EXPECT_EQ(232, height);  // Would be 236 without the fix
 }
 
+TEST_F(H264SpsParserTest, TestPaffSps) {
+  // First SPS of the JVT conformance stream "sharp_mp_paff_2.jvt", a
+  // 720x480 Main profile PAFF (picture-adaptive frame/field) sequence.
+  // ffprobe reports width=720 height=480 field_order=tt.
+  //
+  // This stream exercises two interlaced-specific issues:
+  //
+  // 1. pic_order_cnt_type == 1 with num_ref_frames_in_pic_order_cnt_cycle
+  //    == 1. Section 7.4.2.1.1 says num_ref_frames_in_pic_order_cnt_cycle
+  //    "shall be in the range of 0 to 255, inclusive", so 1 is legal, but
+  //    the parser used to require a minimum of 12. Rejecting the SPS left
+  //    every subsequent slice reporting "non-existent SPS id: 0".
+  //
+  // 2. frame_mbs_only_flag == 0, so a map unit is a macroblock *pair* and
+  //    the frame height is (2 - frame_mbs_only_flag) * PicHeightInMapUnits
+  //    macroblocks (eq. 7-18), i.e. 2 * 15 * 16 = 480, not 240.
+  //
+  // fuzzer::conv: data
+  const uint8_t buffer[] = {0x4d, 0x40, 0x1e, 0x8d, 0x41, 0x29,
+                            0x0c, 0x30, 0x16, 0x8f, 0x24};
+  // fuzzer::conv: begin
+  auto sps = H264SpsParser::ParseSps(buffer, arraysize(buffer));
+  // fuzzer::conv: end
+
+  ASSERT_TRUE(sps != nullptr);
+
+  // seq_parameter_set_data()
+  auto& sps_data = sps->sps_data;
+  ASSERT_TRUE(sps_data != nullptr);
+  EXPECT_EQ(77, sps_data->profile_idc);
+  EXPECT_EQ(0, sps_data->constraint_set0_flag);
+  EXPECT_EQ(1, sps_data->constraint_set1_flag);
+  EXPECT_EQ(0, sps_data->constraint_set2_flag);
+  EXPECT_EQ(0, sps_data->constraint_set3_flag);
+  EXPECT_EQ(0, sps_data->constraint_set4_flag);
+  EXPECT_EQ(0, sps_data->constraint_set5_flag);
+  EXPECT_EQ(0, sps_data->reserved_zero_2bits);
+  EXPECT_EQ(30, sps_data->level_idc);
+  EXPECT_EQ(0, sps_data->seq_parameter_set_id);
+  // not signaled for Main profile: defaults to 1 per 7.4.2.1.1
+  EXPECT_EQ(1, sps_data->chroma_format_idc);
+  EXPECT_EQ(12, sps_data->log2_max_frame_num_minus4);
+  EXPECT_EQ(1, sps_data->pic_order_cnt_type);
+  EXPECT_EQ(0, sps_data->delta_pic_order_always_zero_flag);
+  EXPECT_EQ(-4, sps_data->offset_for_non_ref_pic);
+  EXPECT_EQ(1, sps_data->offset_for_top_to_bottom_field);
+  // the value that used to be (wrongly) rejected
+  EXPECT_EQ(1, sps_data->num_ref_frames_in_pic_order_cnt_cycle);
+  EXPECT_EQ(1u, sps_data->offset_for_ref_frame.size());
+  EXPECT_EQ(6, sps_data->offset_for_ref_frame[0]);
+  EXPECT_EQ(5, sps_data->max_num_ref_frames);
+  EXPECT_EQ(0, sps_data->gaps_in_frame_num_value_allowed_flag);
+  EXPECT_EQ(44, sps_data->pic_width_in_mbs_minus1);
+  EXPECT_EQ(14, sps_data->pic_height_in_map_units_minus1);
+  // PAFF: field pictures, not MBAFF
+  EXPECT_EQ(0, sps_data->frame_mbs_only_flag);
+  EXPECT_EQ(0, sps_data->mb_adaptive_frame_field_flag);
+  EXPECT_EQ(1, sps_data->direct_8x8_inference_flag);
+  EXPECT_EQ(0, sps_data->frame_cropping_flag);
+  EXPECT_EQ(0, sps_data->vui_parameters_present_flag);
+
+  int width = 0;
+  int height = 0;
+  EXPECT_EQ(0, sps_data->getResolution(&width, &height));
+  EXPECT_EQ(720, width);
+  EXPECT_EQ(480, height);  // would be 240 without the eq. 7-18 fix
+}
+
+TEST_F(H264SpsParserTest, TestInterlacedSpsFrameHeight) {
+  // Real 704x480 interlaced (MBAFF) SPS, High profile, produced with:
+  //   ffmpeg -f lavfi -i testsrc=size=704x480:rate=30:duration=1 \
+  //          -c:v libx264 -x264opts "tff=1" -pix_fmt yuv420p out.264
+  // ffprobe reports width=704 height=480 field_order=tt.
+  //
+  // frame_mbs_only_flag == 0, so pic_height_in_map_units_minus1 counts
+  // macroblock *pairs*: FrameHeightInMbs = 2 * 15 = 30 -> 480 pixels.
+  // fuzzer::conv: data
+  const uint8_t buffer[] = {0x64, 0x00, 0x1e, 0xac, 0xd9, 0x40, 0xb0,
+                            0x7b, 0x60, 0x22, 0x00, 0x00, 0x03, 0x00,
+                            0x02, 0x00, 0x00, 0x03, 0x00, 0x78, 0x3e,
+                            0x28, 0x53, 0x2c};
+  // fuzzer::conv: begin
+  auto sps = H264SpsParser::ParseSps(buffer, arraysize(buffer));
+  // fuzzer::conv: end
+
+  ASSERT_TRUE(sps != nullptr);
+
+  auto& sps_data = sps->sps_data;
+  ASSERT_TRUE(sps_data != nullptr);
+  EXPECT_EQ(100, sps_data->profile_idc);
+  EXPECT_EQ(1, sps_data->chroma_format_idc);
+  EXPECT_EQ(43, sps_data->pic_width_in_mbs_minus1);
+  EXPECT_EQ(14, sps_data->pic_height_in_map_units_minus1);
+  EXPECT_EQ(0, sps_data->frame_mbs_only_flag);
+  EXPECT_EQ(1, sps_data->mb_adaptive_frame_field_flag);
+  EXPECT_EQ(0, sps_data->frame_cropping_flag);
+
+  int width = 0;
+  int height = 0;
+  EXPECT_EQ(0, sps_data->getResolution(&width, &height));
+  EXPECT_EQ(704, width);
+  EXPECT_EQ(480, height);  // would be 240 without the eq. 7-18 fix
+}
+
 TEST_F(H264SpsParserTest, TestTruncatedSps) {
   // single byte, too short to parse
   const uint8_t buffer[] = {0x42};

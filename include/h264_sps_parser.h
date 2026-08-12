@@ -51,7 +51,7 @@ class H264SpsDataParser {
   const static uint32_t kLog2MaxPicOrderCntLsbMinus4Max = 12;
   // Section 7.4.2.1.1: "The value of num_ref_frames_in_pic_order_cnt_cycle
   // shall be in the range of 0 to 255, inclusive."
-  const static uint32_t kNumRefFramesInPicOrderCntCycleMin = 12;
+  const static uint32_t kNumRefFramesInPicOrderCntCycleMin = 0;
   const static uint32_t kNumRefFramesInPicOrderCntCycleMax = 255;
 
   // The parsed state of an seq_parameter_set_data() RBSP. Only some select
