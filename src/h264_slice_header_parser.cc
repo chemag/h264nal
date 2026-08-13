@@ -325,6 +325,13 @@ H264SliceHeaderParser::ParseSliceHeader(
     fprintf(stderr,
             "error: unimplemented ref_pic_list_mvc_modification in pps\n");
 #endif  // FPRINT_ERRORS
+    // Not parsing ref_pic_list_mvc_modification() leaves the bit buffer
+    // positioned in the middle of the slice header, so everything read
+    // after this point would be garbage. Give up rather than return a
+    // slice header that looks valid but is not. This also keeps
+    // ref_pic_list_modification non-null for every slice header that is
+    // returned, matching the else branch below.
+    return nullptr;
   } else {
     // ref_pic_list_modification(slice_type)
     slice_header->ref_pic_list_modification =
