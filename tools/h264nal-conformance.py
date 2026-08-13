@@ -25,13 +25,26 @@ CSV_FIELDS = [
     "profile",
     "level",
     "number_of_nalus",
+    "number_of_slice_nalus",
     "number_of_slice_header_nalus",
     "h264nal_status",
+    "slice_header_status",
 ]
 
 STATUS_OK = "0"
 
 DEFAULT_TIMEOUT = 60
+
+# NAL unit types h264nal is expected to turn into a slice header: a coded
+# slice (1), an IDR slice (5), and a coded slice extension (20). Data
+# partitions (2 to 4) and auxiliary slices (19) are deliberately left out:
+# h264nal does not parse them, so counting them would report a shortfall
+# that is a missing feature rather than a failure.
+SLICE_NAL_UNIT_TYPES = (1, 5, 20)
+
+# a slice header is dumped as one of these, depending on whether the slice
+# is a plain one or lives in an SVC scalable extension
+SLICE_HEADER_MARKERS = ("slice_header {", "slice_header_in_scalable_extension {")
 
 # Section A.3.1/A.3.2: level 1b is signalled differently depending on the
 # profile. For the High profiles it is level_idc == 9; for the others it is
@@ -152,10 +165,38 @@ def add_unique(values, value):
         values.append(value)
 
 
+def count_slice_nalus(stdout):
+    """Count the NAL units that should each yield one slice header."""
+    types = "|".join(str(t) for t in SLICE_NAL_UNIT_TYPES)
+    return len(re.findall(rf"\bnal_unit_type: (?:{types})\b", stdout))
+
+
+def count_slice_headers(stdout):
+    """Count the slice headers h264nal actually parsed."""
+    return sum(stdout.count(marker) for marker in SLICE_HEADER_MARKERS)
+
+
+def get_slice_header_status(slice_nalus, slice_headers):
+    """Flag slice headers that went missing without h264nal saying so.
+
+    A slice NAL unit that yields no slice header was rejected somewhere. The
+    parser usually explains itself on stderr, but not always: a sub-parser
+    can return nullptr silently and the NAL unit is then dumped with an empty
+    payload. Comparing the two counts catches that, which stderr alone does
+    not. Kept out of h264nal_status so that column stays a faithful record
+    of what h264nal itself reported.
+    """
+    if slice_headers == slice_nalus:
+        return STATUS_OK
+    return f"unparsed slice headers: {slice_headers}/{slice_nalus}"
+
+
 def analyze_file(input_path, h264nal_path, timeout):
     """Build the CSV row for a single input file."""
     stdout, status = run_h264nal(input_path, h264nal_path, timeout)
     resolutions, profiles, levels = parse_sps_lines(stdout)
+    slice_nalus = count_slice_nalus(stdout)
+    slice_headers = count_slice_headers(stdout)
 
     return {
         "input_path": input_path,
@@ -163,11 +204,13 @@ def analyze_file(input_path, h264nal_path, timeout):
         "resolution": ";".join(resolutions),
         "profile": ";".join(profiles),
         "level": ";".join(levels),
-        # in one-line mode there is exactly one "nal_unit {" per NAL unit,
-        # and one "slice_header {" per successfully parsed slice header
+        # in one-line mode there is exactly one "nal_unit {" per NAL unit
         "number_of_nalus": stdout.count("nal_unit {"),
-        "number_of_slice_header_nalus": stdout.count("slice_header {"),
+        "number_of_slice_nalus": slice_nalus,
+        "number_of_slice_header_nalus": slice_headers,
         "h264nal_status": status,
+        "slice_header_status": get_slice_header_status(slice_nalus,
+                                                       slice_headers),
     }
 
 
@@ -232,7 +275,13 @@ def main(argv):
     if not options.quiet:
         failed = sum(1 for row in rows
                      if row["h264nal_status"] != STATUS_OK)
-        print(f"parsed {len(rows)} file(s), {failed} with issues",
+        # files losing slice headers without h264nal reporting anything:
+        # worth calling out separately, as they look clean otherwise
+        silent = sum(1 for row in rows
+                     if row["h264nal_status"] == STATUS_OK
+                     and row["slice_header_status"] != STATUS_OK)
+        print(f"parsed {len(rows)} file(s), {failed} with issues, "
+              f"{silent} silently missing slice headers",
               file=sys.stderr)
 
 
