@@ -96,19 +96,16 @@ H264NalUnitHeaderParser::ParseNalUnitHeader(BitBuffer* bit_buffer) noexcept {
 
     } else if (nal_unit_header->avc_3d_extension_flag) {
       // nal_unit_header_3davc_extension()  // specified in Annex I
-#ifdef FPRINT_ERRORS
       // TODO(chemag): add support for nal_unit_header_3davc_extension()
-      fprintf(stderr,
-              "error: unimplemented nal_unit_header_3davc_extension\n");
-#endif  // FPRINT_ERRORS
+      report_unimplemented("nal_unit_header_3davc_extension()",
+                           "nal_unit_header()");
       return nullptr;
 
     } else {
       // nal_unit_header_mvc_extension()  // specified in Annex G
-#ifdef FPRINT_ERRORS
       // TODO(chemag): add support for nal_unit_header_mvc_extension()
-      fprintf(stderr, "error: unimplemented nal_unit_header_mvc_extension\n");
-#endif  // FPRINT_ERRORS
+      report_unimplemented("nal_unit_header_mvc_extension()",
+                           "nal_unit_header()");
       return nullptr;
     }
   }

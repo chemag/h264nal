@@ -320,11 +320,11 @@ H264SliceHeaderParser::ParseSliceHeader(
 
   if (slice_header->nal_unit_type == 20 || slice_header->nal_unit_type == 21) {
     // ref_pic_list_mvc_modification()
-#ifdef FPRINT_ERRORS
     // TODO(chemag): add support for ref_pic_list_mvc_modification()
-    fprintf(stderr,
-            "error: unimplemented ref_pic_list_mvc_modification in pps\n");
-#endif  // FPRINT_ERRORS
+    // note the context is slice_header(), not pps(): the structure sits in
+    // the slice header, where the old message said otherwise
+    report_unimplemented("ref_pic_list_mvc_modification()",
+                         "slice_header()");
     // Not parsing ref_pic_list_mvc_modification() leaves the bit buffer
     // positioned in the middle of the slice header, so everything read
     // after this point would be garbage. Give up rather than return a

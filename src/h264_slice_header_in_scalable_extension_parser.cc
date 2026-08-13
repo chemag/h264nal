@@ -405,9 +405,8 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
         if ((shise->use_ref_base_pic_flag || shise->store_ref_base_pic_flag) &&
             !shise->idr_flag) {
           // dec_ref_base_pic_marking()
-#ifdef FPRINT_ERRORS
-          fprintf(stderr, "error: dec_ref_base_pic_marking undefined\n");
-#endif  // FPRINT_ERRORS
+          report_unimplemented("dec_ref_base_pic_marking()",
+                               "slice_header_in_scalable_extension()");
           return nullptr;
         }
       }
@@ -831,9 +830,8 @@ void H264SliceHeaderInScalableExtensionParser::
         fdump_indent_level(outfp, indent_level);
         fprintf(outfp, "store_ref_base_pic_flag: %u", store_ref_base_pic_flag);
         if ((use_ref_base_pic_flag || store_ref_base_pic_flag) && !idr_flag) {
-#ifdef FPRINT_ERRORS
-          fprintf(stderr, "error: dec_ref_base_pic_marking undefined\n");
-#endif  // FPRINT_ERRORS
+          fdump_indent_level(outfp, indent_level);
+          fdump_unimplemented(outfp, "dec_ref_base_pic_marking()");
         }
       }
     }

@@ -33,6 +33,12 @@ CSV_FIELDS = [
 
 STATUS_OK = "0"
 
+# h264nal tells apart a bitstream it does not support from a broken one
+EXIT_CODES = {
+    1: "invalid bitstream",
+    2: "unimplemented syntax",
+}
+
 DEFAULT_TIMEOUT = 60
 
 # NAL unit types h264nal is expected to turn into a slice header: a coded
@@ -89,7 +95,9 @@ def run_h264nal(input_path, h264nal_path, timeout):
 
     status = summarize_errors(result.stderr)
     if result.returncode != 0:
-        rc_status = f"h264nal exited with {result.returncode}"
+        reason = EXIT_CODES.get(result.returncode)
+        rc_status = (f"h264nal: {reason}" if reason is not None
+                     else f"h264nal exited with {result.returncode}")
         status = rc_status if status == STATUS_OK else f"{rc_status}; {status}"
     return result.stdout, status
 

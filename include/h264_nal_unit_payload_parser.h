@@ -40,6 +40,15 @@ class H264NalUnitPayloadParser {
                ParsingOptions parsing_options) const;
 #endif  // FDUMP_DEFINE
 
+    // Whether the payload of a NAL unit of the given type was parsed. A
+    // NAL unit whose payload fails to parse is not fatal (we keep the NAL
+    // unit, with an empty payload), so this is how a caller notices.
+    // Types whose payload we do not parse at all (SEI, data partitions,
+    // filler, ...) count as parsed: nothing is missing that we would have
+    // produced. They are whole NAL units we skip, not a structure whose
+    // absence knocks the rest of a parse out of alignment.
+    bool IsPayloadParsed(uint32_t nal_unit_type) const noexcept;
+
     std::shared_ptr<struct H264SpsParser::SpsState> sps;
     std::shared_ptr<struct H264PpsParser::PpsState> pps;
     std::unique_ptr<struct H264SliceLayerWithoutPartitioningRbspParser::

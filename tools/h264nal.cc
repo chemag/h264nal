@@ -38,6 +38,11 @@
 
 extern int optind;
 
+// exit codes: tell a bitstream we do not support from a broken one
+constexpr int kExitOk = 0;
+constexpr int kExitInvalidBitstream = 1;
+constexpr int kExitUnimplemented = 2;
+
 enum Dumpmode { dump_all, dump_length };
 
 typedef struct arg_options {
@@ -424,6 +429,7 @@ int main(int argc, char** argv) {
 #endif
 
   // 3. parse bitstream
+  h264nal::reset_unimplemented_count();
   std::vector<uint8_t> buffer;
   std::unique_ptr<h264nal::H264BitstreamParser::BitstreamState> bitstream;
   if (options.infile != nullptr) {
@@ -556,5 +562,45 @@ int main(int argc, char** argv) {
     fclose(outfp);
   }
 
-  return 0;
+  // 5. report how the parse went
+  //   kExitOk: every NAL unit parsed
+  //   kExitInvalidBitstream: at least one NAL unit payload did not parse
+  //   kExitUnimplemented: the bitstream needs syntax we do not support yet
+  if (options.infile == nullptr || bitstream == nullptr) {
+    return kExitOk;
+  }
+  // a NAL unit can go missing in two ways: dropped before it reached the
+  // list (its header did not parse), or kept with a payload that did not
+  // parse. Count both, or a bail-out in the NAL unit header reads as zero.
+  // only for Annex B: the explicit framing path walks the buffer inline
+  // rather than through an index list, so there is nothing cheap to count
+  // against, and dropped NAL units go unreported there.
+  size_t unparsed_nal_units = 0;
+  if (options.nalu_length_bytes < 0) {
+    size_t total_nal_units = h264nal::H264BitstreamParser::FindNaluIndices(
+                                 buffer.data(), buffer.size())
+                                 .size();
+    unparsed_nal_units = total_nal_units - bitstream->nal_units.size();
+  }
+  for (auto& nal_unit : bitstream->nal_units) {
+    if (!nal_unit->nal_unit_payload->IsPayloadParsed(
+            nal_unit->nal_unit_header->nal_unit_type)) {
+      unparsed_nal_units += 1;
+    }
+  }
+  uint32_t unimplemented = h264nal::get_unimplemented_count();
+  if (unimplemented > 0) {
+    fprintf(stderr,
+            "error: bitstream uses %" PRIu32
+            " unimplemented syntax structure(s), "
+            "%zu NAL unit(s) left unparsed\n",
+            unimplemented, unparsed_nal_units);
+    return kExitUnimplemented;
+  }
+  if (unparsed_nal_units > 0) {
+    fprintf(stderr, "error: %zu NAL unit(s) left unparsed\n",
+            unparsed_nal_units);
+    return kExitInvalidBitstream;
+  }
+  return kExitOk;
 }

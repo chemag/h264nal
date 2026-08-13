@@ -198,6 +198,28 @@ H264NalUnitPayloadParser::ParseNalUnitPayload(
   return nal_unit_payload;
 }
 
+bool H264NalUnitPayloadParser::NalUnitPayloadState::IsPayloadParsed(
+    uint32_t nal_unit_type) const noexcept {
+  switch (nal_unit_type) {
+    case SPS_NUT:
+      return sps != nullptr;
+    case PPS_NUT:
+      return pps != nullptr;
+    case SUBSET_SPS_NUT:
+      return subset_sps != nullptr;
+    case PREFIX_NUT:
+      return prefix_nal_unit != nullptr;
+    case CODED_SLICE_OF_NON_IDR_PICTURE_NUT:
+    case CODED_SLICE_OF_IDR_PICTURE_NUT:
+      return slice_layer_without_partitioning_rbsp != nullptr;
+    case CODED_SLICE_EXTENSION:
+      return slice_layer_extension_rbsp != nullptr;
+    default:
+      // a payload we do not parse: nothing is missing
+      return true;
+  }
+}
+
 #ifdef FDUMP_DEFINE
 void H264NalUnitPayloadParser::NalUnitPayloadState::fdump(
     FILE* outfp, int indent_level, uint32_t nal_unit_type,

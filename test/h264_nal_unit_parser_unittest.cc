@@ -53,6 +53,16 @@ TEST_F(H264NalUnitParserTest, TestSampleNalUnit) {
   EXPECT_EQ(0, nal_unit->nal_unit_header->forbidden_zero_bit);
   EXPECT_EQ(3, nal_unit->nal_unit_header->nal_ref_idc);
   EXPECT_EQ(NalUnitType::SPS_NUT, nal_unit->nal_unit_header->nal_unit_type);
+
+  // a 1-byte SPS NAL unit has a header but no parseable payload. The NAL
+  // unit survives, so this is the only way a caller notices; the h264nal
+  // tool uses it to pick its exit code.
+  ASSERT_TRUE(nal_unit->nal_unit_payload != nullptr);
+  EXPECT_FALSE(nal_unit->nal_unit_payload->IsPayloadParsed(
+      nal_unit->nal_unit_header->nal_unit_type));
+  // a type whose payload we do not parse at all is not missing anything
+  EXPECT_TRUE(
+      nal_unit->nal_unit_payload->IsPayloadParsed(NalUnitType::SEI_NUT));
 }
 
 TEST_F(H264NalUnitParserTest, TestEmptyNalUnit) {

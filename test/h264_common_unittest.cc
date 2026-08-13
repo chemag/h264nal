@@ -137,4 +137,27 @@ INSTANTIATE_TEST_SUITE_P(
     Parameter, H264CommonMoreRbspDataTest,
     ::testing::ValuesIn(kH264CommonMoreRbspDataParameterTestcases));
 
+class H264CommonUnimplementedTest : public ::testing::Test {
+ public:
+  H264CommonUnimplementedTest() {}
+  ~H264CommonUnimplementedTest() override {}
+};
+
+TEST_F(H264CommonUnimplementedTest, TestUnimplementedCount) {
+  // the count is what lets the h264nal tool tell a bitstream we do not
+  // support yet from a bitstream that is broken
+  reset_unimplemented_count();
+  EXPECT_EQ(0, get_unimplemented_count());
+
+  report_unimplemented("ref_pic_list_mvc_modification()", "slice_header()");
+  EXPECT_EQ(1, get_unimplemented_count());
+
+  report_unimplemented("nal_unit_header_mvc_extension()",
+                       "nal_unit_header()");
+  EXPECT_EQ(2, get_unimplemented_count());
+
+  reset_unimplemented_count();
+  EXPECT_EQ(0, get_unimplemented_count());
+}
+
 }  // namespace h264nal

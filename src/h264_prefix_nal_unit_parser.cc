@@ -57,9 +57,8 @@ H264PrefixNalUnitSvcParser::ParsePrefixNalUnitSvc(
          prefix_nal_unit_svc->store_ref_base_pic_flag) &&
         !prefix_nal_unit_svc->idr_flag) {
       // dec_ref_base_pic_marking()
-#ifdef FPRINT_ERRORS
-      fprintf(stderr, "error: dec_ref_base_pic_marking undefined\n");
-#endif  // FPRINT_ERRORS
+      report_unimplemented("dec_ref_base_pic_marking()",
+                           "prefix_nal_unit_svc()");
       return nullptr;
     }
 
