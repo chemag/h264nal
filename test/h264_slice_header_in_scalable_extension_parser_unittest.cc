@@ -192,15 +192,32 @@ TEST_F(H264SliceHeaderInScalableExtensionParserTest, TestSampleBitstream01) {
   EXPECT_EQ(0, slice_header_in_scalable_extension->slice_alpha_c0_offset_div2);
   EXPECT_EQ(0, slice_header_in_scalable_extension->slice_beta_offset_div2);
   EXPECT_EQ(0, slice_header_in_scalable_extension->slice_group_change_cycle);
-  // The fields from here on (ref_layer_dq_id, the inter_layer_* group,
-  // slice_skip_flag, the *_base_mode_flag group, ...) live inside
-  // "if( !no_inter_layer_pred_flag && quality_id == 0 )" and
-  // "if( !no_inter_layer_pred_flag )". This slice has
-  // no_inter_layer_pred_flag equal to 1, so none of them is present and none
-  // should be read. The parser reads them anyway, because it only copies
-  // no_inter_layer_pred_flag out of the NAL unit header inside the weighted
-  // prediction branch, which an EI slice never takes. Not asserted until
-  // that is fixed: the values are whatever the stray reads happen to find.
+  // no_inter_layer_pred_flag is 1 for this slice, so everything guarded by
+  // "if( !no_inter_layer_pred_flag && quality_id == 0 )" and by
+  // "if( !no_inter_layer_pred_flag )" is absent from the bitstream. These
+  // must therefore keep their defaults: a non-zero value here means the
+  // parser read a block the slice does not contain, and every element after
+  // it is then misaligned.
+  EXPECT_EQ(0, slice_header_in_scalable_extension->ref_layer_dq_id);
+  EXPECT_EQ(0, slice_header_in_scalable_extension
+                   ->disable_inter_layer_deblocking_filter_idc);
+  EXPECT_EQ(0, slice_header_in_scalable_extension
+                   ->inter_layer_slice_alpha_c0_offset_div2);
+  EXPECT_EQ(
+      0,
+      slice_header_in_scalable_extension->inter_layer_slice_beta_offset_div2);
+  EXPECT_EQ(
+      0, slice_header_in_scalable_extension->constrained_intra_resampling_flag);
+  EXPECT_EQ(0, slice_header_in_scalable_extension->slice_skip_flag);
+  EXPECT_EQ(0, slice_header_in_scalable_extension->num_mbs_in_slice_minus1);
+  EXPECT_EQ(0, slice_header_in_scalable_extension->adaptive_base_mode_flag);
+  EXPECT_EQ(0, slice_header_in_scalable_extension->default_base_mode_flag);
+  EXPECT_EQ(
+      0, slice_header_in_scalable_extension->adaptive_residual_prediction_flag);
+  EXPECT_EQ(
+      0, slice_header_in_scalable_extension->default_residual_prediction_flag);
+  EXPECT_EQ(0, slice_header_in_scalable_extension->scan_idx_start);
+  EXPECT_EQ(0, slice_header_in_scalable_extension->scan_idx_end);
 }
 
 // SPS (id 0), subset SPS (id 1), PPS (id 2 -> seq_parameter_set_id 1) and a

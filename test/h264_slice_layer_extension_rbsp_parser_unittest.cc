@@ -183,11 +183,32 @@ TEST_F(H264SliceLayerExtensionRbspParserTest, TestSampleSlice01) {
   EXPECT_EQ(0, slice_header_in_scalable_extension->slice_alpha_c0_offset_div2);
   EXPECT_EQ(0, slice_header_in_scalable_extension->slice_beta_offset_div2);
   EXPECT_EQ(0, slice_header_in_scalable_extension->slice_group_change_cycle);
-  // Not asserted: the fields from here on sit inside
-  // "if( !no_inter_layer_pred_flag && ... )", and this slice has
-  // no_inter_layer_pred_flag equal to 1, so none of them is present. The
-  // parser reads them anyway; see the note in
-  // h264_slice_header_in_scalable_extension_parser_unittest.cc.
+  // no_inter_layer_pred_flag is 1 for this slice, so everything guarded by
+  // "if( !no_inter_layer_pred_flag && quality_id == 0 )" and by
+  // "if( !no_inter_layer_pred_flag )" is absent from the bitstream. These
+  // must therefore keep their defaults: a non-zero value here means the
+  // parser read a block the slice does not contain, and every element after
+  // it is then misaligned.
+  EXPECT_EQ(0, slice_header_in_scalable_extension->ref_layer_dq_id);
+  EXPECT_EQ(0, slice_header_in_scalable_extension
+                   ->disable_inter_layer_deblocking_filter_idc);
+  EXPECT_EQ(0, slice_header_in_scalable_extension
+                   ->inter_layer_slice_alpha_c0_offset_div2);
+  EXPECT_EQ(
+      0,
+      slice_header_in_scalable_extension->inter_layer_slice_beta_offset_div2);
+  EXPECT_EQ(
+      0, slice_header_in_scalable_extension->constrained_intra_resampling_flag);
+  EXPECT_EQ(0, slice_header_in_scalable_extension->slice_skip_flag);
+  EXPECT_EQ(0, slice_header_in_scalable_extension->num_mbs_in_slice_minus1);
+  EXPECT_EQ(0, slice_header_in_scalable_extension->adaptive_base_mode_flag);
+  EXPECT_EQ(0, slice_header_in_scalable_extension->default_base_mode_flag);
+  EXPECT_EQ(
+      0, slice_header_in_scalable_extension->adaptive_residual_prediction_flag);
+  EXPECT_EQ(
+      0, slice_header_in_scalable_extension->default_residual_prediction_flag);
+  EXPECT_EQ(0, slice_header_in_scalable_extension->scan_idx_start);
+  EXPECT_EQ(0, slice_header_in_scalable_extension->scan_idx_end);
 }
 
 }  // namespace h264nal

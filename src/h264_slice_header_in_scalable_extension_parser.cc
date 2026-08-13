@@ -184,6 +184,16 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
     return nullptr;
   }
   shise->idr_flag = nal_unit_header_svc_extension->idr_flag;
+  // Copy the remaining input derived flags here too. Each is read by a
+  // branch further down that is not the branch it used to be copied in, so
+  // copying it late left the default of 0 in place and made the parser take
+  // a path the bitstream does not describe.
+  shise->no_inter_layer_pred_flag =
+      nal_unit_header_svc_extension->no_inter_layer_pred_flag;
+  shise->bottom_field_pic_order_in_frame_present_flag =
+      pps->bottom_field_pic_order_in_frame_present_flag;
+  shise->slice_header_restriction_flag =
+      subset_sps_svc_extension->slice_header_restriction_flag;
 
   // Section G.7.3.3.4 gates idr_pic_id on "idr_flag == 1", where idr_flag
   // comes from nal_unit_header_svc_extension(). Note this is not the
@@ -220,8 +230,6 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
       return nullptr;
     }
 
-    shise->bottom_field_pic_order_in_frame_present_flag =
-        pps->bottom_field_pic_order_in_frame_present_flag;
     if (shise->bottom_field_pic_order_in_frame_present_flag &&
         !shise->field_pic_flag) {
       // delta_pic_order_cnt_bottom  se(v)
@@ -353,8 +361,6 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
         ((shise->weighted_bipred_idc == 1) &&
          ((shise->slice_type == SvcSliceType::EBa) ||
           (shise->slice_type == SvcSliceType::EBb)))) {
-      shise->no_inter_layer_pred_flag =
-          nal_unit_header_svc_extension->no_inter_layer_pred_flag;
       if (!shise->no_inter_layer_pred_flag) {
         // base_pred_weight_table_flag  u(1)
         if (!bit_buffer->ReadBits(1, shise->base_pred_weight_table_flag)) {
@@ -388,8 +394,6 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
         return nullptr;
       }
 
-      shise->slice_header_restriction_flag =
-          subset_sps_svc_extension->slice_header_restriction_flag;
       if (!shise->slice_header_restriction_flag) {
         // store_ref_base_pic_flag  u(1)
         if (!bit_buffer->ReadBits(1, shise->store_ref_base_pic_flag)) {
@@ -398,7 +402,6 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
 
         shise->use_ref_base_pic_flag =
             nal_unit_header_svc_extension->use_ref_base_pic_flag;
-        shise->idr_flag = nal_unit_header_svc_extension->idr_flag;
         if ((shise->use_ref_base_pic_flag || shise->store_ref_base_pic_flag) &&
             !shise->idr_flag) {
           // dec_ref_base_pic_marking()
