@@ -176,6 +176,11 @@ H264SliceHeaderParser::ParseSliceHeader(
     }
   }
 
+  // used by both the pic_order_cnt_type == 0 and the pic_order_cnt_type == 1
+  // branches below, so copy it before either of them
+  slice_header->bottom_field_pic_order_in_frame_present_flag =
+      pps->bottom_field_pic_order_in_frame_present_flag;
+
   slice_header->pic_order_cnt_type = sps_data->pic_order_cnt_type;
   if (slice_header->pic_order_cnt_type == 0) {
     uint32_t log2_max_pic_order_cnt_lsb_minus4 =
@@ -188,8 +193,6 @@ H264SliceHeaderParser::ParseSliceHeader(
       return nullptr;
     }
 
-    slice_header->bottom_field_pic_order_in_frame_present_flag =
-        pps->bottom_field_pic_order_in_frame_present_flag;
     if (slice_header->bottom_field_pic_order_in_frame_present_flag &&
         !slice_header->field_pic_flag) {
       // delta_pic_order_cnt_bottom  se(v)
