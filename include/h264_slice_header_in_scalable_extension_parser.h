@@ -49,10 +49,19 @@ class H264SliceHeaderInScalableExtensionParser {
   // 0 to 2, inclusive."
   const static uint32_t kCabacInitIdcMin = 0;
   const static uint32_t kCabacInitIdcMax = 2;
-  // Section 7.4.3: "The value of disable_deblocking_filter_idc shall be in
-  // the range of 0 to 2, inclusive."
+  // Section F.3.4.3.4 ("Slice header in scalable extension semantics"):
+  // "The value of disable_deblocking_filter_idc shall be in the range of 0
+  // to 6, inclusive." The scalable extension adds values 3 to 6 to the 0 to
+  // 2 of section 7.4.3, to control the order of the deblocking filter
+  // operations across layers.
+  //
+  // The same subclause narrows the range back to 0 to 2 when
+  // no_inter_layer_pred_flag or tcoeff_level_prediction_flag is equal to 1.
+  // That is not enforced here: tcoeff_level_prediction_flag comes later in
+  // the slice header, so it is not known yet at this point, and half a
+  // narrowing is worse than none.
   const static uint32_t kDisableDeblockingFilterIdcMin = 0;
-  const static uint32_t kDisableDeblockingFilterIdcMax = 2;
+  const static uint32_t kDisableDeblockingFilterIdcMax = 6;
 
   // The parsed state of the slice. Only some select values are stored.
   // Add more as they are actually needed.

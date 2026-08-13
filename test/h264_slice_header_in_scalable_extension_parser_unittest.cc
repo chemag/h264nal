@@ -301,6 +301,64 @@ TEST_F(H264SliceHeaderInScalableExtensionParserTest, TestSubsetSpsIdValueSpace) 
   EXPECT_EQ(1, shise->pic_order_cnt_lsb);
 }
 
+// SPS (id 0), subset SPS (id 1), PPS (id 1) and a truncated nal_unit_type 20
+// slice, taken from the JVT conformance stream "svcbst-8.264". The slice
+// carries disable_deblocking_filter_idc equal to 3.
+//
+// Section 7.4.3 puts disable_deblocking_filter_idc in the range 0 to 2, but
+// F.3.4.3.4 widens it to 0 to 6 for a slice header in scalable extension,
+// where values 3 to 6 control the order of deblocking across layers. The
+// parser applied the narrower range here and rejected the slice.
+// fuzzer::conv: data
+const uint8_t buffer_deblocking[] = {
+    0x00, 0x00, 0x00, 0x01, 0x27, 0x42, 0xe0, 0x0d, 0x95, 0x96, 0x17, 0x1f,
+    0xe5, 0xd0, 0x00, 0x00, 0x00, 0x01, 0x2f, 0x53, 0x80, 0x28, 0x4b, 0x0a,
+    0xcb, 0x05, 0xc1, 0xef, 0x13, 0xa5, 0x08, 0x00, 0x00, 0x00, 0x01, 0x28,
+    0x4a, 0xe0, 0x47, 0x20, 0x00, 0x00, 0x00, 0x01, 0x14, 0x80, 0x10, 0x67,
+    0xd0, 0x0f, 0x72, 0x4c, 0x41, 0x83, 0x2f, 0xac, 0x3f, 0x0b, 0x5e, 0x19,
+    0x4c, 0x7c, 0x3f, 0x25, 0x85, 0x70, 0x54, 0x45, 0x81, 0x70, 0x0e, 0x43,
+    0xd3, 0xc8, 0x27, 0xbe, 0xc8, 0x2b, 0x80, 0xa9, 0x8c, 0xd7, 0x04, 0xb3,
+    0x20, 0x66, 0x60, 0x8e, 0xce, 0x10, 0x65, 0x91, 0xb7, 0xfb, 0xce, 0x16,
+    0x61, 0x49, 0xb0, 0xc5, 0xa9, 0xcd, 0x7b, 0xe9, 0x09, 0xdf, 0x68, 0x99,
+    0x87, 0xdf, 0x7b, 0x78, 0xc5, 0xf4, 0xbb, 0xc6
+};
+
+TEST_F(H264SliceHeaderInScalableExtensionParserTest,
+       TestDisableDeblockingFilterIdcRange) {
+  // fuzzer::conv: begin
+  H264BitstreamParserState bitstream_parser_state;
+  ParsingOptions parsing_options;
+  auto bitstream = H264BitstreamParser::ParseBitstream(
+      buffer_deblocking, arraysize(buffer_deblocking), &bitstream_parser_state,
+      parsing_options);
+  // fuzzer::conv: end
+
+  ASSERT_TRUE(bitstream != nullptr);
+  ASSERT_EQ(4, bitstream->nal_units.size());
+
+  auto& nal_unit = bitstream->nal_units[3];
+  EXPECT_EQ(NalUnitType::CODED_SLICE_EXTENSION,
+            nal_unit->nal_unit_header->nal_unit_type);
+  auto& slice_layer_extension_rbsp =
+      nal_unit->nal_unit_payload->slice_layer_extension_rbsp;
+  ASSERT_TRUE(slice_layer_extension_rbsp != nullptr);
+  auto& shise =
+      slice_layer_extension_rbsp->slice_header_in_scalable_extension;
+  ASSERT_TRUE(shise != nullptr);
+
+  // the value that used to be rejected
+  EXPECT_EQ(3, shise->disable_deblocking_filter_idc);
+
+  EXPECT_EQ(0, shise->first_mb_in_slice);
+  EXPECT_EQ(0, shise->slice_type);
+  EXPECT_EQ(1, shise->pic_parameter_set_id);
+  EXPECT_EQ(1, shise->frame_num);
+  EXPECT_EQ(0, shise->quality_id);
+  // read after disable_deblocking_filter_idc, so it would be wrong if the
+  // element had been mis-handled
+  EXPECT_EQ(3, shise->slice_qp_delta);
+}
+
 #if 0
 TEST_F(H264SliceHeaderInScalableExtensionParserTest, TestSampleNalUnit) {
 
