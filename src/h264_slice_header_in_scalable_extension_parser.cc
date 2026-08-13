@@ -119,28 +119,26 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
   }
   auto& pps = bitstream_parser_state->pps[pps_id];
 
-  uint32_t sps_id = pps->seq_parameter_set_id;
-  if (bitstream_parser_state->sps.find(sps_id) ==
-      bitstream_parser_state->sps.end()) {
-    // non-existent SPS id
-#ifdef FPRINT_ERRORS
-    fprintf(stderr, "non-existent SPS id: %u\n", sps_id);
-#endif  // FPRINT_ERRORS
-    return nullptr;
-  }
-  auto& sps = bitstream_parser_state->sps[sps_id];
-  auto& sps_data = sps->sps_data;
-
+  // Section 3.2.61: a subset sequence parameter set applies to the layer
+  // representations with dependency_id or quality_id not equal to 0, and is
+  // the parameter set referred to from the slice headers of the EI, EP and
+  // EB slices this parser handles. Subset SPSs have their own
+  // seq_parameter_set_id value space, so resolve the id against the subset
+  // SPS map alone: a regular SPS carrying the same id need not exist, and
+  // if one does it describes the base layer, not this one.
   uint32_t subset_sps_id = pps->seq_parameter_set_id;
   if (bitstream_parser_state->subset_sps.find(subset_sps_id) ==
       bitstream_parser_state->subset_sps.end()) {
-    // non-existent SPS id
+    // non-existent subset SPS id
 #ifdef FPRINT_ERRORS
     fprintf(stderr, "non-existent subset SPS id: %u\n", subset_sps_id);
 #endif  // FPRINT_ERRORS
     return nullptr;
   }
   auto& subset_sps = bitstream_parser_state->subset_sps[subset_sps_id];
+  // the subset SPS carries a full seq_parameter_set_data(): that is the one
+  // that applies to this layer
+  auto& sps_data = subset_sps->seq_parameter_set_data;
   auto& subset_sps_svc_extension = subset_sps->seq_parameter_set_svc_extension;
   if (subset_sps_svc_extension == nullptr) {
     // slice_header_in_scalable_extension() (defined inside

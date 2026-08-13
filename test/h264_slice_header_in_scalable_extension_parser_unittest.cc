@@ -240,6 +240,67 @@ TEST_F(H264SliceHeaderInScalableExtensionParserTest, TestSampleBitstream01) {
   EXPECT_EQ(0, slice_header_in_scalable_extension->scan_idx_end);
 }
 
+// SPS (id 0), subset SPS (id 1), PPS (id 2 -> seq_parameter_set_id 1) and a
+// truncated nal_unit_type 20 slice using PPS 2, taken from the JVT
+// conformance stream "svcbcts-1.264".
+//
+// A subset sequence parameter set (section 3.2.61) applies to the layer
+// representations with dependency_id or quality_id not equal to 0, and has
+// its own seq_parameter_set_id value space. Here that space holds id 1 while
+// the regular SPS space only holds id 0, which is the normal shape of an SVC
+// stream. The parser used to demand a regular SPS carrying the id as well,
+// so it rejected the slice with "non-existent SPS id: 1".
+// fuzzer::conv: data
+const uint8_t buffer_subset_sps[] = {
+    0x00, 0x00, 0x00, 0x01, 0x67, 0x42, 0xe0, 0x0c, 0x9a, 0xdc, 0x28, 0x3f,
+    0x20, 0x00, 0x00, 0x00, 0x01, 0x6f, 0x53, 0xc0, 0x1e, 0x4b, 0x0d, 0x65,
+    0x82, 0x80, 0xf6, 0x1b, 0x7c, 0x20, 0x00, 0x00, 0x00, 0x01, 0x68, 0x6b,
+    0xe0, 0x29, 0xa8, 0x00, 0x00, 0x00, 0x01, 0x14, 0x80, 0x20, 0x4f, 0xd8,
+    0x04, 0x1b, 0x92, 0x40, 0x89, 0xc3, 0xff, 0x16, 0xb9, 0xd5, 0x2d, 0x40,
+    0x92, 0x40, 0xb4, 0x47, 0x45, 0x31, 0xcc, 0x99, 0xb5, 0x53, 0x74, 0xc5,
+    0xe5, 0x69, 0x39, 0xe8, 0xbe, 0x6c, 0x67, 0xf0, 0xea, 0x02, 0x33, 0xb2,
+    0x41, 0x57, 0x60, 0xb5, 0x66, 0x47, 0x82, 0x0d, 0x43, 0xb4, 0x50, 0xb4,
+    0xbe, 0xe6, 0x65, 0x8d, 0x05, 0xa9, 0x9d, 0x54, 0xf6, 0x83, 0x17
+};
+
+TEST_F(H264SliceHeaderInScalableExtensionParserTest, TestSubsetSpsIdValueSpace) {
+  // fuzzer::conv: begin
+  H264BitstreamParserState bitstream_parser_state;
+  ParsingOptions parsing_options;
+  auto bitstream = H264BitstreamParser::ParseBitstream(
+      buffer_subset_sps, arraysize(buffer_subset_sps), &bitstream_parser_state,
+      parsing_options);
+  // fuzzer::conv: end
+
+  ASSERT_TRUE(bitstream != nullptr);
+  ASSERT_EQ(4, bitstream->nal_units.size());
+
+  // the subset SPS uses an id the regular SPS space does not have
+  EXPECT_EQ(1u, bitstream_parser_state.sps.size());
+  EXPECT_EQ(1u, bitstream_parser_state.subset_sps.size());
+  EXPECT_TRUE(bitstream_parser_state.sps.find(1) ==
+              bitstream_parser_state.sps.end());
+  EXPECT_TRUE(bitstream_parser_state.subset_sps.find(1) !=
+              bitstream_parser_state.subset_sps.end());
+
+  // the scalable extension slice must still resolve
+  auto& nal_unit = bitstream->nal_units[3];
+  EXPECT_EQ(NalUnitType::CODED_SLICE_EXTENSION,
+            nal_unit->nal_unit_header->nal_unit_type);
+  auto& slice_layer_extension_rbsp =
+      nal_unit->nal_unit_payload->slice_layer_extension_rbsp;
+  ASSERT_TRUE(slice_layer_extension_rbsp != nullptr);
+  auto& shise =
+      slice_layer_extension_rbsp->slice_header_in_scalable_extension;
+  ASSERT_TRUE(shise != nullptr);
+
+  EXPECT_EQ(0, shise->first_mb_in_slice);
+  EXPECT_EQ(0, shise->slice_type);
+  EXPECT_EQ(2, shise->pic_parameter_set_id);
+  EXPECT_EQ(1, shise->frame_num);
+  EXPECT_EQ(1, shise->pic_order_cnt_lsb);
+}
+
 #if 0
 TEST_F(H264SliceHeaderInScalableExtensionParserTest, TestSampleNalUnit) {
 
