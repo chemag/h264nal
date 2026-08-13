@@ -124,6 +124,46 @@ TEST_F(H264PpsParserTest, TestSliceGroupMapType0) {
   EXPECT_EQ(0, pps->redundant_pic_cnt_present_flag);
 }
 
+TEST_F(H264PpsParserTest, TestSliceGroupMapType6) {
+  // PPS id 7 of the JVT conformance stream "fm1_bt_b.h264": FMO with 7
+  // slice groups and slice_group_map_type 6, for a 176x144 sequence
+  // (11 * 9 == 99 map units).
+  //
+  // Section 7.3.2.2 loops slice_group_id while
+  // "i <= pic_size_in_map_units_minus1". Reading a single id left the rest
+  // of the PPS misaligned: weighted_pred_flag came out as 1, so slices
+  // using this PPS then tried to read a pred_weight_table that is not in
+  // the bitstream, which surfaced as "invalid chroma_log2_weight_denom".
+  // fuzzer::conv: data
+  const uint8_t buffer[] = {
+      0x11, 0x0e, 0x70, 0x31, 0x88, 0x6a, 0xcc, 0x43,
+      0x56, 0x62, 0x1a, 0xb3, 0x10, 0xd5, 0x98, 0x86,
+      0xac, 0xc4, 0x35, 0x66, 0x21, 0xab, 0x31, 0x0d,
+      0x59, 0x88, 0x6a, 0xcc, 0x43, 0x56, 0x62, 0x1a,
+      0xb3, 0x10, 0xd5, 0x98, 0x86, 0xac, 0xc4, 0x35,
+      0x66, 0x09, 0x1c, 0x40
+  };
+  // fuzzer::conv: begin
+  uint32_t chroma_format_idc = 1;
+  auto pps = H264PpsParser::ParsePps(buffer, arraysize(buffer),
+                                     chroma_format_idc);
+  // fuzzer::conv: end
+
+  ASSERT_TRUE(pps != nullptr);
+
+  EXPECT_EQ(7, pps->pic_parameter_set_id);
+  EXPECT_EQ(6, pps->num_slice_groups_minus1);
+  EXPECT_EQ(6, pps->slice_group_map_type);
+  EXPECT_EQ(98, pps->pic_size_in_map_units_minus1);
+  // one slice_group_id per map unit
+  EXPECT_EQ(99u, pps->slice_group_id.size());
+  // fields past the loop, which used to be misparsed
+  EXPECT_EQ(0, pps->weighted_pred_flag);
+  EXPECT_EQ(0, pps->weighted_bipred_idc);
+  EXPECT_EQ(0, pps->deblocking_filter_control_present_flag);
+  EXPECT_EQ(0, pps->redundant_pic_cnt_present_flag);
+}
+
 TEST_F(H264PpsParserTest, TestTruncatedPps) {
   // single byte, too short to parse
   const uint8_t buffer[] = {0x08};

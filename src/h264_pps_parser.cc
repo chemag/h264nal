@@ -177,12 +177,30 @@ std::shared_ptr<H264PpsParser::PpsState> H264PpsParser::ParsePps(
         return nullptr;
       }
 
-      // slice_group_id  u(v)
-      uint32_t slice_group_id_len = pps->getSliceGroupIdLen();
-      if (!bit_buffer->ReadBits(slice_group_id_len, bits_tmp)) {
+      // Section 7.4.2.2: "The value of pic_size_in_map_units_minus1 shall
+      // be equal to PicSizeInMapUnits - 1." Bound it before looping, both
+      // to reject broken input and to keep the loop below finite.
+      if (pps->pic_size_in_map_units_minus1 > (kMaxMbPicSize - 1)) {
+#ifdef FPRINT_ERRORS
+        fprintf(stderr,
+                "invalid pic_size_in_map_units_minus1: %" PRIu32
+                " not in range "
+                "[%" PRIu32 ", %" PRIu32 "]\n",
+                pps->pic_size_in_map_units_minus1, 0, (kMaxMbPicSize - 1));
+#endif  // FPRINT_ERRORS
         return nullptr;
       }
-      pps->slice_group_id.push_back(bits_tmp);
+
+      // Section 7.3.2.2: the slice_group_id loop runs while
+      // "i <= pic_size_in_map_units_minus1", i.e. one id per map unit.
+      uint32_t slice_group_id_len = pps->getSliceGroupIdLen();
+      for (uint32_t i = 0; i <= pps->pic_size_in_map_units_minus1; i++) {
+        // slice_group_id[i]  u(v)
+        if (!bit_buffer->ReadBits(slice_group_id_len, bits_tmp)) {
+          return nullptr;
+        }
+        pps->slice_group_id.push_back(bits_tmp);
+      }
     }
   }
 
