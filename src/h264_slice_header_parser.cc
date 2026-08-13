@@ -370,7 +370,7 @@ H264SliceHeaderParser::ParseSliceHeader(
     // dec_ref_pic_marking(nal_unit_type)
     slice_header->dec_ref_pic_marking =
         H264DecRefPicMarkingParser::ParseDecRefPicMarking(
-            bit_buffer, slice_header->nal_unit_type);
+            bit_buffer, (slice_header->nal_unit_type == 5) ? 1 : 0);
     if (slice_header->dec_ref_pic_marking == nullptr) {
       return nullptr;
     }

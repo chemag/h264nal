@@ -177,8 +177,21 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
     }
   }
 
-  uint32_t IdrPicFlag = ((shise->nal_unit_type == 5) ? 1 : 0);
-  if (IdrPicFlag) {
+  auto& nal_unit_header_svc_extension =
+      nal_unit_header.nal_unit_header_svc_extension;
+  if (nal_unit_header_svc_extension == nullptr) {
+    // non-existent nal_unit_header_svc_extension
+    return nullptr;
+  }
+  shise->idr_flag = nal_unit_header_svc_extension->idr_flag;
+
+  // Section G.7.3.3.4 gates idr_pic_id on "idr_flag == 1", where idr_flag
+  // comes from nal_unit_header_svc_extension(). Note this is not the
+  // IdrPicFlag of section 7.4.3, which is derived from nal_unit_type: a
+  // slice header in scalable extension always lives in a nal_unit_type 20
+  // NAL unit, so that flag is always 0 here and the element would never be
+  // read. The enhancement layer slices of an IDR access unit do carry it.
+  if (shise->idr_flag) {
     // idr_pic_id  ue(v)
     if (!bit_buffer->ReadExponentialGolomb(shise->idr_pic_id)) {
       return nullptr;
@@ -257,13 +270,6 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
 #endif  // FPRINT_ERRORS
       return nullptr;
     }
-  }
-
-  auto& nal_unit_header_svc_extension =
-      nal_unit_header.nal_unit_header_svc_extension;
-  if (nal_unit_header_svc_extension == nullptr) {
-    // non-existent nal_unit_header_svc_extension
-    return nullptr;
   }
 
   shise->quality_id = nal_unit_header_svc_extension->quality_id;
@@ -374,8 +380,10 @@ H264SliceHeaderInScalableExtensionParser::ParseSliceHeaderInScalableExtension(
     if (shise->nal_ref_idc != 0) {
       // dec_ref_pic_marking(nal_unit_type)
       shise->dec_ref_pic_marking =
-          H264DecRefPicMarkingParser::ParseDecRefPicMarking(
-              bit_buffer, shise->nal_unit_type);
+          // section F.3.4.1.1: IdrPicFlag is idr_flag here, not the
+          // nal_unit_type == 5 of equation 7-1
+          H264DecRefPicMarkingParser::ParseDecRefPicMarking(bit_buffer,
+                                                            shise->idr_flag);
       if (shise->dec_ref_pic_marking == nullptr) {
         return nullptr;
       }

@@ -22,15 +22,15 @@ namespace h264nal {
 // Unpack RBSP and parse dec_ref_pic_marking state from the supplied buffer.
 std::unique_ptr<H264DecRefPicMarkingParser::DecRefPicMarkingState>
 H264DecRefPicMarkingParser::ParseDecRefPicMarking(
-    const uint8_t* data, size_t length, uint32_t nal_unit_type) noexcept {
+    const uint8_t* data, size_t length, uint32_t IdrPicFlag) noexcept {
   std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
   BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
-  return ParseDecRefPicMarking(&bit_buffer, nal_unit_type);
+  return ParseDecRefPicMarking(&bit_buffer, IdrPicFlag);
 }
 
 std::unique_ptr<H264DecRefPicMarkingParser::DecRefPicMarkingState>
 H264DecRefPicMarkingParser::ParseDecRefPicMarking(
-    BitBuffer* bit_buffer, uint32_t nal_unit_type) noexcept {
+    BitBuffer* bit_buffer, uint32_t IdrPicFlag) noexcept {
   uint32_t golomb_tmp;
 
   // H264 dec_ref_pic_marking() NAL Unit.
@@ -39,10 +39,7 @@ H264DecRefPicMarkingParser::ParseDecRefPicMarking(
   auto dec_ref_pic_marking = std::make_unique<DecRefPicMarkingState>();
 
   // store input values
-  dec_ref_pic_marking->nal_unit_type = nal_unit_type;
-
-  // Equation (7-1)
-  uint32_t IdrPicFlag = ((nal_unit_type == 5) ? 1 : 0);
+  dec_ref_pic_marking->IdrPicFlag = IdrPicFlag;
 
   if (IdrPicFlag) {
     // no_output_of_prior_pics_flag  u(1)
@@ -132,7 +129,7 @@ void H264DecRefPicMarkingParser::DecRefPicMarkingState::fdump(
   fprintf(outfp, "dec_ref_pic_marking {");
   indent_level = indent_level_incr(indent_level);
 
-  if (nal_unit_type == 5) {
+  if (IdrPicFlag) {
     fdump_indent_level(outfp, indent_level);
     fprintf(outfp, "no_output_of_prior_pics_flag: %u",
             no_output_of_prior_pics_flag);

@@ -23,9 +23,9 @@ TEST_F(H264DecRefPicMarkingParserTest, TestSampleDecRefPicMarking601IDR) {
   // fuzzer::conv: data
   const uint8_t buffer[] = {0x00};
   // fuzzer::conv: begin
-  uint32_t nal_unit_type = NalUnitType::CODED_SLICE_OF_IDR_PICTURE_NUT;
+  uint32_t IdrPicFlag = 1;
   auto dec_ref_pic_marking = H264DecRefPicMarkingParser::ParseDecRefPicMarking(
-      buffer, arraysize(buffer), nal_unit_type);
+      buffer, arraysize(buffer), IdrPicFlag);
   // fuzzer::conv: end
 
   EXPECT_TRUE(dec_ref_pic_marking != nullptr);
@@ -39,9 +39,9 @@ TEST_F(H264DecRefPicMarkingParserTest, TestSampleDecRefPicMarking601NonIDR) {
   // fuzzer::conv: data
   const uint8_t buffer[] = {0x00};
   // fuzzer::conv: begin
-  uint32_t nal_unit_type = NalUnitType::CODED_SLICE_OF_NON_IDR_PICTURE_NUT;
+  uint32_t IdrPicFlag = 0;
   auto dec_ref_pic_marking = H264DecRefPicMarkingParser::ParseDecRefPicMarking(
-      buffer, arraysize(buffer), nal_unit_type);
+      buffer, arraysize(buffer), IdrPicFlag);
   // fuzzer::conv: end
 
   EXPECT_TRUE(dec_ref_pic_marking != nullptr);

@@ -14,14 +14,14 @@
 // libfuzzer infra to test the fuzz target
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   {
-  uint32_t nal_unit_type = h264nal::NalUnitType::CODED_SLICE_OF_IDR_PICTURE_NUT;
+  uint32_t IdrPicFlag = 1;
   auto dec_ref_pic_marking = h264nal::H264DecRefPicMarkingParser::ParseDecRefPicMarking(
-      data, size, nal_unit_type);
+      data, size, IdrPicFlag);
   }
   {
-  uint32_t nal_unit_type = h264nal::NalUnitType::CODED_SLICE_OF_NON_IDR_PICTURE_NUT;
+  uint32_t IdrPicFlag = 0;
   auto dec_ref_pic_marking = h264nal::H264DecRefPicMarkingParser::ParseDecRefPicMarking(
-      data, size, nal_unit_type);
+      data, size, IdrPicFlag);
   }
   return 0;
 }

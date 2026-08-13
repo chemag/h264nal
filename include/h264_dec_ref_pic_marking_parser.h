@@ -33,7 +33,12 @@ class H264DecRefPicMarkingParser {
 #endif  // FDUMP_DEFINE
 
     // input parameters
-    uint32_t nal_unit_type = 0;
+    // Equation 7-1 derives IdrPicFlag from nal_unit_type, but section
+    // F.3.4.1.1 overrides it: "For NAL units, in which idr_flag is present,
+    // the variable IdrPicFlag derived in subclause 7.4.1 is modified by
+    // setting it equal to idr_flag." Take the flag itself, so the caller
+    // that knows which rule applies decides.
+    uint32_t IdrPicFlag = 0;
 
     // contents
     uint32_t no_output_of_prior_pics_flag = 0;
@@ -48,9 +53,9 @@ class H264DecRefPicMarkingParser {
 
   // Unpack RBSP and parse DecRefPicMarking state from the supplied buffer.
   static std::unique_ptr<DecRefPicMarkingState> ParseDecRefPicMarking(
-      const uint8_t* data, size_t length, uint32_t nal_unit_type) noexcept;
+      const uint8_t* data, size_t length, uint32_t IdrPicFlag) noexcept;
   static std::unique_ptr<DecRefPicMarkingState> ParseDecRefPicMarking(
-      BitBuffer* bit_buffer, uint32_t nal_unit_type) noexcept;
+      BitBuffer* bit_buffer, uint32_t IdrPicFlag) noexcept;
 };
 
 }  // namespace h264nal

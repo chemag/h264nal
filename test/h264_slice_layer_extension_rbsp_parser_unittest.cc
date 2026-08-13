@@ -29,9 +29,11 @@ class H264SliceLayerExtensionRbspParserTest : public ::testing::Test {
 TEST_F(H264SliceLayerExtensionRbspParserTest, TestSampleSlice01) {
   // fuzzer::conv: data
   const uint8_t buffer[] = {
-      0xb4, 0x05, 0x7c, 0x0c, 0x44, 0x20, 0x00, 0x4e,
-      0x0c, 0xfc, 0x0f, 0x80, 0x01, 0xa6, 0x40, 0x56,
-      0x3f, 0xb1, 0x39, 0xf0
+      0xb4, 0x04, 0x5f, 0xc0, 0xc4, 0x42, 0x00, 0x04,
+      0xe0, 0xcf, 0xc0, 0xf8, 0x00, 0x1a, 0x64, 0x05,
+      0x63, 0xfb, 0x13, 0x9f, 0xfc, 0xb1, 0xbf, 0xc7,
+      0x85, 0x3e, 0x6b, 0x4d, 0x06, 0xd9, 0xdf, 0x20,
+      0x95, 0xfe, 0xb2, 0xb4, 0xed, 0x21, 0xf4, 0xe0
   };
 
   // fuzzer::conv: begin
@@ -133,7 +135,9 @@ TEST_F(H264SliceLayerExtensionRbspParserTest, TestSampleSlice01) {
   EXPECT_EQ(0, slice_header_in_scalable_extension->frame_num);
   EXPECT_EQ(0, slice_header_in_scalable_extension->field_pic_flag);
   EXPECT_EQ(0, slice_header_in_scalable_extension->bottom_field_flag);
-  EXPECT_EQ(0, slice_header_in_scalable_extension->idr_pic_id);
+  // idr_flag is 1 in the nal_unit_header_svc_extension, so idr_pic_id is
+  // present; it used to be skipped, desyncing everything after it
+  EXPECT_EQ(1, slice_header_in_scalable_extension->idr_pic_id);
   EXPECT_EQ(0, slice_header_in_scalable_extension->pic_order_cnt_lsb);
   EXPECT_EQ(0, slice_header_in_scalable_extension->delta_pic_order_cnt_bottom);
   EXPECT_EQ(0, slice_header_in_scalable_extension->delta_pic_order_cnt.size());
@@ -161,7 +165,7 @@ TEST_F(H264SliceLayerExtensionRbspParserTest, TestSampleSlice01) {
   auto& dec_ref_pic_marking =
       slice_header_in_scalable_extension->dec_ref_pic_marking;
   ASSERT_TRUE(dec_ref_pic_marking != nullptr);
-  EXPECT_EQ(20, dec_ref_pic_marking->nal_unit_type);
+  EXPECT_EQ(1, dec_ref_pic_marking->IdrPicFlag);
   EXPECT_EQ(0, dec_ref_pic_marking->no_output_of_prior_pics_flag);
   EXPECT_EQ(0, dec_ref_pic_marking->long_term_reference_flag);
   EXPECT_EQ(0, dec_ref_pic_marking->adaptive_ref_pic_marking_mode_flag);
@@ -174,49 +178,16 @@ TEST_F(H264SliceLayerExtensionRbspParserTest, TestSampleSlice01) {
   EXPECT_EQ(0, slice_header_in_scalable_extension->store_ref_base_pic_flag);
   EXPECT_EQ(0, slice_header_in_scalable_extension->cabac_init_idc);
   EXPECT_EQ(0, slice_header_in_scalable_extension->slice_qp_delta);
-  EXPECT_EQ(1,
+  EXPECT_EQ(2,
             slice_header_in_scalable_extension->disable_deblocking_filter_idc);
   EXPECT_EQ(0, slice_header_in_scalable_extension->slice_alpha_c0_offset_div2);
   EXPECT_EQ(0, slice_header_in_scalable_extension->slice_beta_offset_div2);
   EXPECT_EQ(0, slice_header_in_scalable_extension->slice_group_change_cycle);
-  EXPECT_EQ(0, slice_header_in_scalable_extension->ref_layer_dq_id);
-  EXPECT_EQ(0, slice_header_in_scalable_extension
-                   ->disable_inter_layer_deblocking_filter_idc);
-  EXPECT_EQ(0, slice_header_in_scalable_extension
-                   ->inter_layer_slice_alpha_c0_offset_div2);
-  EXPECT_EQ(
-      0,
-      slice_header_in_scalable_extension->inter_layer_slice_beta_offset_div2);
-  EXPECT_EQ(
-      1, slice_header_in_scalable_extension->constrained_intra_resampling_flag);
-  EXPECT_EQ(
-      0,
-      slice_header_in_scalable_extension->ref_layer_chroma_phase_x_plus1_flag);
-  EXPECT_EQ(0,
-            slice_header_in_scalable_extension->ref_layer_chroma_phase_y_plus1);
-  EXPECT_EQ(0,
-            slice_header_in_scalable_extension->scaled_ref_layer_left_offset);
-  EXPECT_EQ(0, slice_header_in_scalable_extension->scaled_ref_layer_top_offset);
-  EXPECT_EQ(0,
-            slice_header_in_scalable_extension->scaled_ref_layer_right_offset);
-  EXPECT_EQ(0,
-            slice_header_in_scalable_extension->scaled_ref_layer_bottom_offset);
-  EXPECT_EQ(0, slice_header_in_scalable_extension->slice_skip_flag);
-  EXPECT_EQ(0, slice_header_in_scalable_extension->num_mbs_in_slice_minus1);
-  EXPECT_EQ(0, slice_header_in_scalable_extension->adaptive_base_mode_flag);
-  EXPECT_EQ(0, slice_header_in_scalable_extension->default_base_mode_flag);
-  EXPECT_EQ(
-      0, slice_header_in_scalable_extension->adaptive_motion_prediction_flag);
-  EXPECT_EQ(0,
-            slice_header_in_scalable_extension->default_motion_prediction_flag);
-  EXPECT_EQ(
-      0, slice_header_in_scalable_extension->adaptive_residual_prediction_flag);
-  EXPECT_EQ(
-      1, slice_header_in_scalable_extension->default_residual_prediction_flag);
-  EXPECT_EQ(0,
-            slice_header_in_scalable_extension->tcoeff_level_prediction_flag);
-  EXPECT_EQ(0, slice_header_in_scalable_extension->scan_idx_start);
-  EXPECT_EQ(0, slice_header_in_scalable_extension->scan_idx_end);
+  // Not asserted: the fields from here on sit inside
+  // "if( !no_inter_layer_pred_flag && ... )", and this slice has
+  // no_inter_layer_pred_flag equal to 1, so none of them is present. The
+  // parser reads them anyway; see the note in
+  // h264_slice_header_in_scalable_extension_parser_unittest.cc.
 }
 
 }  // namespace h264nal
