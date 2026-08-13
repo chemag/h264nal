@@ -4,6 +4,8 @@
 
 #include "h264_nal_unit_parser.h"
 
+#include "h264_nal_unit_header_parser.h"
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -84,5 +86,48 @@ class H264NalUnitHeaderParserTest : public ::testing::Test {
   H264NalUnitHeaderParserTest() {}
   ~H264NalUnitHeaderParserTest() override {}
 };
+
+// Section 7.3.1: for nal_unit_type 14, 20 and 21 the header is followed by
+// exactly one of three extension structures. Only the SVC one is parsed;
+// the other two are refused rather than skipped over, because their bytes
+// would otherwise be read as the start of the payload.
+
+TEST_F(H264NalUnitHeaderParserTest, TestSvcExtensionHeader) {
+  // nal_unit_type 20 with svc_extension_flag 1 (svcbcts-1.264)
+  const uint8_t buffer[] = {0x74, 0xc0, 0x10, 0x07, 0xb4};
+  auto nal_unit_header =
+      H264NalUnitHeaderParser::ParseNalUnitHeader(buffer, arraysize(buffer));
+
+  ASSERT_TRUE(nal_unit_header != nullptr);
+  EXPECT_EQ(0, nal_unit_header->forbidden_zero_bit);
+  EXPECT_EQ(3, nal_unit_header->nal_ref_idc);
+  EXPECT_EQ(NalUnitType::CODED_SLICE_EXTENSION,
+            nal_unit_header->nal_unit_type);
+  EXPECT_EQ(1, nal_unit_header->svc_extension_flag);
+  EXPECT_TRUE(nal_unit_header->nal_unit_header_svc_extension != nullptr);
+}
+
+TEST_F(H264NalUnitHeaderParserTest, TestMvcExtensionHeaderIsRefused) {
+  // nal_unit_type 20 with svc_extension_flag 0 (mvcds1.264), so the header
+  // carries a nal_unit_header_mvc_extension(). Parsing on without consuming
+  // its 3 bytes used to shift the slice header by 24 bits and report the
+  // resulting garbage as a bad bitstream, e.g. "invalid pic_parameter_set_id:
+  // 3148 not in range [0, 255]".
+  const uint8_t buffer[] = {0x74, 0x02, 0x00, 0x45, 0xb4};
+  auto nal_unit_header =
+      H264NalUnitHeaderParser::ParseNalUnitHeader(buffer, arraysize(buffer));
+
+  EXPECT_TRUE(nal_unit_header == nullptr);
+}
+
+TEST_F(H264NalUnitHeaderParserTest, Test3davcExtensionHeaderIsRefused) {
+  // nal_unit_type 21 with avc_3d_extension_flag 1 (balloons.bit), so the
+  // header carries a nal_unit_header_3davc_extension() of 2 bytes.
+  const uint8_t buffer[] = {0x55, 0x81, 0xc3, 0xb5, 0x5f};
+  auto nal_unit_header =
+      H264NalUnitHeaderParser::ParseNalUnitHeader(buffer, arraysize(buffer));
+
+  EXPECT_TRUE(nal_unit_header == nullptr);
+}
 
 }  // namespace h264nal

@@ -71,21 +71,45 @@ H264NalUnitHeaderParser::ParseNalUnitHeader(BitBuffer* bit_buffer) noexcept {
       if (!bit_buffer->ReadBits(1, nal_unit_header->svc_extension_flag)) {
         return nullptr;
       }
-      if (nal_unit_header->svc_extension_flag == 1) {
-        // nal_unit_header_svc_extension()
-        nal_unit_header->nal_unit_header_svc_extension =
-            H264NalUnitHeaderSvcExtensionParser::ParseNalUnitHeaderSvcExtension(
-                bit_buffer);
-        if (nal_unit_header->nal_unit_header_svc_extension == nullptr) {
-          return nullptr;
-        }
-      }
 
     } else {
       // avc_3d_extension_flag  u(1)
       if (!bit_buffer->ReadBits(1, nal_unit_header->avc_3d_extension_flag)) {
         return nullptr;
       }
+    }
+
+    // Section 7.3.1: exactly one of the three extension structures follows,
+    // adding 3, 2 or 3 bytes to nalUnitHeaderBytes respectively. Only the
+    // SVC one is implemented. The other two must not be skipped over
+    // silently: the bytes they occupy would then be read as the start of the
+    // payload, and everything after would be parsed from the wrong bit
+    // offset. Give up instead, and say why.
+    if (nal_unit_header->svc_extension_flag) {
+      // nal_unit_header_svc_extension()  // specified in Annex F
+      nal_unit_header->nal_unit_header_svc_extension =
+          H264NalUnitHeaderSvcExtensionParser::ParseNalUnitHeaderSvcExtension(
+              bit_buffer);
+      if (nal_unit_header->nal_unit_header_svc_extension == nullptr) {
+        return nullptr;
+      }
+
+    } else if (nal_unit_header->avc_3d_extension_flag) {
+      // nal_unit_header_3davc_extension()  // specified in Annex I
+#ifdef FPRINT_ERRORS
+      // TODO(chemag): add support for nal_unit_header_3davc_extension()
+      fprintf(stderr,
+              "error: unimplemented nal_unit_header_3davc_extension\n");
+#endif  // FPRINT_ERRORS
+      return nullptr;
+
+    } else {
+      // nal_unit_header_mvc_extension()  // specified in Annex G
+#ifdef FPRINT_ERRORS
+      // TODO(chemag): add support for nal_unit_header_mvc_extension()
+      fprintf(stderr, "error: unimplemented nal_unit_header_mvc_extension\n");
+#endif  // FPRINT_ERRORS
+      return nullptr;
     }
   }
 
