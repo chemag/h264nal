@@ -665,7 +665,7 @@ uint32_t H264SliceHeaderInScalableExtensionParser::
   // Rec. ITU-T H.264 (2012) Page 67, Section 7.4.3
   // The value of slice_group_change_cycle is represented in the bitstream
   // by the following number of bits
-  // Ceil(Log2(PicSizeInMapUnits ÷ SliceGroupChangeRate + 1)) (7-21)
+  // Ceil(Log2(PicSizeInMapUnits / SliceGroupChangeRate + 1)) (7-21)
   uint32_t PicSizeInMapUnits = getPicSizeInMapUnits(
       pic_width_in_mbs_minus1, pic_height_in_map_units_minus1);
   uint32_t SliceGroupChangeRate =
