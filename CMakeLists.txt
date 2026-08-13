@@ -53,6 +53,23 @@ if(POLICY CMP0077)
   cmake_policy(SET CMP0077 NEW)
 endif()
 
+option(BUILD_CLANG_FUZZER "Build clang fuzzer sanitizer targets" OFF)
+
+if(BUILD_CLANG_FUZZER)
+  if(NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    message(FATAL_ERROR "BUILD_CLANG_FUZZER requires Clang (found ${CMAKE_CXX_COMPILER_ID})")
+  endif()
+  # Instrument here, at the top level, so that the library gets it too. The
+  # flags used to live in fuzz/CMakeLists.txt, where add_compile_options()
+  # only reaches targets declared in that directory: the fuzzers were
+  # linking an uninstrumented libh264nal, which left them with no
+  # AddressSanitizer inside the parsers and no coverage to steer by.
+  # fuzzer-no-link gives the library the coverage instrumentation without
+  # pulling in libFuzzer's main(); the fuzz targets link that themselves.
+  add_compile_options(-fsanitize=address,undefined -fsanitize=fuzzer-no-link)
+  add_link_options(-fsanitize=address,undefined)
+endif()
+
 # Recurse into source code subdirectories.
 add_subdirectory(src)
 add_subdirectory(tools)
@@ -62,12 +79,7 @@ if(BUILD_H264_TESTS)
   add_subdirectory(test)
 endif()
 
-option(BUILD_CLANG_FUZZER "Build clang fuzzer sanitizer targets" OFF)
-
 if(BUILD_CLANG_FUZZER)
-  if(NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    message(FATAL_ERROR "BUILD_CLANG_FUZZER requires Clang (found ${CMAKE_CXX_COMPILER_ID})")
-  endif()
   add_subdirectory(fuzz)
 endif()
 

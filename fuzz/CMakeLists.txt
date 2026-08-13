@@ -7,8 +7,10 @@ include_directories(PUBLIC ../src)
 include_directories(PUBLIC /usr/local/include)
 link_directories(/usr/local/lib)
 
-add_compile_options(-fsanitize=address,fuzzer,undefined)
-add_link_options(-fsanitize=address,fuzzer,undefined)
+# the top level CMakeLists.txt instruments everything, including the
+# library, with -fsanitize=address,undefined -fsanitize=fuzzer-no-link.
+# Only the libFuzzer entry point is added here, where the targets are.
+add_link_options(-fsanitize=fuzzer)
 
 function(add_fuzzer TARGET SOURCE)
   if(NOT WIN32)
