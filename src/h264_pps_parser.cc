@@ -122,7 +122,11 @@ std::shared_ptr<H264PpsParser::PpsState> H264PpsParser::ParsePps(
     }
 
     if (pps->slice_group_map_type == 0) {
-      for (uint32_t iGroup = 0; iGroup < pps->num_slice_groups_minus1;
+      // Section 7.3.2.2: the run_length_minus1 loop runs while
+      // "iGroup <= num_slice_groups_minus1", i.e. once per slice group.
+      // Note this differs from the slice_group_map_type == 2 loop below,
+      // which the standard bounds with "<".
+      for (uint32_t iGroup = 0; iGroup <= pps->num_slice_groups_minus1;
            iGroup++) {
         // run_length_minus1[iGroup]  ue(v)
         if (!bit_buffer->ReadExponentialGolomb(golomb_tmp)) {
