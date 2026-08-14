@@ -1,0 +1,37 @@
+# clang-tidy configuration, used both by "make tidy" and by editors that
+# pick up .clang-tidy (clangd, and so on), so that the two agree on what
+# counts as a finding.
+#
+# Check groups were chosen by counting what each costs on this tree:
+#
+#   clang-analyzer-*     0    the static analyzer is clean, keep it that way
+#   performance-*        0    likewise
+#   bugprone-*          45    10 once the two noisy checks below are off
+#   modernize-*        376    argues against the C++14 target
+#   readability-*      433
+#   cert-*             490
+#   misc-*             535
+#
+# The last four are left off: several hundred findings cannot be triaged,
+# and drown the ones worth acting on. bugprone-integer-division, in this
+# set, is the check that flags reading a bit width as
+# Ceil(Log2(a / b + 1)) with integer division, which crashed the parser.
+---
+Checks: >
+  -*,
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-branch-clone,
+  clang-analyzer-*,
+  performance-*
+
+# advisory, not a build gate: "make tidy" is run on purpose, not on every
+# build, and a finding here is a prompt to look rather than a failure
+WarningsAsErrors: ''
+
+# report findings inside this project's own headers, which are analysed as
+# part of the translation units that include them. Anything from a system
+# or third party header is not ours to fix.
+HeaderFilterRegex: '.*/(include|src)/(h264|rtc)[^/]*\.h$'
+
+FormatStyle: google
