@@ -674,12 +674,20 @@ uint32_t H264SliceHeaderInScalableExtensionParser::
   // The value of slice_group_change_cycle is represented in the bitstream
   // by the following number of bits
   // Ceil(Log2(PicSizeInMapUnits / SliceGroupChangeRate + 1)) (7-21)
+  //
+  // The division there is the standard's real division operator, not the
+  // "/" that truncates toward zero (see the operator list in section 5.2).
+  // Dividing the integers first truncates the ratio to 0 whenever
+  // PicSizeInMapUnits < SliceGroupChangeRate, which makes the whole
+  // expression Ceil(Log2(1)) == 0, and a zero bit read is not something
+  // BitBuffer accepts. Promote before dividing, as the non-scalable
+  // slice header parser does.
   uint32_t PicSizeInMapUnits = getPicSizeInMapUnits(
       pic_width_in_mbs_minus1, pic_height_in_map_units_minus1);
   uint32_t SliceGroupChangeRate =
       getSliceGroupChangeRate(slice_group_change_rate_minus1);
   return std::ceil(
-      std::log2(1.0 * (PicSizeInMapUnits / SliceGroupChangeRate) + 1));
+      std::log2(((1.0 * PicSizeInMapUnits) / SliceGroupChangeRate) + 1));
 }
 
 uint32_t H264SliceHeaderInScalableExtensionParser::

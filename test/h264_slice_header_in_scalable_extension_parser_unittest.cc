@@ -14,6 +14,7 @@
 #include "h264_pps_parser.h"
 #include "h264_pred_weight_table_parser.h"
 #include "h264_ref_pic_list_modification_parser.h"
+#include "h264_slice_header_parser.h"
 #include "h264_sps_parser.h"
 #include "rtc_common.h"
 
@@ -479,5 +480,43 @@ TEST_F(H264SliceHeaderInScalableExtensionParserTest, TestSampleSliceIDR601) {
   EXPECT_EQ(0, shise->slice_group_change_cycle);
 }
 #endif
+
+TEST_F(H264SliceHeaderInScalableExtensionParserTest,
+       TestSliceGroupChangeCycleLen) {
+  // Equation 7-21 is
+  //   Ceil(Log2(PicSizeInMapUnits / SliceGroupChangeRate + 1))
+  // where the division is the standard's real division, not the "/" that
+  // truncates. Dividing the integers first makes the ratio 0 whenever
+  // PicSizeInMapUnits < SliceGroupChangeRate, the expression collapses to
+  // Ceil(Log2(1)) == 0, and the caller then asks BitBuffer for a zero bit
+  // read, which asserts. Found by the fuzzer, as
+  // crash-075aa64d452e6539ba1be324c74d1923137df7a6 of
+  // h264_bitstream_parser_fuzzer.
+  using State = H264SliceHeaderInScalableExtensionParser::
+      SliceHeaderInScalableExtensionState;
+
+  // PicSizeInMapUnits 1, SliceGroupChangeRate 2: the ratio is 0.5, not 0,
+  // so this is 1 bit. Truncating gives 0 bits and crashes.
+  EXPECT_EQ(1, State::getSliceGroupChangeCycleLen(0, 0, 1));
+  // and with a larger rate, still 1 rather than 0
+  EXPECT_EQ(1, State::getSliceGroupChangeCycleLen(0, 0, 9));
+  // PicSizeInMapUnits 3, SliceGroupChangeRate 2: 2.5 -> 2 bits. Truncating
+  // gives 2 -> 1 bit, so this catches the rounding as well as the crash.
+  EXPECT_EQ(2, State::getSliceGroupChangeCycleLen(2, 0, 1));
+
+  // cases where both readings agree, to pin the formula itself
+  EXPECT_EQ(1, State::getSliceGroupChangeCycleLen(0, 0, 0));
+  EXPECT_EQ(7, State::getSliceGroupChangeCycleLen(10, 8, 0));
+  EXPECT_EQ(6, State::getSliceGroupChangeCycleLen(10, 8, 1));
+
+  // the non-scalable slice header computes the same quantity from the same
+  // equation: the two must not drift apart again
+  for (uint32_t rate_minus1 = 0; rate_minus1 < 12; ++rate_minus1) {
+    EXPECT_EQ(H264SliceHeaderParser::SliceHeaderState::
+                  getSliceGroupChangeCycleLen(3, 2, rate_minus1),
+              State::getSliceGroupChangeCycleLen(3, 2, rate_minus1))
+        << "rate_minus1: " << rate_minus1;
+  }
+}
 
 }  // namespace h264nal
