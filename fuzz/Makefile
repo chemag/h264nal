@@ -157,7 +157,10 @@ FUZZERS = \
     h264_bitstream_parser_fuzzer \
     h264_prefix_nal_unit_parser_fuzzer \
     h264_nal_unit_header_svc_extension_parser_fuzzer \
-    h264_nal_unit_parser_fuzzer
+    h264_nal_unit_parser_fuzzer \
+    h264_nal_unit_header_parser_fuzzer \
+    h264_slice_header_in_scalable_extension_parser_fuzzer \
+    h264_slice_layer_extension_rbsp_parser_fuzzer
 
 .PHONY: fuzz merge $(FUZZERS)
 
