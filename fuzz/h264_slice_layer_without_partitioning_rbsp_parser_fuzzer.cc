@@ -19,11 +19,20 @@
 
 // libfuzzer infra to test the fuzz target
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
+  // the code below is copied verbatim out of a unit test, where it sits
+  // inside "namespace h264nal", and so refers to the project's types
+  // unqualified. This entry point cannot: it has to be extern "C" at
+  // global scope. Pull the namespace in rather than qualifying each name,
+  // which would mean keeping a list of them here.
+  using namespace h264nal;  // NOLINT(build/namespaces)
+  // a test with no fuzzer::conv markers converts to an empty body
+  (void)data;
+  (void)size;
   {
   // get some mock state
-  h264nal::H264BitstreamParserState bitstream_parser_state;
-  auto sps = std::make_shared<h264nal::H264SpsParser::SpsState>();
-  sps->sps_data = std::make_unique<h264nal::H264SpsDataParser::SpsDataState>();
+  H264BitstreamParserState bitstream_parser_state;
+  auto sps = std::make_shared<H264SpsParser::SpsState>();
+  sps->sps_data = std::make_unique<H264SpsDataParser::SpsDataState>();
   sps->sps_data->log2_max_frame_num_minus4 = 1;
   sps->sps_data->frame_mbs_only_flag = 1;
   sps->sps_data->pic_order_cnt_type = 2;
@@ -31,7 +40,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   sps->sps_data->pic_width_in_mbs_minus1 = 0;
   sps->sps_data->pic_height_in_map_units_minus1 = 0;
   bitstream_parser_state.sps[0] = sps;
-  auto pps = std::make_shared<h264nal::H264PpsParser::PpsState>();
+  auto pps = std::make_shared<H264PpsParser::PpsState>();
   pps->bottom_field_pic_order_in_frame_present_flag = 0;
   pps->redundant_pic_cnt_present_flag = 0;
   pps->weighted_pred_flag = 0;
@@ -43,18 +52,18 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   pps->slice_group_change_rate_minus1 = 0;
   bitstream_parser_state.pps[0] = pps;
   uint32_t nal_ref_idc = 3;
-  uint32_t nal_unit_type = h264nal::NalUnitType::CODED_SLICE_OF_IDR_PICTURE_NUT;
+  uint32_t nal_unit_type = NalUnitType::CODED_SLICE_OF_IDR_PICTURE_NUT;
   auto slice_layer_without_partitioning_rbsp =
-      h264nal::H264SliceLayerWithoutPartitioningRbspParser::
+      H264SliceLayerWithoutPartitioningRbspParser::
           ParseSliceLayerWithoutPartitioningRbsp(data, size,
                                                  nal_ref_idc, nal_unit_type,
                                                  &bitstream_parser_state);
   }
   {
   // get some mock state
-  h264nal::H264BitstreamParserState bitstream_parser_state;
-  auto sps = std::make_shared<h264nal::H264SpsParser::SpsState>();
-  sps->sps_data = std::make_unique<h264nal::H264SpsDataParser::SpsDataState>();
+  H264BitstreamParserState bitstream_parser_state;
+  auto sps = std::make_shared<H264SpsParser::SpsState>();
+  sps->sps_data = std::make_unique<H264SpsDataParser::SpsDataState>();
   sps->sps_data->log2_max_frame_num_minus4 = 1;
   sps->sps_data->frame_mbs_only_flag = 1;
   sps->sps_data->pic_order_cnt_type = 2;
@@ -62,7 +71,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   sps->sps_data->pic_width_in_mbs_minus1 = 0;
   sps->sps_data->pic_height_in_map_units_minus1 = 0;
   bitstream_parser_state.sps[0] = sps;
-  auto pps = std::make_shared<h264nal::H264PpsParser::PpsState>();
+  auto pps = std::make_shared<H264PpsParser::PpsState>();
   pps->bottom_field_pic_order_in_frame_present_flag = 0;
   pps->redundant_pic_cnt_present_flag = 0;
   pps->weighted_pred_flag = 0;
@@ -74,9 +83,9 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   pps->slice_group_change_rate_minus1 = 0;
   bitstream_parser_state.pps[0] = pps;
   uint32_t nal_ref_idc = 2;
-  uint32_t nal_unit_type = h264nal::NalUnitType::CODED_SLICE_OF_NON_IDR_PICTURE_NUT;
+  uint32_t nal_unit_type = NalUnitType::CODED_SLICE_OF_NON_IDR_PICTURE_NUT;
   auto slice_layer_without_partitioning_rbsp =
-      h264nal::H264SliceLayerWithoutPartitioningRbspParser::
+      H264SliceLayerWithoutPartitioningRbspParser::
           ParseSliceLayerWithoutPartitioningRbsp(data, size,
                                                  nal_ref_idc, nal_unit_type,
                                                  &bitstream_parser_state);

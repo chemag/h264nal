@@ -13,22 +13,31 @@
 
 // libfuzzer infra to test the fuzz target
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
+  // the code below is copied verbatim out of a unit test, where it sits
+  // inside "namespace h264nal", and so refers to the project's types
+  // unqualified. This entry point cannot: it has to be extern "C" at
+  // global scope. Pull the namespace in rather than qualifying each name,
+  // which would mean keeping a list of them here.
+  using namespace h264nal;  // NOLINT(build/namespaces)
+  // a test with no fuzzer::conv markers converts to an empty body
+  (void)data;
+  (void)size;
   {
   uint32_t chroma_format_idc = 1;
-  auto pps = h264nal::H264PpsParser::ParsePps(data, size, chroma_format_idc);
+  auto pps = H264PpsParser::ParsePps(data, size, chroma_format_idc);
   }
   {
   uint32_t chroma_format_idc = 1;
-  auto pps = h264nal::H264PpsParser::ParsePps(data, size, chroma_format_idc);
+  auto pps = H264PpsParser::ParsePps(data, size, chroma_format_idc);
   }
   {
   uint32_t chroma_format_idc = 1;
-  auto pps = h264nal::H264PpsParser::ParsePps(data, size,
+  auto pps = H264PpsParser::ParsePps(data, size,
                                      chroma_format_idc);
   }
   {
   uint32_t chroma_format_idc = 1;
-  auto pps = h264nal::H264PpsParser::ParsePps(data, size,
+  auto pps = H264PpsParser::ParsePps(data, size,
                                      chroma_format_idc);
   }
   return 0;
