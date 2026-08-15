@@ -31,7 +31,11 @@ all: \
     h264_prefix_nal_unit_parser_fuzzer.cc \
     h264_nal_unit_header_svc_extension_parser_fuzzer.cc \
     h264_nal_unit_parser_fuzzer.cc
-	echo "run: RUNS=1000000 make -j -Oline fuzz"
+	@echo "run:     RUNS=1000000 make -j -Oline fuzz     (fork mode: RUNS is a floor)"
+	@echo "exact:   RUNS=1000000 FUZZ_FLAGS= make -j -Oline fuzz"
+	@echo "repro:   SEED=12345 make <target>"
+	@echo "results: make fuzz-report"
+	@echo "distill: make -j merge"
 
 
 h264_common_fuzzer.cc: ../test/h264_common_unittest.cc
