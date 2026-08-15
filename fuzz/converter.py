@@ -31,6 +31,15 @@ $include
 
 // libfuzzer infra to test the fuzz target
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
+  // the code below is copied verbatim out of a unit test, where it sits
+  // inside "namespace h264nal", and so refers to the project's types
+  // unqualified. This entry point cannot: it has to be extern "C" at
+  // global scope. Pull the namespace in rather than qualifying each name,
+  // which would mean keeping a list of them here.
+  using namespace h264nal;  // NOLINT(build/namespaces)
+  // a test with no fuzzer::conv markers converts to an empty body
+  (void)data;
+  (void)size;
 $code
   return 0;
 }
@@ -157,14 +166,11 @@ def parse_input(lines, debug):
     # clean the code
     output['code'] = ''
     for line in lines_code:
-        # add h264nal namespace if needed
-        if 'H264' in line:
-            line = line.replace('H264', 'h264nal::H264')
-        if 'NalUnitType::' in line:
-            line = line.replace('NalUnitType::', 'h264nal::NalUnitType::')
-        if 'SliceType::' in line:
-            line = line.replace('SliceType::', 'h264nal::SliceType::')
-        line = line.replace('buffer, arraysize(buffer)', 'data, size')
+        # feed the fuzzer input in wherever the test passes its own buffer.
+        # The buffer is not always called "buffer": a test declaring more
+        # than one gives each a distinct name, so match whatever name the
+        # test used on both sides of the arraysize() call.
+        line = re.sub(r'\b(\w+), arraysize\(\1\)', 'data, size', line)
         output['code'] += line
     output['code'].strip('\n')
     output['code'] = output['code'].strip('\n')
