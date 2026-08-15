@@ -630,6 +630,20 @@ bool H264SpsDataParser::SpsDataState::scaling_list(
       if (!bit_buffer->ReadSignedExponentialGolomb(delta_scale)) {
         return false;
       }
+      // Equation 7-40 below adds delta_scale to lastScale in an int, so an
+      // out-of-range value read from a broken bitstream overflows before
+      // the modulo can bring it back down.
+      if (delta_scale < kScalingDeltaMin || delta_scale > kScalingDeltaMax) {
+#ifdef FPRINT_ERRORS
+        fprintf(stderr,
+                "invalid delta_scale: %" PRIi32
+                " not in range "
+                "[%" PRIi32 ", %" PRIi32 "]\n",
+                delta_scale, kScalingDeltaMin, kScalingDeltaMax);
+#endif  // FPRINT_ERRORS
+        return false;
+      }
+      // Equation 7-40
       nextScale = static_cast<uint32_t>(static_cast<int32_t>(lastScale) +
                                         delta_scale + 256) %
                   256;

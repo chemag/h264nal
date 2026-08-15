@@ -346,6 +346,63 @@ TEST_F(H264SpsParserTest, TestInterlacedSpsFrameHeight) {
   EXPECT_EQ(480, height);  // would be 240 without the eq. 7-18 fix
 }
 
+// The 3 tests below share a hand-built High profile SPS header that turns
+// the scaling matrix on and marks the first scaling list present, so that
+// scaling_list() runs and reads a delta_scale. They differ only in the
+// se(v) that follows:
+//
+//   profile_idc=100 constraint flags=0 level_idc=30 seq_parameter_set_id=0
+//   chroma_format_idc=1 bit_depth_luma_minus8=0 bit_depth_chroma_minus8=0
+//   qpprime_y_zero_transform_bypass_flag=0
+//   seq_scaling_matrix_present_flag=1 seq_scaling_list_present_flag[0]=1
+
+TEST_F(H264SpsParserTest, TestScalingListDeltaScaleOverflow) {
+  // delta_scale = 2147483534, encoded as se(v) codeNum 4294967067.
+  //
+  // Section 7.4.2.1.1.1 caps delta_scale at +127, and equation 7-40 adds it
+  // to lastScale in an int. Before the range check this overflowed, which
+  // is undefined behavior: UBSan reported "signed integer overflow:
+  // 2147483542 + 256 cannot be represented in type 'int'". Found by
+  // h264_sps_parser_fuzzer.
+  const uint8_t buffer[] = {0x64, 0x00, 0x1e, 0xad, 0x80, 0x00, 0x00,
+                            0x00, 0xff, 0xff, 0xff, 0x1c, 0x80};
+  auto sps = H264SpsParser::ParseSps(buffer, arraysize(buffer));
+  EXPECT_TRUE(sps == nullptr);
+}
+
+TEST_F(H264SpsParserTest, TestScalingListDeltaScaleOutOfRange) {
+  // delta_scale = 128, one past the +127 the spec allows. Too small to
+  // overflow anything, so it checks the range test itself rather than the
+  // overflow it prevents.
+  const uint8_t buffer[] = {0x64, 0x00, 0x1e, 0xad, 0x80, 0x40, 0x20};
+  auto sps = H264SpsParser::ParseSps(buffer, arraysize(buffer));
+  EXPECT_TRUE(sps == nullptr);
+}
+
+TEST_F(H264SpsParserTest, TestScalingListValidDeltaScale) {
+  // 704x480 High profile SPS carrying a scaling list, to show the range
+  // check does not reject a legal one. delta_scale = -8 drives nextScale to
+  // (8 - 8 + 256) % 256 == 0, which ends the list at j == 0 per section
+  // 7.3.2.1.1.1, so the remaining 15 coefficients are not coded.
+  const uint8_t buffer[] = {0x64, 0x00, 0x1e, 0xad, 0x84, 0x40,
+                            0x74, 0x05, 0x81, 0xec, 0x80};
+  auto sps = H264SpsParser::ParseSps(buffer, arraysize(buffer));
+  ASSERT_TRUE(sps != nullptr);
+
+  auto& sps_data = sps->sps_data;
+  ASSERT_TRUE(sps_data != nullptr);
+  EXPECT_EQ(1, sps_data->seq_scaling_matrix_present_flag);
+  EXPECT_EQ(1, sps_data->seq_scaling_list_present_flag[0]);
+  EXPECT_EQ(-8, sps_data->delta_scale);
+  EXPECT_EQ(1, sps_data->UseDefaultScalingMatrix4x4Flag[0]);
+
+  int width = 0;
+  int height = 0;
+  EXPECT_EQ(0, sps_data->getResolution(&width, &height));
+  EXPECT_EQ(704, width);
+  EXPECT_EQ(480, height);
+}
+
 TEST_F(H264SpsParserTest, TestTruncatedSps) {
   // single byte, too short to parse
   const uint8_t buffer[] = {0x42};

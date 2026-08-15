@@ -33,6 +33,10 @@ class H264SpsDataParser {
   // 6, inclusive."
   const static uint32_t kBitDepthChromaMinus8Min = 0;
   const static uint32_t kBitDepthChromaMinus8Max = 6;
+  // Section 7.4.2.1.1.1: "The value of delta_scale shall be in the range
+  // of -128 to +127, inclusive."
+  const static int32_t kScalingDeltaMin = -128;
+  const static int32_t kScalingDeltaMax = 127;
   // Section 7.4.2.1.2: "The value of seq_parameter_set_id shall be in the
   // range of 0 to 31, inclusive."
   const static uint32_t kSeqParameterSetIdMin = 0;
