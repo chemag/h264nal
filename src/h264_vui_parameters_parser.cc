@@ -330,9 +330,10 @@ H264VuiParametersParser::ParseVuiParameters(BitBuffer* bit_buffer) noexcept {
 
 float H264VuiParametersParser::VuiParametersState::getFramerate()
     const noexcept {
-  // Equation D-2
-  float framerate = (float)time_scale / (2.0 * (float)num_units_in_tick);
-  return framerate;
+  // Equation D-2. Evaluate in double and narrow once on return: the
+  // operands are 32 bit, and 30000/1001 is the sort of ratio that does
+  // not survive a float division intact.
+  return static_cast<float>(time_scale / (2.0 * num_units_in_tick));
 }
 
 #ifdef FDUMP_DEFINE

@@ -88,18 +88,23 @@ H264SpsExtensionParser::ParseSpsExtension(BitBuffer* bit_buffer) noexcept {
       return nullptr;
     }
 
+    // Section 7.3.2.1.2: alpha_opaque_value and alpha_transparent_value
+    // are both u(v) with v = bit_depth_aux_minus8 + 9, so the width is the
+    // same by construction and is computed once. Cast before the addition
+    // rather than after: the sum is at most 13 given the range check
+    // above, but doing the arithmetic in size_t makes that a property of
+    // this expression instead of one of that check.
+    size_t alpha_value_bits =
+        static_cast<size_t>(sps_extension->bit_depth_aux_minus8) + 9;
+
     // alpha_opaque_value  u(v)
-    size_t alpha_opaque_value_bits =
-        static_cast<size_t>(sps_extension->bit_depth_aux_minus8 + 9);
-    if (!bit_buffer->ReadBits(alpha_opaque_value_bits,
+    if (!bit_buffer->ReadBits(alpha_value_bits,
                               sps_extension->alpha_opaque_value)) {
       return nullptr;
     }
 
     // alpha_transparent_value  u(v)
-    size_t alpha_transparent_value_bits =
-        static_cast<size_t>(sps_extension->bit_depth_aux_minus8 + 9);
-    if (!bit_buffer->ReadBits(alpha_transparent_value_bits,
+    if (!bit_buffer->ReadBits(alpha_value_bits,
                               sps_extension->alpha_transparent_value)) {
       return nullptr;
     }

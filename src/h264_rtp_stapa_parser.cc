@@ -53,8 +53,12 @@ H264RtpStapAParser::ParseRtpStapA(
     if (!bit_buffer->ReadBits(16, nalu_size)) {
       return nullptr;
     }
-    // Validate nalu_size fits in remaining buffer
-    if (nalu_size * 8 > bit_buffer->RemainingBitCount()) {
+    // Validate nalu_size fits in remaining buffer. Widen before the
+    // multiply, not after: nalu_size is 16 bits today so the product
+    // cannot wrap, but that is a property of the ReadBits above rather
+    // than of this check.
+    if (static_cast<uint64_t>(nalu_size) * 8 >
+        bit_buffer->RemainingBitCount()) {
       return nullptr;
     }
     rtp_stapa->nal_unit_sizes.push_back(nalu_size);
