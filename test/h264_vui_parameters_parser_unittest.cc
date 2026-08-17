@@ -223,4 +223,48 @@ TEST_F(H264VuiParametersParserTest, TestSampleVuiParametersSmallMaxDecFrameBuffe
   EXPECT_EQ(1, vui_parameters->max_dec_frame_buffering);
 }
 
+// The 3 tests below share a minimal VUI whose only content is the timing
+// info: the 4 leading present flags are 0, timing_info_present_flag is 1,
+// and what follows is num_units_in_tick u(32), time_scale u(32) and
+// fixed_frame_rate_flag. They differ only in those two 32 bit fields.
+
+TEST_F(H264VuiParametersParserTest, TestZeroNumUnitsInTick) {
+  // num_units_in_tick = 0, time_scale = 60000. Section E.2.1 requires
+  // num_units_in_tick to be greater than 0; it is the denominator of
+  // equation D-2, so a zero divides by zero in getFramerate().
+  const uint8_t buffer[] = {0x08, 0x00, 0x00, 0x00, 0x00,
+                            0x00, 0x07, 0x53, 0x00, 0x00};
+  auto vui_parameters =
+      H264VuiParametersParser::ParseVuiParameters(buffer, arraysize(buffer));
+  EXPECT_TRUE(vui_parameters == nullptr);
+}
+
+TEST_F(H264VuiParametersParserTest, TestZeroTimeScale) {
+  // num_units_in_tick = 1001, time_scale = 0. Section E.2.1 requires
+  // time_scale to be greater than 0 as well, which makes the framerate 0
+  // rather than undefined, but is just as invalid.
+  const uint8_t buffer[] = {0x08, 0x00, 0x00, 0x1f, 0x48,
+                            0x00, 0x00, 0x00, 0x00, 0x00};
+  auto vui_parameters =
+      H264VuiParametersParser::ParseVuiParameters(buffer, arraysize(buffer));
+  EXPECT_TRUE(vui_parameters == nullptr);
+}
+
+TEST_F(H264VuiParametersParserTest, TestValidTimingInfo) {
+  // num_units_in_tick = 1001, time_scale = 60000, the usual 29.97 fps
+  // pair. Shows the two checks do not reject a legal timing info, and is
+  // the only coverage getFramerate() has.
+  const uint8_t buffer[] = {0x08, 0x00, 0x00, 0x1f, 0x48,
+                            0x00, 0x07, 0x53, 0x00, 0x00};
+  auto vui_parameters =
+      H264VuiParametersParser::ParseVuiParameters(buffer, arraysize(buffer));
+  ASSERT_TRUE(vui_parameters != nullptr);
+
+  EXPECT_EQ(1, vui_parameters->timing_info_present_flag);
+  EXPECT_EQ(1001, vui_parameters->num_units_in_tick);
+  EXPECT_EQ(60000, vui_parameters->time_scale);
+  // equation D-2: 60000 / (2 * 1001)
+  EXPECT_NEAR(29.97003, vui_parameters->getFramerate(), 0.00001);
+}
+
 }  // namespace h264nal

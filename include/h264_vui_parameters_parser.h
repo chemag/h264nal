@@ -66,6 +66,12 @@ class H264VuiParametersParser {
   // the range of 0 to max_dec_frame_buffering, inclusive."
   // copied from ffmpeg
   const static uint32_t kMaxDpbFrames = 16;
+  // Section E.2.1: "num_units_in_tick shall be greater than 0." It is the
+  // denominator of equation D-2, so a zero divides by zero in
+  // getFramerate().
+  const static uint32_t kNumUnitsInTickMin = 1;
+  // Section E.2.1: "time_scale shall be greater than 0."
+  const static uint32_t kTimeScaleMin = 1;
   // The parsed state of the SPS VUI. Only some select values are stored.
   // Add more as they are actually needed.
   struct VuiParametersState {

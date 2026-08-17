@@ -160,8 +160,26 @@ H264VuiParametersParser::ParseVuiParameters(BitBuffer* bit_buffer) noexcept {
     if (!bit_buffer->ReadBits(32, vui->num_units_in_tick)) {
       return nullptr;
     }
+    if (vui->num_units_in_tick < kNumUnitsInTickMin) {
+#ifdef FPRINT_ERRORS
+      fprintf(stderr,
+              "invalid num_units_in_tick: %" PRIu32
+              ", shall be greater than 0\n",
+              vui->num_units_in_tick);
+#endif  // FPRINT_ERRORS
+      return nullptr;
+    }
+
     // time_scale  u(32)
     if (!bit_buffer->ReadBits(32, vui->time_scale)) {
+      return nullptr;
+    }
+    if (vui->time_scale < kTimeScaleMin) {
+#ifdef FPRINT_ERRORS
+      fprintf(stderr,
+              "invalid time_scale: %" PRIu32 ", shall be greater than 0\n",
+              vui->time_scale);
+#endif  // FPRINT_ERRORS
       return nullptr;
     }
     // fixed_frame_rate_flag  u(1)
