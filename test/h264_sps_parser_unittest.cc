@@ -403,6 +403,28 @@ TEST_F(H264SpsParserTest, TestScalingListValidDeltaScale) {
   EXPECT_EQ(480, height);
 }
 
+TEST_F(H264SpsParserTest, TestGetResolutionRejectsEmptyPicture) {
+  // getResolution() is public, on a struct whose fields are public, so it
+  // cannot rely on the parser having enforced section 7.4.2.1.1. Crop the
+  // whole picture away and it has to fail rather than report a negative
+  // width as success: 16 - 2 * 100 == -184, which fdump printed with "%u"
+  // as 4294967112.
+  H264SpsDataParser::SpsDataState sps_data;
+  sps_data.chroma_format_idc = 1;
+  sps_data.pic_width_in_mbs_minus1 = 0;         // 16 pixels
+  sps_data.pic_height_in_map_units_minus1 = 0;  // 16 pixels
+  sps_data.frame_mbs_only_flag = 1;
+  sps_data.frame_cropping_flag = 1;
+  sps_data.frame_crop_left_offset = 100;
+
+  int width = 0;
+  int height = 0;
+  EXPECT_EQ(-1, sps_data.getResolution(&width, &height));
+  // and it does not leave a bogus value behind for the caller to print
+  EXPECT_EQ(-1, width);
+  EXPECT_EQ(-1, height);
+}
+
 TEST_F(H264SpsParserTest, TestTruncatedSps) {
   // single byte, too short to parse
   const uint8_t buffer[] = {0x42};

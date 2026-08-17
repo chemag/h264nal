@@ -614,6 +614,16 @@ int H264SpsDataParser::SpsDataState::getResolution(int* width,
              CropUnitX * static_cast<int>(frame_crop_right_offset));
   *height -= (CropUnitY * static_cast<int>(frame_crop_top_offset) +
               CropUnitY * static_cast<int>(frame_crop_bottom_offset));
+  // Section 7.4.2.1.1 bounds the cropping offsets against the picture
+  // size, so a conforming SPS cannot crop a dimension away entirely. This
+  // is a public method on a struct whose fields are public, though, so it
+  // cannot assume the parser vetted them: do not report success on a
+  // nonsense answer, and do not leave one behind for the caller to print.
+  if (*width <= 0 || *height <= 0) {
+    *width = -1;
+    *height = -1;
+    return -1;
+  }
   return 0;
 }
 
@@ -889,14 +899,16 @@ void H264SpsDataParser::SpsDataState::fdump(
   }
 
   if (parsing_options.add_resolution) {
-    // add video resolution
+    // add video resolution. Both are int, and getResolution() sets them to
+    // -1 when it cannot work them out, so print them signed: "%u" here
+    // turned a negative width into 4294967112.
     int width = -1;
     int height = -1;
-    getResolution(&width, &height);
+    (void)getResolution(&width, &height);
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "width: %u", width);
+    fprintf(outfp, "width: %d", width);
     fdump_indent_level(outfp, indent_level);
-    fprintf(outfp, "height: %u", height);
+    fprintf(outfp, "height: %d", height);
   }
 
   indent_level = indent_level_decr(indent_level);
