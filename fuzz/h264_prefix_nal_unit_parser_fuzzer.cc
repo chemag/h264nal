@@ -41,13 +41,5 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
                                                   &bitstream_parser_state,
                                                   parsing_options);
   }
-  {
-  H264BitstreamParserState bitstream_parser_state;
-  ParsingOptions parsing_options;
-  parsing_options.add_checksum = true;
-  auto nal_unit = H264NalUnitParser::ParseNalUnit(data, size,
-                                                  &bitstream_parser_state,
-                                                  parsing_options);
-  }
   return 0;
 }

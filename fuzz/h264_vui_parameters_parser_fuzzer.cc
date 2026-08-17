@@ -26,21 +26,5 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
   auto vui_parameters =
       H264VuiParametersParser::ParseVuiParameters(data, size);
   }
-  {
-  auto vui_parameters =
-      H264VuiParametersParser::ParseVuiParameters(data, size);
-  }
-  {
-  auto vui_parameters =
-      H264VuiParametersParser::ParseVuiParameters(data, size);
-  }
-  {
-  auto vui_parameters =
-      H264VuiParametersParser::ParseVuiParameters(data, size);
-  }
-  {
-  auto vui_parameters =
-      H264VuiParametersParser::ParseVuiParameters(data, size);
-  }
   return 0;
 }

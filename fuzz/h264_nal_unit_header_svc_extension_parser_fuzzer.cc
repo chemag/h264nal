@@ -26,10 +26,5 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
       H264NalUnitHeaderSvcExtensionParser::ParseNalUnitHeaderSvcExtension(
           data, size);
   }
-  {
-  auto nal_unit_header_svc_extension =
-      H264NalUnitHeaderSvcExtensionParser::ParseNalUnitHeaderSvcExtension(
-          data, size);
-  }
   return 0;
 }
