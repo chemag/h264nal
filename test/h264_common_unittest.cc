@@ -226,6 +226,22 @@ TEST_F(H264CommonNaluChecksumTest, TestUnalignedBitBuffer) {
   EXPECT_EQ(4, checksum->GetLength());
 }
 
+TEST_F(H264CommonNaluChecksumTest, TestPrintableChecksum) {
+  // GetPrintableChecksum() has no callers in the tree, so this is the only
+  // thing exercising it. It shares fdump()'s conversion, so check the two
+  // agree as well as checking the value.
+  const uint8_t buffer[] = {0xde, 0xad, 0xbe, 0xef, 0x12, 0x34};
+  BitBuffer bit_buffer(buffer, arraysize(buffer));
+
+  auto checksum = NaluChecksum::GetNaluChecksum(&bit_buffer);
+  ASSERT_TRUE(checksum != nullptr);
+  EXPECT_EQ("0f1e4110", checksum->GetPrintableChecksum());
+
+  char dumped[(NaluChecksum::kMaxLength * 2) + 1] = {};
+  checksum->fdump(dumped, static_cast<int>(sizeof(dumped)));
+  EXPECT_EQ(checksum->GetPrintableChecksum(), std::string(dumped));
+}
+
 TEST_F(H264CommonNaluChecksumTest, TestAlignedBitBuffer) {
   // the aligned path, to show the fix did not change the ordinary result.
   // 6 bytes: the 32 bit loop takes 32 and the byte loop takes the other 2
