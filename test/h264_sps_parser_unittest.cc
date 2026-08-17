@@ -312,7 +312,7 @@ TEST_F(H264SpsParserTest, TestPaffSps) {
 
 TEST_F(H264SpsParserTest, TestInterlacedSpsFrameHeight) {
   // Real 704x480 interlaced (MBAFF) SPS, High profile, produced with:
-  //   ffmpeg -f lavfi -i testsrc=size=704x480:rate=30:duration=1 \
+  //   ffmpeg -f lavfi -i testsrc=size=704x480:rate=30:duration=1
   //          -c:v libx264 -x264opts "tff=1" -pix_fmt yuv420p out.264
   // ffprobe reports width=704 height=480 field_order=tt.
   //
