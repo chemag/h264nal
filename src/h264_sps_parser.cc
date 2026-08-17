@@ -445,6 +445,36 @@ H264SpsDataParser::ParseSpsData(BitBuffer* bit_buffer) noexcept {
 #endif  // FPRINT_ERRORS
       return nullptr;
     }
+
+    // Section 7.4.2.1.1 bounds the offsets against this picture, not
+    // against a constant: frame_crop_left_offset is limited to
+    // "( PicWidthInSamplesL / CropUnitX ) - ( frame_crop_right_offset + 1 )"
+    // and frame_crop_top_offset to "( 16 * FrameHeightInMbs / CropUnitY ) -
+    // ( frame_crop_bottom_offset + 1 )". Equivalently, the two offsets on
+    // each axis have to leave at least one sample behind. The per-offset
+    // checks above only cap each at the largest picture h264nal accepts, so
+    // a small picture could be cropped past nothing.
+    uint32_t PicWidthInSamplesL = 16 * (sps_data->pic_width_in_mbs_minus1 + 1);
+    uint32_t FrameHeightInSamplesL =
+        16 * (2 - sps_data->frame_mbs_only_flag) *
+        (sps_data->pic_height_in_map_units_minus1 + 1);
+    uint32_t cropped_width =
+        static_cast<uint32_t>(sps_data->getCropUnitX()) *
+        (sps_data->frame_crop_left_offset + sps_data->frame_crop_right_offset);
+    uint32_t cropped_height =
+        static_cast<uint32_t>(sps_data->getCropUnitY()) *
+        (sps_data->frame_crop_top_offset + sps_data->frame_crop_bottom_offset);
+    if (cropped_width >= PicWidthInSamplesL ||
+        cropped_height >= FrameHeightInSamplesL) {
+#ifdef FPRINT_ERRORS
+      fprintf(stderr,
+              "invalid frame cropping: crops %" PRIu32 "x%" PRIu32
+              " off a %" PRIu32 "x%" PRIu32 " picture\n",
+              cropped_width, cropped_height, PicWidthInSamplesL,
+              FrameHeightInSamplesL);
+#endif  // FPRINT_ERRORS
+      return nullptr;
+    }
   }
 
   // vui_parameters_present_flag  u(1)
@@ -580,25 +610,27 @@ int H264SpsDataParser::SpsDataState::getSubHeightC() const noexcept {
   return -1;
 }
 
+int H264SpsDataParser::SpsDataState::getCropUnitX() const noexcept {
+  // Equations 7-19 and 7-21
+  if (getChromaArrayType() == 0) {
+    return 1;
+  }
+  return getSubWidthC();
+}
+
+int H264SpsDataParser::SpsDataState::getCropUnitY() const noexcept {
+  // Equations 7-20 and 7-22
+  int SubHeightC = (getChromaArrayType() == 0) ? 1 : getSubHeightC();
+  return SubHeightC * (2 - static_cast<int>(frame_mbs_only_flag));
+}
+
 int H264SpsDataParser::SpsDataState::getResolution(int* width,
                                                    int* height) const noexcept {
   if (width == nullptr || height == nullptr) {
     return -1;
   }
-  uint32_t ChromaArrayType = getChromaArrayType();
-  int CropUnitX = -1;
-  int CropUnitY = -1;
-  if (ChromaArrayType == 0) {
-    // Equations 7-19, 7-20
-    CropUnitX = 1;
-    CropUnitY = 2 - static_cast<int>(frame_mbs_only_flag);
-  } else {
-    // Equations 7-21, 7-22
-    int SubWidthC = getSubWidthC();
-    int SubHeightC = getSubHeightC();
-    CropUnitX = SubWidthC;
-    CropUnitY = SubHeightC * (2 - static_cast<int>(frame_mbs_only_flag));
-  }
+  int CropUnitX = getCropUnitX();
+  int CropUnitY = getCropUnitY();
 
   // Equation 7-13: PicWidthInMbs = pic_width_in_mbs_minus1 + 1
   // Equation 7-17: PicHeightInMapUnits = pic_height_in_map_units_minus1 + 1

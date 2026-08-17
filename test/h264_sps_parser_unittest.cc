@@ -403,6 +403,19 @@ TEST_F(H264SpsParserTest, TestScalingListValidDeltaScale) {
   EXPECT_EQ(480, height);
 }
 
+TEST_F(H264SpsParserTest, TestExcessiveFrameCropping) {
+  // Baseline SPS for a 16x16 picture (pic_width_in_mbs_minus1 == 0) with
+  // frame_crop_left_offset == 100. Section 7.4.2.1.1 limits that offset to
+  // (PicWidthInSamplesL / CropUnitX) - (frame_crop_right_offset + 1), which
+  // is 7 here, so 100 crops the picture past nothing.
+  //
+  // The per-offset checks cap each at kMaxWidth, the widest picture the
+  // parser accepts, so 100 passed them and the SPS parsed.
+  const uint8_t buffer[] = {0x42, 0x00, 0x1e, 0xdd, 0xd0, 0x32, 0xf4};
+  auto sps = H264SpsParser::ParseSps(buffer, arraysize(buffer));
+  EXPECT_TRUE(sps == nullptr);
+}
+
 TEST_F(H264SpsParserTest, TestGetResolutionRejectsEmptyPicture) {
   // getResolution() is public, on a struct whose fields are public, so it
   // cannot rely on the parser having enforced section 7.4.2.1.1. Crop the

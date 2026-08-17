@@ -128,6 +128,10 @@ class H264SpsDataParser {
     uint32_t getChromaArrayType() const noexcept;
     int getSubWidthC() const noexcept;
     int getSubHeightC() const noexcept;
+    // Equations 7-19 to 7-22. The units the frame cropping offsets are
+    // counted in, which depend on the chroma format.
+    int getCropUnitX() const noexcept;
+    int getCropUnitY() const noexcept;
     int getResolution(int* width, int* height) const noexcept;
 
     // helper functions
