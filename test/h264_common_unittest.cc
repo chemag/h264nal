@@ -201,4 +201,43 @@ TEST_F(H264CommonSignedGolombTest, TestReadSignedExponentialGolomb) {
   }
 }
 
+class H264CommonNaluChecksumTest : public ::testing::Test {
+ public:
+  H264CommonNaluChecksumTest() {}
+  ~H264CommonNaluChecksumTest() override {}
+};
+
+// Note: a regression here does not fail, it hangs. GetNaluChecksum used to
+// loop forever on a bit buffer that was not byte aligned, so the assertion
+// below is only reached if the loop terminates at all.
+TEST_F(H264CommonNaluChecksumTest, TestUnalignedBitBuffer) {
+  // 6 bytes, with 1 bit consumed before the call. That leaves 47 bits: the
+  // 32 bit loop takes 32, the byte loop takes 8, and 7 are left over.
+  // 7 is "> 0" but too few for ReadUInt8(), and a failed read consumes
+  // nothing, so a loop that tests RemainingBitCount() > 0 and ignores the
+  // result of the read never advances.
+  const uint8_t buffer[] = {0xde, 0xad, 0xbe, 0xef, 0x12, 0x34};
+  BitBuffer bit_buffer(buffer, arraysize(buffer));
+  uint32_t bit = 0;
+  ASSERT_TRUE(bit_buffer.ReadBits(1, bit));
+
+  auto checksum = NaluChecksum::GetNaluChecksum(&bit_buffer);
+  ASSERT_TRUE(checksum != nullptr);
+  EXPECT_EQ(4, checksum->GetLength());
+}
+
+TEST_F(H264CommonNaluChecksumTest, TestAlignedBitBuffer) {
+  // the aligned path, to show the fix did not change the ordinary result.
+  // 6 bytes: the 32 bit loop takes 32 and the byte loop takes the other 2
+  // bytes, so i ends at 2 and every shift is in range.
+  const uint8_t buffer[] = {0xde, 0xad, 0xbe, 0xef, 0x12, 0x34};
+  BitBuffer bit_buffer(buffer, arraysize(buffer));
+
+  auto checksum = NaluChecksum::GetNaluChecksum(&bit_buffer);
+  ASSERT_TRUE(checksum != nullptr);
+  EXPECT_EQ(4, checksum->GetLength());
+  // GetNaluChecksum() restores the bit buffer, so nothing is consumed
+  EXPECT_EQ(arraysize(buffer) * 8, bit_buffer.RemainingBitCount());
+}
+
 }  // namespace h264nal
