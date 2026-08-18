@@ -1,0 +1,259 @@
+input_dir,input_file,resolution,profile,level,number_of_nalus,number_of_slice_nalus,number_of_slice_header_nalus,h264nal_status,slice_header_status
+svc,svcbc-1.264,320x240,Constrained Baseline;Unspecified,2.1,906,600,600,0,0
+svc,svcbc-1-l0.264,320x240,Constrained Baseline,2.1,603,300,300,0,0
+svc,svcbc-1-l1.264,320x240,Constrained Baseline;Unspecified,2.1,906,600,600,0,0
+svc,svcbct-1.264,320x240,Constrained Baseline;Unspecified,1.2;2.1,606,450,450,0,0
+svc,svcbct-1-l0.264,320x240,Constrained Baseline,1.2,303,150,150,0,0
+svc,svcbct-1-l1.264,320x240,Constrained Baseline;Unspecified,1.2;2.1,606,450,450,0,0
+svc,svcbcts-1.264,320x240;640x480,Constrained Baseline;Unspecified,1.2;1.3;3.0,908,750,750,0,0
+svc,svcbcts-1-l0.264,320x240,Constrained Baseline,1.2,303,150,150,0,0
+svc,svcbcts-1-l1.264,320x240,Constrained Baseline;Unspecified,1.2;1.3,605,450,450,0,0
+svc,svcbcts-1-l2.264,320x240;640x480,Constrained Baseline;Unspecified,1.2;1.3;3.0,908,750,750,0,0
+svc,svcbcts-2.264,320x240;640x480,Constrained Baseline;Unspecified,1.2;1.3;3.0,909,750,750,0,0
+svc,svcbcts-2-l0.264,320x240,Constrained Baseline,1.2,303,150,150,0,0
+svc,svcbcts-2-l1.264,320x240,Constrained Baseline;Unspecified,1.2;1.3,606,450,450,0,0
+svc,svcbcts-2-l2.264,320x240;640x480,Constrained Baseline;Unspecified,1.2;1.3;3.0,909,750,750,0,0
+svc,svcbcts-3.264,176x144;352x288,Constrained Baseline;Unspecified,1b;0.9;1.3,608,450,450,0,0
+svc,svcbcts-3-l0.264,176x144,Constrained Baseline,1b,303,150,150,0,0
+svc,svcbcts-3-l1.264,176x144,Constrained Baseline;Unspecified,1b;0.9,455,300,300,0,0
+svc,svcbcts-3-l2.264,176x144;352x288,Constrained Baseline;Unspecified,1b;0.9;1.3,607,450,450,0,0
+svc,svcbm-1.264,352x288,Constrained Baseline;Unspecified,1.3,604,400,400,0,0
+svc,svcbm-1-l0.264,352x288,Constrained Baseline,1.3,402,200,200,0,0
+svc,svcbm-1-l1.264,352x288,Constrained Baseline;Unspecified,1.3,604,400,400,0,0
+svc,svcbm-2.264,352x288,Constrained Baseline;Unspecified,1.3,605,400,400,0,0
+svc,svcbm-2-l0.264,352x288,Constrained Baseline;Unspecified,1.3,405,200,200,0,0
+svc,svcbm-2-l1.264,352x288,Constrained Baseline;Unspecified,1.3,605,400,400,0,0
+svc,svcbm-3.264,352x288,Constrained Baseline;Unspecified,1.3,605,400,400,0,0
+svc,svcbm-3-l0.264,352x288,Constrained Baseline;Unspecified,1.3,405,200,200,0,0
+svc,svcbm-3-l1.264,352x288,Constrained Baseline;Unspecified,1.3,605,400,400,0,0
+svc,svcbm-4.264,352x288,Constrained Baseline;Unspecified,1.3;2.1,807,600,600,0,0
+svc,svcbm-4-l0.264,352x288,Constrained Baseline;Unspecified,1.3;2.1,407,200,200,0,0
+svc,svcbm-4-l1.264,352x288,Constrained Baseline;Unspecified,1.3;2.1,607,400,400,0,0
+svc,svcbm-4-l2.264,352x288,Constrained Baseline;Unspecified,1.3;2.1,807,600,600,0,0
+svc,svcbm-5.264,352x288,Constrained Baseline;Unspecified,2.2;3.0,1506,1200,1200,"h264nal: unimplemented syntax; error: unimplemented dec_ref_base_pic_marking() in prefix_nal_unit_svc() (x18); error: bitstream uses 18 unimplemented syntax structure(s), 18 NAL unit(s) left unparsed",0
+svc,svcbm-5-l0.264,352x288,Constrained Baseline;Unspecified,2.2;3.0,606,300,300,"h264nal: unimplemented syntax; error: unimplemented dec_ref_base_pic_marking() in prefix_nal_unit_svc() (x18); error: bitstream uses 18 unimplemented syntax structure(s), 18 NAL unit(s) left unparsed",0
+svc,svcbm-5-l1.264,352x288,Constrained Baseline;Unspecified,2.2;3.0,906,600,600,"h264nal: unimplemented syntax; error: unimplemented dec_ref_base_pic_marking() in prefix_nal_unit_svc() (x18); error: bitstream uses 18 unimplemented syntax structure(s), 18 NAL unit(s) left unparsed",0
+svc,svcbm-5-l2.264,352x288,Constrained Baseline;Unspecified,2.2;3.0,1206,900,900,"h264nal: unimplemented syntax; error: unimplemented dec_ref_base_pic_marking() in prefix_nal_unit_svc() (x18); error: bitstream uses 18 unimplemented syntax structure(s), 18 NAL unit(s) left unparsed",0
+svc,svcbm-5-l3.264,352x288,Constrained Baseline;Unspecified,2.2;3.0,1506,1200,1200,"h264nal: unimplemented syntax; error: unimplemented dec_ref_base_pic_marking() in prefix_nal_unit_svc() (x18); error: bitstream uses 18 unimplemented syntax structure(s), 18 NAL unit(s) left unparsed",0
+svc,svcbmst-1.264,360x240,Constrained Baseline;Unspecified,1.3,438,316,316,0,0
+svc,svcbmst-1-l0.264,360x240,Constrained Baseline,1.3,234,116,116,0,0
+svc,svcbmst-1-l1.264,360x240,Constrained Baseline;Unspecified,1.3,438,316,316,0,0
+svc,svcbmst-1-l2.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,795,673,673,0,0
+svc,svcbmst-2.264,360x240,Constrained Baseline;Unspecified,1.3,426,302,302,0,0
+svc,svcbmst-2-l0.264,360x240,Constrained Baseline,1.3,238,118,118,0,0
+svc,svcbmst-2-l1.264,360x240,Constrained Baseline;Unspecified,1.3,426,302,302,0,0
+svc,svcbmst-2-l2.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,741,617,617,0,0
+svc,svcbmst-3.264,320x240;640x480,Constrained Baseline;Unspecified,2.1;3.1,158,120,120,"h264nal: unimplemented syntax; error: unimplemented dec_ref_base_pic_marking() in prefix_nal_unit_svc() (x3); error: bitstream uses 3 unimplemented syntax structure(s), 3 NAL unit(s) left unparsed",0
+svc,svcbmst-3-l0.264,320x240,Constrained Baseline;Unspecified,2.1,65,30,30,"h264nal: unimplemented syntax; error: unimplemented dec_ref_base_pic_marking() in prefix_nal_unit_svc() (x3); error: bitstream uses 3 unimplemented syntax structure(s), 3 NAL unit(s) left unparsed",0
+svc,svcbmst-3-l1.264,320x240,Constrained Baseline;Unspecified,2.1,95,60,60,"h264nal: unimplemented syntax; error: unimplemented dec_ref_base_pic_marking() in prefix_nal_unit_svc() (x3); error: bitstream uses 3 unimplemented syntax structure(s), 3 NAL unit(s) left unparsed",0
+svc,svcbmst-3-l2.264,320x240;640x480,Constrained Baseline;Unspecified,2.1;3.1,158,120,120,"h264nal: unimplemented syntax; error: unimplemented dec_ref_base_pic_marking() in prefix_nal_unit_svc() (x3); error: bitstream uses 3 unimplemented syntax structure(s), 3 NAL unit(s) left unparsed",0
+svc,svcbmt-10.264,352x240,Constrained Baseline;Unspecified,1.3,929,649,649,0,0
+svc,svcbmt-10-l0.264,352x240,Constrained Baseline,1.3,554,276,276,0,0
+svc,svcbmt-10-l1.264,352x240,Constrained Baseline;Unspecified,1.3,929,649,649,0,0
+svc,svcbmt-11.264,352x240,Constrained Baseline;Unspecified,1.3,983,692,692,0,0
+svc,svcbmt-11-l0.264,352x240,Constrained Baseline,1.3,576,287,287,0,0
+svc,svcbmt-11-l1.264,352x240,Constrained Baseline;Unspecified,1.3,983,692,692,0,0
+svc,svcbmt-12.264,352x240,Constrained Baseline;Unspecified,1.3,1053,765,765,"h264nal: unimplemented syntax; error: unimplemented dec_ref_base_pic_marking() in prefix_nal_unit_svc() (x107); error: bitstream uses 107 unimplemented syntax structure(s), 107 NAL unit(s) left unparsed",0
+svc,svcbmt-1.264,352x240,Constrained Baseline;Unspecified,1.3,604,400,400,0,0
+svc,svcbmt-12-l0.264,352x240,Constrained Baseline,1.3,570,284,284,"h264nal: unimplemented syntax; error: unimplemented dec_ref_base_pic_marking() in prefix_nal_unit_svc() (x107); error: bitstream uses 107 unimplemented syntax structure(s), 107 NAL unit(s) left unparsed",0
+svc,svcbmt-12-l1.264,352x240,Constrained Baseline;Unspecified,1.3,1053,765,765,"h264nal: unimplemented syntax; error: unimplemented dec_ref_base_pic_marking() in prefix_nal_unit_svc() (x107); error: bitstream uses 107 unimplemented syntax structure(s), 107 NAL unit(s) left unparsed",0
+svc,svcbmt-13.264,352x240,Constrained Baseline;Unspecified,1.3;2.1,88,60,60,0,0
+svc,svcbmt-13-l0.264,352x240,Constrained Baseline;Unspecified,1.3;2.1,48,20,20,0,0
+svc,svcbmt-13-l1.264,352x240,Constrained Baseline;Unspecified,1.3;2.1,68,40,40,0,0
+svc,svcbmt-13-l2.264,352x240,Constrained Baseline;Unspecified,1.3;2.1,88,60,60,0,0
+svc,svcbmt-1-l0.264,352x240,Constrained Baseline,1.3,402,200,200,0,0
+svc,svcbmt-1-l1.264,352x240,Constrained Baseline;Unspecified,1.3,604,400,400,0,0
+svc,svcbmt-2.264,352x240,Constrained Baseline;Unspecified,1.3,604,400,400,0,0
+svc,svcbmt-2-l0.264,352x240,Constrained Baseline,1.3,402,200,200,0,0
+svc,svcbmt-2-l1.264,352x240,Constrained Baseline;Unspecified,1.3,604,400,400,0,0
+svc,svcbmt-3.264,352x240,Constrained Baseline;Unspecified,1.3,939,662,662,0,0
+svc,svcbmt-3-l0.264,352x240,Constrained Baseline,1.3,548,273,273,0,0
+svc,svcbmt-3-l1.264,352x240,Constrained Baseline;Unspecified,1.3,939,662,662,0,0
+svc,svcbmt-4.264,352x240,Constrained Baseline;Unspecified,1.3,959,679,679,0,0
+svc,svcbmt-4-l0.264,352x240,Constrained Baseline,1.3,554,276,276,0,0
+svc,svcbmt-4-l1.264,352x240,Constrained Baseline;Unspecified,1.3,959,679,679,0,0
+svc,svcbmt-5.264,352x240,Constrained Baseline;Unspecified,1.3,1406,1000,1000,0,0
+svc,svcbmt-5-l0.264,352x240,Constrained Baseline;Unspecified,1.3,806,400,400,0,0
+svc,svcbmt-5-l1.264,352x240,Constrained Baseline;Unspecified,1.3,1406,1000,1000,0,0
+svc,svcbmt-6.264,352x240,Constrained Baseline;Unspecified,1.3,1205,800,800,0,0
+svc,svcbmt-6-l0.264,352x240,Constrained Baseline;Unspecified,1.3,805,400,400,0,0
+svc,svcbmt-6-l1.264,352x240,Constrained Baseline;Unspecified,1.3,1205,800,800,0,0
+svc,svcbmt-7.264,352x240,Constrained Baseline;Unspecified,1.3,1205,800,800,0,0
+svc,svcbmt-7-l0.264,352x240,Constrained Baseline;Unspecified,1.3,805,400,400,0,0
+svc,svcbmt-7-l1.264,352x240,Constrained Baseline;Unspecified,1.3,1205,800,800,0,0
+svc,svcbmt-8.264,352x240,Constrained Baseline;Unspecified,1.3,969,688,688,0,0
+svc,svcbmt-8-l0.264,352x240,Constrained Baseline,1.3,556,277,277,0,0
+svc,svcbmt-8-l1.264,352x240,Constrained Baseline;Unspecified,1.3,969,688,688,0,0
+svc,svcbmt-9.264,352x240,Constrained Baseline;Unspecified,1.3;2.2,917,636,636,0,0
+svc,svcbmt-9-l0.264,352x240,Constrained Baseline,1.3,556,277,277,0,0
+svc,svcbmt-9-l1.264,352x240,Constrained Baseline;Unspecified,1.3;2.2,917,636,636,0,0
+svc,svcbs-1.264,176x144;352x288,Constrained Baseline;Unspecified,1.3,604,400,400,0,0
+svc,svcbs-1-l0.264,176x144,Constrained Baseline,1.3,402,200,200,0,0
+svc,svcbs-1-l1.264,176x144;352x288,Constrained Baseline;Unspecified,1.3,604,400,400,0,0
+svc,svcbs-2.264,320x240;640x480,Constrained Baseline;Unspecified,1.3;3.0,2382,1783,1783,0,0
+svc,svcbs-2-l0.264,320x240,Constrained Baseline,1.3,1192,595,595,0,0
+svc,svcbs-2-l1.264,320x240;640x480,Constrained Baseline;Unspecified,1.3;3.0,2382,1783,1783,0,0
+svc,svcbs-3.264,352x288;704x576,Constrained Baseline;Unspecified,1.3;3.1,96,60,60,0,0
+svc,svcbs-3-l0.264,352x288,Constrained Baseline,1.3,63,30,30,0,0
+svc,svcbs-3-l1.264,352x288;704x576,Constrained Baseline;Unspecified,1.3;3.1,96,60,60,0,0
+svc,svcbs-4.264,320x240;640x480,Constrained Baseline;Unspecified,1.3;3.0,96,60,60,0,0
+svc,svcbs-4-l0.264,320x240,Constrained Baseline,1.3,63,30,30,0,0
+svc,svcbs-4-l1.264,320x240;640x480,Constrained Baseline;Unspecified,1.3;3.0,96,60,60,0,0
+svc,svcbs-5.264,384x224;768x448,Constrained Baseline;Unspecified,1.3;3.0,96,60,60,0,0
+svc,svcbs-5-l0.264,384x224,Constrained Baseline,1.3,63,30,30,0,0
+svc,svcbs-5-l1.264,384x224;768x448,Constrained Baseline;Unspecified,1.3;3.0,96,60,60,0,0
+svc,svcbs-6.264,176x144;352x288;704x576,Constrained Baseline;Unspecified,1.1;1.3;3.1,128,90,90,0,0
+svc,svcbs-6-l0.264,176x144,Constrained Baseline,1.1,63,30,30,0,0
+svc,svcbs-6-l1.264,176x144;352x288,Constrained Baseline;Unspecified,1.1;1.3,95,60,60,0,0
+svc,svcbs-6-l2.264,176x144;352x288;704x576,Constrained Baseline;Unspecified,1.1;1.3;3.1,127,90,90,0,0
+svc,svcbs-7.264,176x144;352x288,Constrained Baseline;Unspecified,1.1;1.3,96,60,60,0,0
+svc,svcbs-7-l0.264,176x144,Constrained Baseline,1.1,63,30,30,0,0
+svc,svcbs-7-l1.264,176x144;352x288,Constrained Baseline;Unspecified,1.1;1.3,96,60,60,0,0
+svc,svcbs-8.264,320x240;640x480,Constrained Baseline;Unspecified,2.1;3.1,186,120,120,0,0
+svc,svcbs-8-l0.264,320x240,Constrained Baseline,2.1,123,60,60,0,0
+svc,svcbs-8-l1.264,320x240;640x480,Constrained Baseline;Unspecified,2.1;3.1,186,120,120,0,0
+svc,svcbst-10.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,614,444,444,0,0
+svc,svcbst-10-l0.264,360x240,Constrained Baseline,1.3,332,165,165,0,0
+svc,svcbst-10-l1.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,614,444,444,0,0
+svc,svcbst-11.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,615,445,445,0,0
+svc,svcbst-11-l0.264,360x240,Constrained Baseline,1.3,332,165,165,0,0
+svc,svcbst-11-l1.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,615,445,445,0,0
+svc,svcbst-12.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;3.0,806,600,600,0,0
+svc,svcbst-1.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,663,492,492,0,0
+svc,svcbst-12-l0.264,360x240,Constrained Baseline,1.3,403,200,200,0,0
+svc,svcbst-12-l1.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;3.0,806,600,600,0,0
+svc,svcbst-13.264,1280x720;1920x1080,Constrained Baseline;Unspecified,3.2;4.2,206,140,140,0,0
+svc,svcbst-13-l0.264,1280x720,Constrained Baseline,3.2,123,60,60,0,0
+svc,svcbst-13-l1.264,1280x720;1920x1080,Constrained Baseline;Unspecified,3.2;4.2,206,140,140,0,0
+svc,svcbst-14.264,640x360;1280x720;1920x1080,Constrained Baseline;Unspecified,3.1;3.2;4.2,268,200,200,0,0
+svc,svcbst-14-l0.264,640x360,Constrained Baseline,3.1,123,60,60,0,0
+svc,svcbst-14-l1.264,640x360;1280x720,Constrained Baseline;Unspecified,3.1;3.2,185,120,120,0,0
+svc,svcbst-14-l2.264,640x360;1280x720;1920x1080,Constrained Baseline;Unspecified,3.1;3.2;4.2,268,200,200,0,0
+svc,svcbst-15.264,320x180;640x360,Constrained Baseline;Unspecified,1.3;3.0,419,291,291,0,0
+svc,svcbst-15-l0.264,320x180,Constrained Baseline,1.3,246,122,122,0,0
+svc,svcbst-15-l1.264,320x180;640x360,Constrained Baseline;Unspecified,1.3;3.0,419,291,291,0,0
+svc,svcbst-15-l2.264,320x180;640x360;1280x720,Constrained Baseline;Unspecified,1.3;3.0;5.0,780,652,652,0,0
+svc,svcbst-16.264,320x180;640x360,Constrained Baseline;Unspecified,1.3;3.0,450,314,314,0,0
+svc,svcbst-16-l0.264,320x180,Constrained Baseline,1.3,262,130,130,0,0
+svc,svcbst-16-l1.264,320x180;640x360,Constrained Baseline;Unspecified,1.3;3.0,450,314,314,0,0
+svc,svcbst-16-l2.264,320x180;640x360;1280x720,Constrained Baseline;Unspecified,1.3;3.0;5.0,836,700,700,0,0
+svc,svcbst-17.264,320x180;640x360,Constrained Baseline;Unspecified,1.3;3.0,405,278,278,0,0
+svc,svcbst-17-l0.264,320x180,Constrained Baseline,1.3,244,121,121,0,0
+svc,svcbst-17-l1.264,320x180;640x360,Constrained Baseline;Unspecified,1.3;3.0,405,278,278,0,0
+svc,svcbst-17-l2.264,320x180;640x360;1280x720,Constrained Baseline;Unspecified,1.3;3.0;5.0,710,583,583,0,0
+svc,svcbst-18.264,320x180;640x360,Constrained Baseline;Unspecified,1.3;3.0,405,278,278,0,0
+svc,svcbst-18-l0.264,320x180,Constrained Baseline,1.3,244,121,121,0,0
+svc,svcbst-18-l1.264,320x180;640x360,Constrained Baseline;Unspecified,1.3;3.0,405,278,278,0,0
+svc,svcbst-18-l2.264,320x180;640x360;1280x720,Constrained Baseline;Unspecified,1.3;3.0;5.0,710,583,583,0,0
+svc,svcbst-19.264,320x240;640x480,Constrained Baseline;Unspecified,1.2;3.1,126,90,90,0,0
+svc,svcbst-19-l0.264,320x240,Constrained Baseline,1.2,63,30,30,0,0
+svc,svcbst-19-l1.264,320x240;640x480,Constrained Baseline;Unspecified,1.2;3.1,126,90,90,0,0
+svc,svcbst-1-l0.264,360x240,Constrained Baseline,1.3,334,166,166,0,0
+svc,svcbst-1-l1.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,663,492,492,0,0
+svc,svcbst-20.264,192x144;640x352,Constrained Baseline;Unspecified,1.1;3.0,206,150,150,0,0
+svc,svcbst-20-l0.264,192x144,Constrained Baseline,1.1,103,50,50,0,0
+svc,svcbst-20-l1.264,192x144;640x352,Constrained Baseline;Unspecified,1.1;3.0,206,150,150,0,0
+svc,svcbst-2.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,668,497,497,0,0
+svc,svcbst-2-l0.264,360x240,Constrained Baseline,1.3,334,166,166,0,0
+svc,svcbst-2-l1.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,668,497,497,0,0
+svc,svcbst-3.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,666,495,495,0,0
+svc,svcbst-3-l0.264,360x240,Constrained Baseline,1.3,334,166,166,0,0
+svc,svcbst-3-l1.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,666,495,495,0,0
+svc,svcbst-4.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,629,458,458,0,0
+svc,svcbst-4-l0.264,360x240,Constrained Baseline,1.3,334,166,166,0,0
+svc,svcbst-4-l1.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,629,458,458,0,0
+svc,svcbst-5.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,611,440,440,0,0
+svc,svcbst-5-l0.264,360x240,Constrained Baseline,1.3,334,166,166,0,0
+svc,svcbst-5-l1.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,611,440,440,0,0
+svc,svcbst-6.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,615,445,445,0,0
+svc,svcbst-6-l0.264,360x240,Constrained Baseline,1.3,332,165,165,0,0
+svc,svcbst-6-l1.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,615,445,445,0,0
+svc,svcbst-7.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,611,442,442,0,0
+svc,svcbst-7-l0.264,360x240,Constrained Baseline,1.3,330,164,164,0,0
+svc,svcbst-7-l1.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,611,442,442,0,0
+svc,svcbst-8.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,699,505,505,0,0
+svc,svcbst-8-l0.264,360x240,Constrained Baseline,1.3,380,189,189,0,0
+svc,svcbst-8-l1.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,699,505,505,0,0
+svc,svcbst-9.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,699,505,505,0,0
+svc,svcbst-9-l0.264,360x240,Constrained Baseline,1.3,380,189,189,0,0
+svc,svcbst-9-l1.264,360x240;720x480,Constrained Baseline;Unspecified,1.3;4.0,699,505,505,0,0
+svc,svcbstc-1.264,176x144;352x288,Constrained Baseline;Unspecified,1b;1.2;1.3,608,450,450,0,0
+svc,svcbstc-1-l0.264,176x144,Constrained Baseline,1b,303,150,150,0,0
+svc,svcbstc-1-l1.264,176x144;352x288,Constrained Baseline;Unspecified,1b;1.2,455,300,300,0,0
+svc,svcbstc-1-l2.264,176x144;352x288,Constrained Baseline;Unspecified,1b;1.2;1.3,607,450,450,0,0
+svc,svchcts-1.264,320x240;720x576;1280x720,Main;Unspecified,1.2;1.3;3.0;4.0,692,638,638,0,0
+svc,svchcts-1-l0.264,320x240,Main,1.2,79,38,38,0,0
+svc,svchcts-1-l1.264,320x240,Main;Unspecified,1.2;1.3,156,113,113,0,0
+svc,svchcts-1-l2.264,320x240,Main;Unspecified,1.2;1.3,234,188,188,0,0
+svc,svchcts-1-l3.264,320x240;720x576,Main;Unspecified,1.2;1.3;3.0,311,263,263,0,0
+svc,svchcts-1-l4.264,320x240;720x576,Main;Unspecified,1.2;1.3;3.0,389,338,338,0,0
+svc,svchcts-1-l5.264,320x240;720x576,Main;Unspecified,1.2;1.3;3.0,314,263,263,0,0
+svc,svchcts-1-l6.264,320x240;720x576;1280x720,Main;Unspecified,1.2;1.3;3.0;4.0,542,488,488,0,0
+svc,svchcts-1-l7.264,320x240;720x576;1280x720,Main;Unspecified,1.2;1.3;3.0;4.0,692,638,638,0,0
+svc,svchics-1.264,352x288;704x576,High;Unspecified,1.3;3.1,385,300,300,0,0
+svc,svchics-1-l0.264,352x288,High,1.3,153,75,75,0,0
+svc,svchics-1-l1.264,352x288,High;Unspecified,1.3,230,150,150,0,0
+svc,svchics-1-l2.264,352x288;704x576,High;Unspecified,1.3;3.1,307,225,225,0,0
+svc,svchics-1-l3.264,352x288;704x576,High;Unspecified,1.3;3.1,384,300,300,0,0
+svc,svchis-1.264,480x272;960x544;1920x1088,High;Unspecified,2.1;3.1;4.0,233,200,200,0,0
+svc,svchis-1-l0.264,480x272,High,2.1,53,25,25,0,0
+svc,svchis-1-l1.264,480x272;960x544,High;Unspecified,2.1;3.1,130,100,100,0,0
+svc,svchis-1-l2.264,480x272;960x544;1920x1088,High;Unspecified,2.1;3.1;4.0,232,200,200,0,0
+svc,svchis-2.264,640x352;1280x720;1920x1088,High;Unspecified,3.0;3.1;4.0,258,225,225,0,0
+svc,svchis-2-l0.264,640x352,High,3.0,53,25,25,0,0
+svc,svchis-2-l1.264,640x352;1280x720,High;Unspecified,3.0;3.1,155,125,125,0,0
+svc,svchis-2-l2.264,640x352;1280x720;1920x1088,High;Unspecified,3.0;3.1;4.0,257,225,225,0,0
+svc,svchis-3.264,720x576;1280x720;1920x1088,High;Unspecified,3.0;3.1;4.0,258,225,225,0,0
+svc,svchis-3-l0.264,720x576,High,3.0,53,25,25,0,0
+svc,svchis-3-l1.264,720x576;1280x720,High;Unspecified,3.0;3.1,155,125,125,0,0
+svc,svchis-3-l2.264,720x576;1280x720;1920x1088,High;Unspecified,3.0;3.1;4.0,257,225,225,0,0
+svc,svchm-1.264,352x288,High;Unspecified,2.2;3.0,1506,1200,1200,"h264nal: unimplemented syntax; error: unimplemented dec_ref_base_pic_marking() in prefix_nal_unit_svc() (x18); error: bitstream uses 18 unimplemented syntax structure(s), 18 NAL unit(s) left unparsed",0
+svc,svchm-1-l0.264,352x288,High;Unspecified,2.2;3.0,606,300,300,"h264nal: unimplemented syntax; error: unimplemented dec_ref_base_pic_marking() in prefix_nal_unit_svc() (x18); error: bitstream uses 18 unimplemented syntax structure(s), 18 NAL unit(s) left unparsed",0
+svc,svchm-1-l1.264,352x288,High;Unspecified,2.2;3.0,906,600,600,"h264nal: unimplemented syntax; error: unimplemented dec_ref_base_pic_marking() in prefix_nal_unit_svc() (x18); error: bitstream uses 18 unimplemented syntax structure(s), 18 NAL unit(s) left unparsed",0
+svc,svchm-1-l2.264,352x288,High;Unspecified,2.2;3.0,1206,900,900,"h264nal: unimplemented syntax; error: unimplemented dec_ref_base_pic_marking() in prefix_nal_unit_svc() (x18); error: bitstream uses 18 unimplemented syntax structure(s), 18 NAL unit(s) left unparsed",0
+svc,svchm-1-l3.264,352x288,High;Unspecified,2.2;3.0,1506,1200,1200,"h264nal: unimplemented syntax; error: unimplemented dec_ref_base_pic_marking() in prefix_nal_unit_svc() (x18); error: bitstream uses 18 unimplemented syntax structure(s), 18 NAL unit(s) left unparsed",0
+svc,svchm-2.264,352x288,High;Unspecified,1.3,605,400,400,0,0
+svc,svchm-2-l0.264,352x288,High;Unspecified,1.3,105,50,50,0,0
+svc,svchm-2-l1.264,352x288,High;Unspecified,1.3,205,100,100,0,0
+svc,svchm-3.264,352x288,High;Unspecified,1.3,605,400,400,0,0
+svc,svchm-3-l0.264,352x288,High;Unspecified,1.3,105,50,50,0,0
+svc,svchm-3-l1.264,352x288,High;Unspecified,1.3,205,100,100,0,0
+svc,svchm-4.264,352x288,High;Unspecified,1.3;2.1,808,600,600,0,0
+svc,svchm-4-l0.264,352x288,High;Unspecified,1.3;2.1,108,50,50,0,0
+svc,svchm-4-l1.264,352x288,High;Unspecified,1.3;2.1,208,100,100,0,0
+svc,svchm-4-l2.264,352x288,High;Unspecified,1.3;2.1,408,200,200,0,0
+svc,svchmts-1.264,720x576;1280x720,Main;Unspecified,3.0;3.1;3.2;4.0,1588,1200,1200,0,0
+svc,svchmts-1-l0.264,720x576,Main;Unspecified,3.0;3.1,383,150,150,0,0
+svc,svchmts-1-l1.264,720x576,Main;Unspecified,3.0;3.1,459,226,226,0,0
+svc,svchmts-1-l2.264,720x576,Main;Unspecified,3.0;3.1,609,376,376,0,0
+svc,svchmts-1-l3.264,720x576;1280x720,Main;Unspecified,3.0;3.1;3.2,986,600,600,0,0
+svc,svchmts-1-l4.264,720x576;1280x720,Main;Unspecified,3.0;3.1;3.2;4.0,1364,976,976,0,0
+svc,svchmts-1-l5.264,720x576;1280x720,Main;Unspecified,3.0;3.1;3.2;4.0,1588,1200,1200,0,0
+svc,svchmts-2.264,352x288;704x576,High;Unspecified,1.3;3.1,308,225,225,0,0
+svc,svchmts-2-l0.264,352x288,High;Unspecified,1.3,155,75,75,0,0
+svc,svchmts-2-l1.264,352x288,High;Unspecified,1.3,230,150,150,0,0
+svc,svchmts-2-l2.264,352x288;704x576,High;Unspecified,1.3;3.1,307,225,225,0,0
+svc,svchs-1.264,352x288;720x576,Constrained Baseline;Unspecified,2.1;3.1,306,200,200,0,0
+svc,svchs-1-l0.264,352x288,Constrained Baseline,2.1,203,100,100,0,0
+svc,svchs-1-l1.264,352x288;720x576,Constrained Baseline;Unspecified,2.1;3.1,306,200,200,0,0
+svc,svchs-2.264,320x240;720x576,High;Unspecified,1.3;3.1,306,200,200,0,0
+svc,svchs-2-l0.264,320x240,High,1.3,203,100,100,0,0
+svc,svchs-2-l1.264,320x240;720x576,High;Unspecified,1.3;3.1,306,200,200,0,0
+svc,svchst-1.264,720x576;1280x720;1920x1072,Main;Unspecified,3.0;3.2;4.2,1358,1200,1200,0,0
+svc,svchst-1-l0.264,720x576,Main,3.0,303,150,150,0,0
+svc,svchst-1-l1.264,720x576;1280x720,Main;Unspecified,3.0;3.2,755,600,600,0,0
+svc,svchst-1-l2.264,720x576;1280x720;1920x1072,Main;Unspecified,3.0;3.2;4.2,1358,1200,1200,0,0
+svc,svchst-2.264,720x576;1280x720;1920x1072,Main;Unspecified,3.0;3.2;4.2,1359,1200,1200,0,0
+svc,svchst-2-l0.264,720x576,Main,3.0,303,150,150,0,0
+svc,svchst-2-l1.264,720x576;1280x720,Main;Unspecified,3.0;3.2,756,600,600,0,0
+svc,svchst-2-l2.264,720x576;1280x720;1920x1072,Main;Unspecified,3.0;3.2;4.2,1359,1200,1200,0,0
+svc,svchst-3.264,720x576;1280x720,High;Unspecified,3.1;5.0,206,150,150,0,0
+svc,svchst-3-l0.264,720x576,High,3.1,103,50,50,0,0
+svc,svchst-3-l1.264,720x576;1280x720,High;Unspecified,3.1;5.0,206,150,150,0,0
+svc,svchst-4.264,544x576;720x576,High;Unspecified,3.0;3.1,206,150,150,0,0
+svc,svchst-4-l0.264,544x576,High,3.0,103,50,50,0,0
+svc,svchst-4-l1.264,544x576;720x576,High;Unspecified,3.0;3.1,206,150,150,0,0
+svc,svchstc-1.264,352x288;704x576,High;Unspecified,1.3;3.1,308,225,225,0,0
+svc,svchstc-1-l0.264,352x288,High;Unspecified,1.3,155,75,75,0,0
+svc,svchstc-1-l1.264,352x288,High;Unspecified,1.3,230,150,150,0,0
+svc,svchstc-1-l2.264,352x288;704x576,High;Unspecified,1.3;3.1,307,225,225,0,0

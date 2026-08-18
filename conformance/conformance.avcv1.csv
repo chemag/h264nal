@@ -1,0 +1,136 @@
+input_dir,input_file,resolution,profile,level,number_of_nalus,number_of_slice_nalus,number_of_slice_header_nalus,h264nal_status,slice_header_status
+avcv1,aud_mw_e.264,176x144,Constrained Baseline,1.0,202,100,100,0,0
+avcv1,ba1_ft_c.264,352x288,Constrained Baseline,2.0,620,614,614,0,0
+avcv1,ba1_sony_d.jsv,176x144,Constrained Baseline,1.2,35,17,17,0,0
+avcv1,ba2_sony_f.jsv,176x144,Constrained Baseline,3.1,601,300,300,0,0
+avcv1,ba3_sva_c.264,176x144,Extended,2.1,35,33,33,0,0
+avcv1,bamq1_jvc_c.264,176x144,Constrained Baseline,2.0,32,30,30,0,0
+avcv1,bamq2_jvc_c.264,176x144,Constrained Baseline,2.0,32,30,30,0,0
+avcv1,ba_mw_d.264,176x144,Constrained Baseline,1.0,102,100,100,0,0
+avcv1,banm_mw_d.264,176x144,Constrained Baseline,1.0,102,100,100,0,0
+avcv1,basqp1_sony_c.jsv,176x144,Constrained Baseline,2.1,85,80,80,0,0
+avcv1,caba1_sony_d.jsv,176x144,Main,2.1,101,50,50,0,0
+avcv1,caba1_sva_b.264,176x144,Main,2.1,19,17,17,0,0
+avcv1,caba2_sony_e.jsv,176x144,Main,2.1,601,300,300,0,0
+avcv1,caba2_sva_b.264,176x144,Main,2.1,19,17,17,0,0
+avcv1,caba3_sony_c.jsv,176x144,Main,1.2,601,300,300,0,0
+avcv1,caba3_sva_b.264,176x144,Main,2.1,35,33,33,0,0
+avcv1,caba3_toshiba_e.264,176x144,Main,1.2,620,300,300,0,0
+avcv1,cabaci3_sony_b.jsv,176x144,Main,2.1,1501,1200,1200,0,0
+avcv1,cabast3_sony_e.jsv,352x288,Main,2.1,126,100,100,0,0
+avcv1,cabastbr3_sony_b.jsv,352x288,Main,2.1,126,100,100,0,0
+avcv1,cabref3_sand_d.264,352x288,Main,4.0,103,100,100,0,0
+avcv1,cacqp3_sony_d.jsv,176x144,Main,2.1,101,50,50,0,0
+avcv1,cafi1_sva_c.264,720x480,Main,3.0,68,66,66,0,0
+avcv1,cama1_sony_c.jsv,720x480,Main,3.1,11,5,5,0,0
+avcv1,cama1_toshiba_b.264,352x288,Main,2.1,277,90,90,0,0
+avcv1,cama1_vtc_c.avc,720x480,Main,3.0,11,5,5,0,0
+avcv1,cama2_vtc_b.avc,720x576,Main,3.0,11,5,5,0,0
+avcv1,cama3_sand_e.264,352x288,Main,4.0,53,50,50,0,0
+avcv1,cama3_vtc_b.avc,720x576,Main,3.0,11,5,5,0,0
+avcv1,camaci3_sony_c.jsv,192x128,Main,2.1,35,17,17,0,0
+avcv1,camanl1_toshiba_b.264,352x288,Main,2.1,277,90,90,0,0
+avcv1,camanl2_toshiba_b.264,352x288,Main,2.1,277,90,90,0,0
+avcv1,camanl3_sand_e.264,352x288,Main,4.0,53,50,50,0,0
+avcv1,camasl3_sony_b.jsv,192x128,Main,2.1,86,68,68,0,0
+avcv1,camp_mot_fld0_full.26l,720x480,Main,2.2,62,60,60,0,0
+avcv1,camp_mot_frm0_full.26l,720x480,Main,2.2,32,30,30,0,0
+avcv1,camp_mot_mbaff0_full.26l,720x480,Main,2.2,32,30,30,0,0
+avcv1,camp_mot_mbaff_l30.26l,720x480,Main,3.0,32,30,30,0,0
+avcv1,camp_mot_mbaff_l31.26l,720x480,Main,3.1,32,30,30,0,0
+avcv1,camp_mot_picaff0_full.26l,720x480,Main,2.2,47,45,45,0,0
+avcv1,canl1_sony_e.jsv,176x144,Main,2.1,101,50,50,0,0
+avcv1,canl1_sva_b.264,176x144,Main,2.1,19,17,17,0,0
+avcv1,canl1_toshiba_g.264,176x144,Main,1.2,900,300,300,0,0
+avcv1,canl2_sony_e.jsv,176x144,Main,2.1,601,300,300,0,0
+avcv1,canl2_sva_b.264,176x144,Main,2.1,19,17,17,0,0
+avcv1,canl3_sony_c.jsv,176x144,Main,1.2,601,300,300,0,0
+avcv1,canl3_sva_b.264,176x144,Main,2.1,19,17,17,0,0
+avcv1,canl4_sva_b.264,176x144,Main,2.1,35,33,33,0,0
+avcv1,canlma2_sony_c.jsv,720x480,Main,3.1,35,17,17,0,0
+avcv1,canlma3_sony_c.jsv,720x480,Main,3.1,35,17,17,0,0
+avcv1,capa1_toshiba_b.264,352x288,Main,2.1,421,138,138,0,0
+avcv1,capama3_sand_f.264,352x288,Main,4.0,82,79,79,0,0
+avcv1,capcm1_sand_e.264,352x288,Main,4.0,33,30,30,0,0
+avcv1,capcmnl1_sand_e.264,352x288,Main,4.0,33,30,30,0,0
+avcv1,capm3_sony_d.jsv,176x144,Main,2.1,601,300,300,0,0
+avcv1,caqp1_sony_b.jsv,176x144,Main,1.2,101,50,50,0,0
+avcv1,cawp1_toshiba_e.264,352x288,Main,2.0,186,90,90,0,0
+avcv1,cawp5_toshiba_e.264,352x288,Main,2.0,277,90,90,0,0
+avcv1,ci1_ft_b.264,352x288,Constrained Baseline,2.0,557,549,549,0,0
+avcv1,ci_mw_d.264,176x144,Constrained Baseline,1.0,102,100,100,0,0
+avcv1,cvbs3_sony_c.jsv,176x144,Main,1.2,601,300,300,0,0
+avcv1,cvcanlma2_sony_c.jsv,720x480,Main,3.1,35,17,17,0,0
+avcv1,cvfc1_sony_c.jsv,300x168,Constrained Baseline,3.1,251,200,200,0,0
+avcv1,cvfi1_sony_d.jsv,720x480,Main,3.1,273,238,238,0,0
+avcv1,cvfi1_sva_c.264,720x480,Main,3.0,16,14,14,0,0
+avcv1,cvfi2_sony_h.jsv,720x480,Main,3.1,273,238,238,0,0
+avcv1,cvfi2_sva_c.264,720x480,Main,3.0,28,26,26,0,0
+avcv1,cvma1_sony_d.jsv,720x480,Main,3.1,11,5,5,0,0
+avcv1,cvma1_toshiba_b.264,352x288,Main,2.1,277,90,90,0,0
+avcv1,cvmanl1_toshiba_b.264,352x288,Main,2.1,277,90,90,0,0
+avcv1,cvmanl2_toshiba_b.264,352x288,Main,2.1,277,90,90,0,0
+avcv1,cvmapaqp3_sony_e.jsv,720x480,Main,3.1,29,14,14,0,0
+avcv1,cvmaqp2_sony_g.jsv,192x128,Main,3.1,35,17,17,0,0
+avcv1,cvmaqp3_sony_d.jsv,192x128,Main,2.1,35,17,17,0,0
+avcv1,cvmp_mot_fld0_full_b.26l,720x480,Main,2.2,62,60,60,0,0
+avcv1,cvmp_mot_fld_l30_b.26l,720x480,Main,3.0,62,60,60,0,0
+avcv1,cvmp_mot_frm0_full_b.26l,720x480,Main,2.2,32,30,30,0,0
+avcv1,cvmp_mot_frm_l31_b.26l,720x480,Main,3.1,62,60,60,0,0
+avcv1,cvmp_mot_mbaff0_full_b.26l,720x480,Main,2.2,32,30,30,0,0
+avcv1,cvmp_mot_picaff0_full_b.26l,720x480,Main,2.2,47,45,45,0,0
+avcv1,cvnlfi1_sony_c.jsv,720x480,Main,3.1,273,238,238,0,0
+avcv1,cvnlfi2_sony_h.jsv,720x480,Main,3.1,273,238,238,0,0
+avcv1,cvpa1_toshiba_b.264,352x288,Main,2.1,421,138,138,0,0
+avcv1,cvpcmnl1_sva_c.264,352x288,Main,4.0,32,30,30,0,0
+avcv1,cvpcmnl2_sva_c.264,1280x720,Main,4.0,4,2,2,0,0
+avcv1,cvse2_sony_b.jsv,176x144,Constrained Baseline,2.1,835,278,278,0,0
+avcv1,cvse3_sony_h.jsv,176x144,Main,2.1,835,278,278,0,0
+avcv1,cvsefdft3_sony_e.jsv,176x144,Main,2.1,601,200,200,0,0
+avcv1,cvwp1_toshiba_e.264,352x288,Main,2.0,186,90,90,0,0
+avcv1,cvwp2_toshiba_e.264,352x288,Main,2.0,186,90,90,0,0
+avcv1,cvwp3_toshiba_e.264,352x288,Main,2.0,186,90,90,0,0
+avcv1,cvwp5_toshiba_e.264,352x288,Main,2.0,277,90,90,0,0
+avcv1,fi1_sony_e.jsv,192x128,Main,2.1,69,34,34,0,0
+avcv1,fm1_bt_b.h264,176x144,Baseline,1.0,1696,1687,1687,0,0
+avcv1,fm1_ft_e.264,176x144,Baseline,2.0,616,582,582,0,0
+avcv1,fm2_sva_c.264,176x144,Baseline,2.1,87,85,85,0,0
+avcv1,hcbp1_hhi_a.264,352x288,Constrained Baseline,3.1,252,250,250,0,0
+avcv1,hcbp2_hhi_a.264,352x288,Constrained Baseline,3.1,252,250,250,0,0
+avcv1,hcmp1_hhi_a.264,352x288,Main,3.1,252,250,250,0,0
+avcv1,ls_sva_d.264,176x144,Constrained Baseline,1.3,1702,1700,1700,0,0
+avcv1,midr_mw_d.264,176x144,Constrained Baseline,1.0,102,100,100,0,0
+avcv1,mps_mw_a.264,176x144,Constrained Baseline,1.1,153,150,150,0,0
+avcv1,mr1_bt_a.h264,176x144,Constrained Baseline,1.1,173,171,171,0,0
+avcv1,mr1_mw_a.264,176x144,Constrained Baseline,1.1,152,150,150,0,0
+avcv1,mr2_mw_a.264,176x144,Constrained Baseline,1.1,302,300,300,0,0
+avcv1,mr2_tandberg_e.264,176x144,Baseline,3.1,302,300,300,0,0
+avcv1,mr3_tandberg_b.264,176x144,Baseline,3.1,302,300,300,0,0
+avcv1,mr4_tandberg_c.264,176x144,Baseline,3.1,302,300,300,0,0
+avcv1,mr5_tandberg_c.264,176x144,Baseline,3.1,302,300,300,0,0
+avcv1,mr6_bt_b.h264,192x128,Extended,2.1,122,120,120,0,0
+avcv1,mr7_bt_b.h264,192x128,Extended,2.1,68,66,66,0,0
+avcv1,mr8_bt_b.h264,192x128,Extended,2.1,118,116,116,0,0
+avcv1,mr9_bt_b.h264,192x128,Main,2.1,66,64,64,0,0
+avcv1,nl1_sony_d.jsv,176x144,Constrained Baseline,1.2,35,17,17,0,0
+avcv1,nl2_sony_h.jsv,176x144,Constrained Baseline,3.1,601,300,300,0,0
+avcv1,nl3_sva_e.264,176x144,Main,1.1,35,33,33,0,0
+avcv1,nlmq1_jvc_c.264,176x144,Constrained Baseline,2.0,32,30,30,0,0
+avcv1,nlmq2_jvc_c.264,176x144,Constrained Baseline,2.0,32,30,30,0,0
+avcv1,nrf_mw_e.264,176x144,Constrained Baseline,1.0,102,100,100,0,0
+avcv1,sharp_mp_field_1_b.jvt,720x480,Main,3.0,34,30,30,0,0
+avcv1,sharp_mp_field_2_b.jvt,720x480,Main,3.0,34,30,30,0,0
+avcv1,sharp_mp_field_3_b.jvt,720x480,Main,3.0,34,30,30,0,0
+avcv1,sharp_mp_paff_1r2.jvt,720x480,Main,3.0,27,23,23,0,0
+avcv1,sharp_mp_paff_2.jvt,720x480,Main,3.0,27,23,23,0,0
+avcv1,sl1_sva_b.264,176x144,Main,2.1,101,99,99,0,0
+avcv1,sp1_bt_a.h264,176x144,Extended,1.0,402,400,400,0,0
+avcv1,sp2_bt_b.h264,176x144,Extended,1.0,402,400,400,0,0
+avcv1,src19td.ibp.264,720x480,Main,3.0,259,257,257,0,0
+avcv1,sva_ba1_b.264,176x144,Constrained Baseline,2.1,19,17,17,0,0
+avcv1,sva_ba2_d.264,176x144,Constrained Baseline,2.1,19,17,17,0,0
+avcv1,sva_base_b.264,176x144,Constrained Baseline,2.1,53,51,51,0,0
+avcv1,sva_cl1_e.264,176x144,Constrained Baseline,2.1,152,150,150,0,0
+avcv1,sva_fm1_e.264,176x144,Constrained Baseline,2.1,53,51,51,0,0
+avcv1,sva_nl1_b.264,176x144,Constrained Baseline,2.1,19,17,17,0,0
+avcv1,sva_nl2_e.264,176x144,Constrained Baseline,2.1,19,17,17,0,0

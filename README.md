@@ -37,43 +37,16 @@ Feel free to test all the unittests:
 ```
 $ make test
 Running tests...
-Test project /home/chemag/proj/h264nal/build
+Test project ...h264nal/build
       Start  1: h264_common_unittest
- 1/16 Test  #1: h264_common_unittest .........................................   Passed    0.00 sec
-      Start  2: h264_hrd_parameters_parser_unittest
- 2/16 Test  #2: h264_hrd_parameters_parser_unittest ..........................   Passed    0.00 sec
-      Start  3: h264_vui_parameters_parser_unittest
- 3/16 Test  #3: h264_vui_parameters_parser_unittest ..........................   Passed    0.00 sec
-      Start  4: h264_sps_parser_unittest
- 4/16 Test  #4: h264_sps_parser_unittest .....................................   Passed    0.00 sec
-      Start  5: h264_pps_parser_unittest
- 5/16 Test  #5: h264_pps_parser_unittest .....................................   Passed    0.00 sec
-      Start  6: h264_ref_pic_list_modification_parser_unittest
- 6/16 Test  #6: h264_ref_pic_list_modification_parser_unittest ...............   Passed    0.00 sec
-      Start  7: h264_pred_weight_table_parser_unittest
- 7/16 Test  #7: h264_pred_weight_table_parser_unittest .......................   Passed    0.00 sec
-      Start  8: h264_dec_ref_pic_marking_parser_unittest
- 8/16 Test  #8: h264_dec_ref_pic_marking_parser_unittest .....................   Passed    0.00 sec
-      Start  9: h264_rtp_single_parser_unittest
- 9/16 Test  #9: h264_rtp_single_parser_unittest ..............................   Passed    0.00 sec
-      Start 10: h264_rtp_stapa_parser_unittest
-10/16 Test #10: h264_rtp_stapa_parser_unittest ...............................   Passed    0.00 sec
-      Start 11: h264_rtp_fua_parser_unittest
-11/16 Test #11: h264_rtp_fua_parser_unittest .................................   Passed    0.00 sec
-      Start 12: h264_rtp_parser_unittest
-12/16 Test #12: h264_rtp_parser_unittest .....................................   Passed    0.00 sec
-      Start 13: h264_slice_header_parser_unittest
-13/16 Test #13: h264_slice_header_parser_unittest ............................   Passed    0.00 sec
-      Start 14: h264_slice_layer_without_partitioning_rbsp_parser_unittest
-14/16 Test #14: h264_slice_layer_without_partitioning_rbsp_parser_unittest ...   Passed    0.00 sec
-      Start 15: h264_bitstream_parser_unittest
-15/16 Test #15: h264_bitstream_parser_unittest ...............................   Passed    0.00 sec
-      Start 16: h264_nal_unit_parser_unittest
-16/16 Test #16: h264_nal_unit_parser_unittest ................................   Passed    0.00 sec
+ 1/23 Test  #1: h264_common_unittest .........................................   Passed    0.02 sec
+...
+      Start 23: h264_nal_unit_parser_unittest
+23/23 Test #23: h264_nal_unit_parser_unittest ................................   Passed    0.02 sec
 
-100% tests passed, 0 tests failed out of 16
+100% tests passed, 0 tests failed out of 23
 
-Total Test time (real) =   0.07 sec
+Total Test time (real) =   0.44 sec
 ```
 
 Or to test any of the unittests:
@@ -287,7 +260,96 @@ The [fuzz](fuzz/README.md) directory contains information on fuzzing the
 parser.
 
 
-# 7. TODO
+# 7. Conformance
+
+h264nal has been run against the JVT H.264 conformance suite (the 201602
+release), which is 572 bitstreams across 9 folders. Results can be
+regenerated whenever the parser changes.
+
+## 7.1. Current status
+
+| suite                 | files | clean | unimplemented | invalid | silent |
+|-----------------------|-------|-------|---------------|---------|--------|
+| avcv1                 |   135 |   135 |             0 |       0 |      0 |
+| frext                 |    71 |    71 |             0 |       0 |      0 |
+| professional_profiles |    38 |    38 |             0 |       0 |      0 |
+| svc                   |   258 |   241 |            17 |       0 |      0 |
+| 3davc                 |    12 |     0 |            12 |       0 |      0 |
+| mvc                   |    27 |     0 |            27 |       0 |      0 |
+| mvcd                  |    17 |     0 |            17 |       0 |      0 |
+| mfc                   |     7 |     0 |             7 |       0 |      0 |
+| mfcd                  |     7 |     0 |             7 |       0 |      0 |
+| TOTAL                 |   572 |   485 |            87 |       0 |      0 |
+
+The columns are the four outcomes h264nal can produce, which are worth
+keeping apart:
+
+* clean: parsed in full, and every slice NAL unit yielded a slice header.
+  Exit code 0.
+* unimplemented: the bitstream needs syntax h264nal does not implement.
+  It says which, on stderr, and exits 2. This is a deliberate refusal
+  rather than a failure.
+* invalid: h264nal rejected the bitstream. Exit code 1. On this suite that
+  would mean a bug, since every file in it is conforming.
+* silent: exited 0 but produced fewer slice headers than there were slice
+  NAL units, so something was dropped without being reported. The CSV
+  tracks this in its own column because such a file looks clean otherwise.
+
+There are no crashes, no invalid verdicts and no silent shortfalls. All 87
+unimplemented files are asking for annexes that are not written:
+
+| missing syntax                                    | files |
+|---------------------------------------------------|-------|
+| nal_unit_header_mvc_extension()                   |    56 |
+| nal_unit_header_3davc_extension(), plus the above |    14 |
+| dec_ref_base_pic_marking()                        |    17 |
+
+which is Annex G (MVC), Annex I (3D-AVC) and part of Annex F (SVC). That
+accounts for the 5 folders at zero clean: they are entirely MVC, 3D-AVC or
+MFC content. See section 9 for what is not supported.
+
+## 7.2. Regenerating the results
+
+```
+$ mkdir conformance
+$ cd conformance
+$ make                                  # every suite
+$ make conformance.avcv1.csv            # just one
+$ make DATASET=/path/to/201602          # a copy elsewhere
+$ make -B                               # rebuild everything
+$ make clean
+```
+
+The dataset is not in this repository. `DATASET` defaults to
+`$(HOME)/work/video/dataset/h264_conformance/201602` and has to point at a
+directory holding the 9 suite folders.
+
+Build the binary without the fuzzing sanitizers, which is the default:
+
+```
+$ mkdir build && cd build && cmake .. && make
+```
+
+A build configured with `-DBUILD_CLANG_FUZZER=ON` is not usable here. The
+UBSan checks it turns on report libstdc++'s own reference counting on
+every `shared_ptr` release, and the script reads stderr as parser output,
+so every file comes back changed. Pass `H264NAL=` to use a binary from
+somewhere other than `../build/tools/h264nal`.
+
+Underneath, the Makefile runs
+[tools/h264nal-conformance.py](tools/h264nal-conformance.py), which can
+also be used on its own for any set of files:
+
+```
+$ ./tools/h264nal-conformance.py -o out.csv /path/to/*.264
+```
+
+It writes one row per file with the resolution, profile, level, NAL unit
+counts, and the parser status, and prints a summary to stderr. A full run
+over the 572 files takes about 10 seconds.
+
+
+# 8. TODO
 
 List of tasks:
 * add lacking parsers (e.g. SEI)
@@ -297,12 +359,12 @@ List of tasks:
 * add a set of Annex B files for testing
 
 
-# 8. Limitations
+# 9. Limitations
 
 * no support for STAP-B, MTAP16, MTAP24, or FU-B RTP packetization.
 
 
-# 9. License
+# 10. License
 
 h264nal is BSD licensed, as found in the [LICENSE](LICENSE) file.
 

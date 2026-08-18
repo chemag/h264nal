@@ -1,0 +1,39 @@
+input_dir,input_file,resolution,profile,level,number_of_nalus,number_of_slice_nalus,number_of_slice_header_nalus,h264nal_status,slice_header_status
+professional_profiles,ppcv444i1_2008.bits,1920x1080,CAVLC 4:4:4 Intra,5.0,482,480,480,0,0
+professional_profiles,ppcv444i2_2008.bits,1920x1080,CAVLC 4:4:4 Intra,5.0,482,480,480,0,0
+professional_profiles,ppcv444i3_2008.bits,1920x1080,CAVLC 4:4:4 Intra,5.0,482,480,480,0,0
+professional_profiles,ppcv444i4_mitsubishi_a.264,1920x1080,CAVLC 4:4:4 Intra,4.1,362,360,360,0,0
+professional_profiles,ppcv444i5_mitsubishi_a.264,1920x1080,CAVLC 4:4:4 Intra,4.1,362,360,360,0,0
+professional_profiles,ppcv444i6_mitsubishi_a.264,1920x1080,CAVLC 4:4:4 Intra,4.1,362,360,360,0,0
+professional_profiles,ppcv444i-7.264,176x144,CAVLC 4:4:4 Intra,4.0,1502,1500,1500,0,0
+professional_profiles,pph10i1_panasonic_a.264,1280x720,High 10 Intra,3.2,42,40,40,0,0
+professional_profiles,pph10i2_panasonic_a.264,1280x720,High 10 Intra,3.2,42,40,40,0,0
+professional_profiles,pph10i3_panasonic_a.264,1280x720,High 10 Intra,3.2,42,40,40,0,0
+professional_profiles,pph10i4_panasonic_a.264,1920x1080,High 10 Intra,4.1,42,40,40,0,0
+professional_profiles,pph10i5_panasonic_a.264,1920x1080,High 10 Intra,4.1,42,40,40,0,0
+professional_profiles,pph10i6_panasonic_a.264,1920x1080,High 10 Intra,4.1,42,40,40,0,0
+professional_profiles,pph10i7_panasonic_a.264,1920x1080,High 10 Intra,4.1,42,40,40,0,0
+professional_profiles,pph422i1_panasonic_a.264,1280x720,High 4:2:2 Intra,3.2,42,40,40,0,0
+professional_profiles,pph422i2_panasonic_a.264,1280x720,High 4:2:2 Intra,3.2,42,40,40,0,0
+professional_profiles,pph422i3_panasonic_a.264,1280x720,High 4:2:2 Intra,3.2,42,40,40,0,0
+professional_profiles,pph422i4_panasonic_a.264,1920x1080,High 4:2:2 Intra,4.1,42,40,40,0,0
+professional_profiles,pph422i5_panasonic_a.264,1920x1080,High 4:2:2 Intra,4.1,42,40,40,0,0
+professional_profiles,pph422i6_panasonic_a.264,1920x1080,High 4:2:2 Intra,4.1,42,40,40,0,0
+professional_profiles,pph422i7_panasonic_a.264,1920x1080,High 4:2:2 Intra,4.1,42,40,40,0,0
+professional_profiles,pph444i1_2008.bits,1920x1080,High 4:4:4 Predictive Intra,5.0,482,480,480,0,0
+professional_profiles,pph444i2_2008.bits,1920x1080,High 4:4:4 Predictive Intra,5.0,482,480,480,0,0
+professional_profiles,pph444i3_2008.bits,1920x1080,High 4:4:4 Predictive Intra,5.0,482,480,480,0,0
+professional_profiles,pph444i4_mitsubishi_a.264,1920x1080,High 4:4:4 Predictive Intra,4.1,362,360,360,0,0
+professional_profiles,pph444i5_mitsubishi_a.264,1920x1080,High 4:4:4 Predictive Intra,4.1,362,360,360,0,0
+professional_profiles,pph444i6_mitsubishi_a.264,1920x1080,High 4:4:4 Predictive Intra,4.1,362,360,360,0,0
+professional_profiles,pph444i-7.264,176x144,High 4:4:4 Predictive,4.0,1502,1500,1500,0,0
+professional_profiles,pph444p-10.264,176x144,High 4:4:4 Predictive,4.0,1502,1500,1500,0,0
+professional_profiles,pph444p1_2008.bits,1920x1080,High 4:4:4 Predictive,5.0,482,480,480,0,0
+professional_profiles,pph444p2_2008.bits,1920x1080,High 4:4:4 Predictive,5.0,482,480,480,0,0
+professional_profiles,pph444p3_2008.bits,1920x1080,High 4:4:4 Predictive,5.0,474,472,472,0,0
+professional_profiles,pph444p4_2008.bits,1920x1080,High 4:4:4 Predictive,5.0,474,472,472,0,0
+professional_profiles,pph444p5_2008.bits,1920x1080,High 4:4:4 Predictive,5.0,474,472,472,0,0
+professional_profiles,pph444p6_mitsubishi_a.264,1920x1080,High 4:4:4 Predictive,4.1,362,360,360,0,0
+professional_profiles,pph444p7_mitsubishi_a.264,1920x1080,High 4:4:4 Predictive,4.1,362,360,360,0,0
+professional_profiles,pph444p8_mitsubishi_a.264,1920x1080,High 4:4:4 Predictive,4.1,338,336,336,0,0
+professional_profiles,pph444p9_mitsubishi_a.264,1280x720,High 4:4:4 Predictive,4.1,254,252,252,0,0

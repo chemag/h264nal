@@ -1,0 +1,72 @@
+input_dir,input_file,resolution,profile,level,number_of_nalus,number_of_slice_nalus,number_of_slice_header_nalus,h264nal_status,slice_header_status
+frext,alphaconformanceg.264,960x544,Main,4.0,84,40,40,0,0
+frext,freh10.264,352x288,High,3.0,203,200,200,0,0
+frext,freh11.264,352x288,High,3.0,203,200,200,0,0
+frext,freh12_b.264,352x288,High,2.2,103,100,100,0,0
+frext,freh1_b.264,352x288,High,2.2,103,100,100,0,0
+frext,freh2_b.264,352x288,High,2.2,103,100,100,0,0
+frext,freh3.264,352x288,High,3.0,103,100,100,0,0
+frext,freh4.264,352x288,High,3.0,203,200,200,0,0
+frext,freh5.264,352x288,High,3.0,103,100,100,0,0
+frext,freh6.264,352x288,High,3.0,203,200,200,0,0
+frext,freh7_b.264,352x288,High,2.2,203,200,200,0,0
+frext,freh8.264,352x288,High,3.0,103,100,100,0,0
+frext,freh9.264,352x288,High,3.0,103,100,100,0,0
+frext,frext01_jvc_d.264,352x288,High,3.1,18,16,16,0,0
+frext,frext02_jvc_c.264,352x288,High,3.1,18,16,16,0,0
+frext,frext1_panasonic.avc,352x288,High,2.1,21,8,8,0,0
+frext,frext1_tandberg_a.264,352x288,High 4:2:2,2.1,7,5,5,0,0
+frext,frext2_panasonic.avc,352x288,High,2.1,49,22,22,0,0
+frext,frext2_tandberg_a.264,352x288,High 4:2:2,2.1,7,5,5,0,0
+frext,frext3_panasonic.avc,352x288,High,2.1,25,11,11,0,0
+frext,frext3_tandberg_a.264,352x288,High 4:2:2,2.1,7,5,5,0,0
+frext,frext4_panasonic.avc,352x288,High,2.1,33,15,15,0,0
+frext,frext_mmco4_sony_b.264,352x288,High,3.1,181,60,60,0,0
+frext,hcaff1_hhi.264,352x288,High,3.0,16,14,14,0,0
+frext,hcafr1_hhi.264,352x288,High,3.0,12,10,10,0,0
+frext,hcafr2_hhi.264,352x288,High,2.0,12,10,10,0,0
+frext,hcafr3_hhi.264,352x288,High,3.0,12,10,10,0,0
+frext,hcafr4_hhi.264,352x288,High,3.0,12,10,10,0,0
+frext,hcamff1_hhi.264,352x288,High,3.0,12,10,10,0,0
+frext,hchp1_hhi_b.264,352x288,High,2.1,253,250,250,0,0
+frext,hchp2_hhi_a.264,352x288,High,3.1,252,250,250,0,0
+frext,hchp3_hhi_a.264,720x576,High,4.1,317,315,315,0,0
+frext,hi422fr10_sony_b.264,352x288,High 4:2:2,4.0,7,5,5,0,0
+frext,hi422fr11_sony_b.264,352x288,High 4:2:2,4.0,7,5,5,0,0
+frext,hi422fr12_sony_b.264,352x288,High 4:2:2,4.0,7,5,5,0,0
+frext,hi422fr13_sony_b.264,352x288,High 4:2:2,4.0,7,5,5,0,0
+frext,hi422fr14_sony_b.264,352x288,High 4:2:2,4.0,7,5,5,0,0
+frext,hi422fr15_sony_b.264,352x288,High 4:2:2,4.0,7,5,5,0,0
+frext,hi422fr1_sony_a.jsv,352x288,High 4:2:2,3.1,11,5,5,0,0
+frext,hi422fr2_sony_a.jsv,352x288,High 4:2:2,3.1,11,5,5,0,0
+frext,hi422fr3_sony_a.jsv,352x288,High 4:2:2,3.1,11,5,5,0,0
+frext,hi422fr4_sony_a.jsv,352x288,High 4:2:2,3.1,11,5,5,0,0
+frext,hi422fr6_sony_a.jsv,352x288,High 4:2:2,3.1,11,5,5,0,0
+frext,hi422fr7_sony_a.jsv,352x288,High 4:2:2,3.1,11,5,5,0,0
+frext,hi422fr8_sony_a.jsv,352x288,High 4:2:2,3.1,11,5,5,0,0
+frext,hi422fr9_sony_a.jsv,352x288,High 4:2:2,3.1,11,5,5,0,0
+frext,hi422frext16_sony_a.264,1920x1088,High 4:2:2,4.0,12,10,10,0,0
+frext,hi422frext17_sony_a.264,1920x1088,High 4:2:2,4.0,7,5,5,0,0
+frext,hi422frext18_sony_a.264,720x480,High 4:2:2,4.0,140,138,138,0,0
+frext,hi422frext19_sony_a.264,720x480,High 4:2:2,4.0,105,103,103,0,0
+frext,hpca_brcm_c.264,352x288,High,4.0,303,300,300,0,0
+frext,hpcadq_brcm_b.264,352x288,High,4.0,303,300,300,0,0
+frext,hpcafl_brcm_c.264,352x288,High,4.0,603,600,600,0,0
+frext,hpcaflnl_brcm_c.264,352x288,High,4.0,603,600,600,0,0
+frext,hpcalq_brcm_b.264,352x288,High,4.0,303,300,300,0,0
+frext,hpcamapalq_brcm_b.264,352x288,High,4.0,461,458,458,0,0
+frext,hpcamolq_brcm_b.264,352x288,High,4.0,103,100,100,0,0
+frext,hpcanl_brcm_c.264,352x288,High,4.0,303,300,300,0,0
+frext,hpcaq2lq_brcm_b.264,352x288,High,4.0,103,100,100,0,0
+frext,hpcv_brcm_a.264,352x288,High,4.0,303,300,300,0,0
+frext,hpcvfl_brcm_a.264,352x288,High,4.0,603,600,600,0,0
+frext,hpcvflnl_brcm_a.264,352x288,High,4.0,603,600,600,0,0
+frext,hpcvmolq_brcm_b.264,352x288,High,4.0,103,100,100,0,0
+frext,hpcvnl_brcm_a.264,352x288,High,4.0,303,300,300,0,0
+frext,hvlcfi0_sony_b.264,720x480,High,3.1,77,38,38,0,0
+frext,hvlcmff0_sony_b.264,720x480,High,3.1,61,30,30,0,0
+frext,hvlcpff0_sony_b.264,720x480,High,3.1,61,30,30,0,0
+frext,test7a43.264patched,960x544,High,4.0,45,43,43,0,0
+frext,test8b43.264,960x544,Main,4.0,45,43,43,0,0
+frext,wb_10bit_qp21_1920x1088.264,1920x1088,High 10,4.0,360,358,358,0,0
+frext,wb_10bit_qp21_i-only_1920x1088.264,1920x1088,High 10,4.0,362,360,360,0,0
