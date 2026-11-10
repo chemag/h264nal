@@ -511,7 +511,7 @@ int main(int argc, char** argv) {
         uint32_t nal_unit_type = nal_unit->nal_unit_header->nal_unit_type;
         std::string nal_unit_type_str =
             h264nal::NalUnitTypeToString(nal_unit_type);
-        int nal_length_bytes = nal_unit->length;
+        int nal_length_bytes = static_cast<int>(nal_unit->length);
         int64_t bitrate_bps = -1;
         int first_mb_in_slice = -1;
         bool is_slice_segment = h264nal::IsSliceSegment(nal_unit_type);
