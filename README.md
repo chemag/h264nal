@@ -257,7 +257,9 @@ The `rtc_common.h|cc` code contains an RBSP parser copied from an old
 version of webrtc.
 
 The [fuzz](fuzz/README.md) directory contains information on fuzzing the
-parser.
+parser. The fuzzing corpus lives in the
+[h264nal-fuzzcorpus](https://github.com/chemag/h264nal-fuzzcorpus) repo, as the
+`fuzz/corpus` submodule (not checked out by default).
 
 
 # 7. Conformance

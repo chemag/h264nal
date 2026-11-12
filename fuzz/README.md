@@ -54,8 +54,9 @@ constants, and put them into a binary file.
 
 # Operation
 
-(0) Get the fuzz/corpus submodule. The submodule is not checked out by
-default. You need to explicitly request it:
+(0) Get the fuzz/corpus submodule, which holds the
+[h264nal-fuzzcorpus](https://github.com/chemag/h264nal-fuzzcorpus) repo. The
+submodule is not checked out by default. You need to explicitly request it:
 ```
 $ cd h264nal
 $ git submodule update --init --checkout --depth 1 -- fuzz/corpus
