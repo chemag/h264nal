@@ -10,7 +10,6 @@ SHELL := /bin/bash
 
 
 all: \
-    h264_common_fuzzer.cc \
     h264_sps_parser_fuzzer.cc \
     h264_hrd_parameters_parser_fuzzer.cc \
     h264_vui_parameters_parser_fuzzer.cc \
@@ -37,9 +36,6 @@ all: \
 	@echo "results: make fuzz-report"
 	@echo "distill: make -j merge"
 
-
-h264_common_fuzzer.cc: ../test/h264_common_unittest.cc
-	./converter.py ../test/h264_common_unittest.cc ./
 
 h264_sps_parser_fuzzer.cc: ../test/h264_sps_parser_unittest.cc
 	./converter.py ../test/h264_sps_parser_unittest.cc ./
@@ -141,7 +137,6 @@ SEED ?=
 SEED_FLAG = $(if $(SEED),-seed=$(SEED),)
 
 FUZZERS = \
-    h264_common_fuzzer \
     h264_sps_parser_fuzzer \
     h264_hrd_parameters_parser_fuzzer \
     h264_vui_parameters_parser_fuzzer \

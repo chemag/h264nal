@@ -7,8 +7,8 @@
 // converter.py derives a target from the Parse*(data, size) calls in a unit
 // test. h264_common_unittest.cc has none: it exercises UnescapeRbsp() and
 // the Section 7.2 syntax helpers, which take other shapes. The converter
-// therefore emits an empty LLVMFuzzerTestOneInput for h264_common_fuzzer,
-// which reports cov: 1 forever and tests nothing.
+// would emit an empty LLVMFuzzerTestOneInput for it, which reports cov: 1
+// forever and tests nothing, so there is no h264_common_fuzzer.
 //
 // This file covers that surface directly. converter.py names its output
 // after the unit test it converts (converter.py:52, s/unittest/fuzzer/), so

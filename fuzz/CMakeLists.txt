@@ -19,8 +19,6 @@ function(add_fuzzer TARGET SOURCE)
   endif()
 endfunction()
 
-add_fuzzer(h264_common_fuzzer h264_common_fuzzer.cc)
-
 # Hand-written, not produced by converter.py. See the comment in the source.
 add_fuzzer(h264_common__unescape_rbsp_fuzzer h264_common__unescape_rbsp_fuzzer.cc)
 
